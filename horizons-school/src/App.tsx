@@ -4,6 +4,10 @@ import './App.css';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
+// Import images
+import programsHeroImg from './images/programs-hero.jpg';
+import patternImg from './images/pattern.png';
+
 // Import our layout
 import MainLayout from './layouts/MainLayout';
 

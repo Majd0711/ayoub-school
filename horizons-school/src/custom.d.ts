@@ -34,4 +34,20 @@ declare module './pages/Contact' {
   import React from 'react';
   const Contact: React.FC;
   export default Contact;
-} 
+}
+
+// Image module declarations
+declare module '*.png' {
+  const content: string;
+  export default content;
+}
+
+declare module '*.jpg' {
+  const content: string;
+  export default content;
+}
+
+declare module '*.svg' {
+  const content: string;
+  export default content;
+}
