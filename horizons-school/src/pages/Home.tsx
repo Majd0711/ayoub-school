@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Container, Row, Col, Button, Card, Carousel } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import 'boxicons/css/boxicons.min.css';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -47,22 +48,20 @@ const Home: React.FC = () => {
                 Développez votre potentiel professionnel avec nos formations d'excellence.
               </p>
               <div className="d-flex flex-wrap gap-3">
-                <Button 
-                  variant="warning" 
-                  size="lg" 
-                  href="#/programs" 
-                  className="px-4 py-2 fw-medium"
+                <Link 
+                  to="/programs" 
+                  className="btn btn-warning px-4 py-2 fw-medium"
+                  style={{ fontSize: '1.1rem' }}
                 >
-                  Découvrir nos programmes
-                </Button>
-                <Button 
-                  variant="outline-light" 
-                  size="lg" 
-                  href="#/contact"
-                  className="px-4 py-2 fw-medium"
+                  Découvrir nos formations
+                </Link>
+                <Link 
+                  to="/contact" 
+                  className="btn btn-outline-light px-4 py-2 fw-medium"
+                  style={{ fontSize: '1.1rem' }}
                 >
                   Nous contacter
-                </Button>
+                </Link>
               </div>
               
               {/* Stats */}

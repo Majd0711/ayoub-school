@@ -86,10 +86,71 @@ const Footer: React.FC = () => {
           <Col lg={3} md={6}>
             <h5 className="text-white">Programmes</h5>
             <ul className="list-unstyled mt-3">
-              <li className="mb-2"><a href="#/programs" className="text-white text-decoration-none">Commerce</a></li>
-              <li className="mb-2"><a href="#/programs" className="text-white text-decoration-none">Finance</a></li>
-              <li className="mb-2"><a href="#/programs" className="text-white text-decoration-none">Management</a></li>
-              <li className="mb-2"><a href="#/programs" className="text-white text-decoration-none">Ressources Humaines</a></li>
+              <li className="mb-2">
+                <a 
+                  href="#/programs#technicien" 
+                  className="text-white text-decoration-none"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.scrollTo(0, 0);
+                    setTimeout(() => window.location.href = '#/programs#technicien', 100);
+                  }}
+                >
+                  Formations Techniques
+                </a>
+              </li>
+              <li className="mb-2">
+                <a 
+                  href="#/programs#licence" 
+                  className="text-white text-decoration-none"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.scrollTo(0, 0);
+                    setTimeout(() => window.location.href = '#/programs#licence', 100);
+                  }}
+                >
+                  Licence Professionnelle
+                </a>
+              </li>
+              <li className="mb-2">
+                <a 
+                  href="#/programs#master" 
+                  className="text-white text-decoration-none"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.scrollTo(0, 0);
+                    setTimeout(() => window.location.href = '#/programs#master', 100);
+                  }}
+                >
+                  Master Professionnel
+                </a>
+              </li>
+              <li className="mb-2">
+                <a 
+                  href="#/programs#formation" 
+                  className="text-white text-decoration-none"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.scrollTo(0, 0);
+                    setTimeout(() => window.location.href = '#/programs#formation', 100);
+                  }}
+                >
+                  Formations Continues
+                </a>
+              </li>
+              <li className="mb-2">
+                <a 
+                  href="#/programs#langues" 
+                  className="text-white text-decoration-none"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.scrollTo(0, 0);
+                    setTimeout(() => window.location.href = '#/programs#langues', 100);
+                  }}
+                >
+                  Formations en Langues
+                </a>
+              </li>
             </ul>
           </Col>
           
