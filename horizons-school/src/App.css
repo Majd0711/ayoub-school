@@ -1,4 +1,9 @@
 /* Global Styles */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* Adjust this value based on your header height */
+}
+
 :root {
   --primary-color: #0056b3;
   --secondary-color: #6c757d;
@@ -394,6 +399,49 @@ main {
 
 .nav-pills .nav-link:hover:not(.active) {
   background-color: rgba(0, 86, 179, 0.1);
+}
+
+/* WhatsApp Float Button */
+.whatsapp-float {
+  position: fixed;
+  width: 60px;
+  height: 60px;
+  bottom: 40px;
+  right: 40px;
+  background-color: #fff;
+  color: #fff;
+  border-radius: 50%;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.whatsapp-float:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.whatsapp-float i {
+  font-size: 2rem;
+  color: #25D366;
+}
+
+@media (max-width: 768px) {
+  .whatsapp-float {
+    width: 50px;
+    height: 50px;
+    bottom: 30px;
+    right: 20px;
+  }
+  
+  .whatsapp-float i {
+    font-size: 1.8rem;
+  }
 }
 
 /* Custom styling */

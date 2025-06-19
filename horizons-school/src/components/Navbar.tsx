@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar as BootstrapNavbar, Container, Nav } from 'react-bootstrap';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
-const logo = `${process.env.PUBLIC_URL}/images/logo.svg`;
+import '../styles/Navbar.css';
+
+const logo = `${process.env.PUBLIC_URL}/images/logo-seul-horizons.jpg`;
 
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -43,79 +45,56 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <motion.div
-      initial="hidden"
-      animate="visible"
-      variants={navVariants}
+    <BootstrapNavbar 
+      expand="lg" 
+      fixed="top" 
+      className={`navbar-custom ${scrolled ? 'scrolled' : ''}`}
     >
-      <BootstrapNavbar 
-        expand="lg" 
-        fixed="top" 
-        className={`py-3 ${scrolled ? 'scrolled' : ''}`}
-      >
-        <Container>
-          <BootstrapNavbar.Brand as={Link} to="/" className="d-flex align-items-center">
-            <motion.img 
-              src={logo} 
-              alt="Horizons School" 
-              height="40" 
-              className="me-2"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-            />
-            <motion.span 
-              className="fw-bold brand-text"
-              whileHover={{ color: '#007bff' }}
-            >
-              HORIZONS SCHOOL
-            </motion.span>
-          </BootstrapNavbar.Brand>
-          
-          <BootstrapNavbar.Toggle aria-controls="basic-navbar-nav">
-            <motion.span whileTap={{ scale: 0.9 }}>
-              <span className="navbar-toggler-icon"></span>
-            </motion.span>
-          </BootstrapNavbar.Toggle>
+      <Container>
+        <BootstrapNavbar.Brand as={Link} to="/" className="navbar-brand-custom">
+          <motion.img 
+            src={logo} 
+            alt="Horizons School" 
+            className="navbar-logo me-2"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          />
+          <span className="brand-text">HORIZONS SCHOOL</span>
+        </BootstrapNavbar.Brand>
+        
+        <BootstrapNavbar.Toggle aria-controls="basic-navbar-nav" className="navbar-toggler-custom">
+          <span className="navbar-toggler-icon"></span>
+        </BootstrapNavbar.Toggle>
 
-          <BootstrapNavbar.Collapse id="basic-navbar-nav">
-            <Nav className="ms-auto">
-              {[
-                { path: '/', text: 'Accueil' },
-                { path: '/about', text: 'À Propos' },
-                { path: '/programs', text: 'Programmes' },
-                { path: '/contact', text: 'Contact' }
-              ].map((item) => (
-                <motion.div
-                  key={item.path}
-                  variants={linkVariants}
-                  whileHover="hover"
-                >
-                  <Nav.Link 
-                    as={Link} 
-                    to={item.path}
-                    className={`nav-link ${location.pathname === item.path ? 'active' : ''}`}
-                  >
-                    {item.text}
-                  </Nav.Link>
-                </motion.div>
-              ))}
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
+        <BootstrapNavbar.Collapse id="basic-navbar-nav">
+          <Nav className="ms-auto">
+            {[
+              { path: '/', text: 'Accueil' },
+              { path: '/about', text: 'À Propos' },
+              { path: '/programs', text: 'Programmes' },
+              { path: '/contact', text: 'Contact' }
+            ].map((item) => (
+              <Nav.Item key={item.path} className="nav-item-custom">
                 <Nav.Link 
-                  as={Link}
-                  to="/register"
-                  className="btn btn-primary ms-lg-3 px-4 rounded-pill inscription-btn"
+                  as={Link} 
+                  to={item.path}
+                  className={`nav-link-custom ${location.pathname === item.path ? 'active' : ''}`}
+                  onClick={() => {
+                    // Only scroll to top if we're already on the same page
+                    if (location.pathname === item.path) {
+                      window.scrollTo(0, 0);
+                    }
+                  }}
                 >
-                  S'inscrire
+                  {item.text}
+                  {location.pathname === item.path && <span className="nav-active-indicator"></span>}
                 </Nav.Link>
-              </motion.div>
-            </Nav>
-          </BootstrapNavbar.Collapse>
-        </Container>
-      </BootstrapNavbar>
-    </motion.div>
+              </Nav.Item>
+            ))}
+          </Nav>
+        </BootstrapNavbar.Collapse>
+      </Container>
+    </BootstrapNavbar>
   );
 };
 

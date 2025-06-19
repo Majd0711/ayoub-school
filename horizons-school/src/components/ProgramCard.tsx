@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, Badge } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import { BsClock, BsGear, BsArrowRight, BsCheckCircle } from 'react-icons/bs';
+import '../styles/ProgramCard.css'; // We'll create this file for custom styles
 
 interface ProgramCardProps {
   id: string;
@@ -9,8 +10,8 @@ interface ProgramCardProps {
   level: string;
   duration: string;
   conditions: string[];
-  seats: number;
   imageUrl: string;
+  category?: string;
 }
 
 const ProgramCard: React.FC<ProgramCardProps> = ({
@@ -18,8 +19,8 @@ const ProgramCard: React.FC<ProgramCardProps> = ({
   level,
   duration,
   conditions,
-  seats,
-  imageUrl
+  imageUrl,
+  category
 }) => {
   return (
     <motion.div
@@ -28,25 +29,21 @@ const ProgramCard: React.FC<ProgramCardProps> = ({
         transition: { type: "spring", stiffness: 300 }
       }}
       whileTap={{ scale: 0.98 }}
-    >      <Card className="program-card h-100">
-        <div className="program-card-image">
-          <Card.Img variant="top" src={imageUrl} alt={title} />
-          <div className="program-card-overlay" />
-          <Badge 
-            bg="primary" 
-            className="position-absolute top-0 end-0 m-3 px-3 py-2"
-          >
-            {level}
-          </Badge>
-        </div>
-        <Card.Body className="d-flex flex-column">
-          <Card.Title as="h3" className="h4 mb-3">
-            {title}
-          </Card.Title>
-          
+      className="program-card-wrapper"
+    >      
+      <Card className="program-card border-0 shadow-sm flex-grow-1 d-flex flex-column">
+        <Card.Body className="p-4 d-flex flex-column">
+          <Card.Title as="h3" className="h5 mb-3 fw-bold">{title}</Card.Title>
           <div className="program-meta mb-3 d-flex align-items-center">
-            {React.createElement(BsClock, { className: "text-primary me-2" })}
-            <span className="text-muted">{duration}</span>
+            <BsClock className="text-primary me-2" />
+            <span className="text-muted small">
+              {category === 'formation' ? '6 mois' : duration}
+            </span>
+          </div>
+          <div className="mb-3">
+            <Badge bg="primary" className="px-3 py-2">
+              {level}
+            </Badge>
           </div>
 
           <div className="mb-4">
@@ -64,18 +61,21 @@ const ProgramCard: React.FC<ProgramCardProps> = ({
             </ul>
           </div>
 
-          <div className="mt-auto d-flex justify-content-between align-items-center">
+          <div className="mt-auto pt-3 d-flex justify-content-between align-items-center border-top mt-3">
             <Badge bg="danger" className="d-flex align-items-center p-2">
-              {React.createElement(BsGear, { className: "me-1" })}
-              {seats} places disponibles
+              <BsGear className="me-1" />
+              Places limitées
             </Badge>
             
-            <motion.button
-              className="btn btn-link text-primary p-0 d-flex align-items-center"
+            <motion.a
+              href="https://wa.me/212604916565?text=Bonjour%2C%20je%20souhaite%20plus%20d'informations%20sur%20le%20programme"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-link text-primary p-0 d-flex align-items-center text-decoration-none"
               whileHover={{ x: 5 }}
             >
-              En savoir plus {React.createElement(BsArrowRight, { className: "ms-1" })}
-            </motion.button>
+              En savoir plus <BsArrowRight className="ms-1" />
+            </motion.a>
           </div>
         </Card.Body>
       </Card>

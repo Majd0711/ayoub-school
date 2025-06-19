@@ -1,6 +1,54 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
+import { motion, AnimatePresence } from 'framer-motion';
 import 'boxicons/css/boxicons.min.css';
+import '../styles/Footer.css';
+
+const ScrollToTopButton: React.FC = () => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  // Show button when page is scrolled down
+  const toggleVisibility = () => {
+    if (window.pageYOffset > 300) {
+      setIsVisible(true);
+    } else {
+      setIsVisible(false);
+    }
+  };
+
+  // Set up scroll event listener
+  useEffect(() => {
+    window.addEventListener('scroll', toggleVisibility);
+    return () => window.removeEventListener('scroll', toggleVisibility);
+  }, []);
+
+  // Handle smooth scroll to top
+  const handleScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
+  return (
+    <AnimatePresence>
+      {isVisible && (
+        <motion.button
+          className="scroll-to-top-footer"
+          onClick={handleScrollToTop}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 10 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          aria-label="Retour en haut de la page"
+        >
+          <i className='bx bx-up-arrow-alt'></i>
+        </motion.button>
+      )}
+    </AnimatePresence>
+  );
+};
 
 const Footer: React.FC = () => {
   return (
@@ -13,9 +61,15 @@ const Footer: React.FC = () => {
               École supérieure de commerce et de gestion à Marrakech, offrant des formations de qualité pour préparer les étudiants au monde professionnel.
             </p>
             <div className="social-links mt-3">
-              <a href="#" className="me-2 text-white"><i className="bx bxl-facebook-circle bx-md"></i></a>
-              <a href="#" className="me-2 text-white"><i className="bx bxl-instagram bx-md"></i></a>
-              <a href="#" className="me-2 text-white"><i className="bx bxl-linkedin-square bx-md"></i></a>
+              <a href="https://www.facebook.com/share/1ENdkkJ2KD/" target="_blank" rel="noopener noreferrer" className="me-2 text-white">
+                <i className="bx bxl-facebook-circle bx-md"></i>
+              </a>
+              <a href="https://www.instagram.com/horizons.school" target="_blank" rel="noopener noreferrer" className="me-2 text-white">
+                <i className="bx bxl-instagram bx-md"></i>
+              </a>
+              <a href="https://wa.me/212604916565" target="_blank" rel="noopener noreferrer" className="text-white">
+                <i className="bx bxl-whatsapp bx-md"></i>
+              </a>
             </div>
           </Col>
           
@@ -42,19 +96,32 @@ const Footer: React.FC = () => {
           <Col lg={3} md={6}>
             <h5 className="text-white">Contact</h5>
             <ul className="list-unstyled mt-3">
-              <li className="mb-2"><i className="bx bx-map me-2"></i> Avenue Mohammed VI, Marrakech</li>
-              <li className="mb-2"><i className="bx bx-phone me-2"></i> +212 5 24 XX XX XX</li>
-              <li className="mb-2"><i className="bx bx-envelope me-2"></i> contact@horizons-school.ma</li>
+              <li className="mb-2"><i className="bx bx-map me-2"></i> Mhamid Maatalah, Marrakech</li>
+              <li className="mb-2">
+                <i className="bx bx-phone me-2"></i> 
+                <a href="tel:+212525181650" className="text-white text-decoration-none">+212 5 25 18 16 50</a>
+              </li>
+              <li className="mb-2">
+                <i className="bx bxl-whatsapp me-2"></i>
+                <a href="https://wa.me/212604916565" className="text-white text-decoration-none me-3">+212 6 04 91 65 65</a>
+              </li>
+              <li className="mb-2">
+                <i className="bx bx-envelope me-2"></i>
+                <a href="mailto:horizonsschool4@gmail.com" className="text-white text-decoration-none">horizonsschool4@gmail.com</a>
+              </li>
             </ul>
           </Col>
         </Row>
         
         <hr className="mt-4" />
         
-        <Row>
+        <Row className="align-items-center position-relative">
           <Col className="text-center">
             <p className="mb-0">&copy; {new Date().getFullYear()} Horizons School. Tous droits réservés.</p>
           </Col>
+          <div className="position-absolute" style={{ right: '15px', bottom: '0' }}>
+            <ScrollToTopButton />
+          </div>
         </Row>
       </Container>
     </footer>

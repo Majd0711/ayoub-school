@@ -21,7 +21,7 @@ const About: React.FC = () => {
                 et à la préparation des étudiants pour réussir dans le monde professionnel.
               </p>
               <p>
-                Fondée en 2010 à Marrakech, notre école s'est engagée à offrir des programmes éducatifs 
+                Fondée en 2023 à Marrakech, notre école s'est engagée à offrir des programmes éducatifs 
                 de haute qualité qui répondent aux exigences du marché du travail actuel. Nous combinons 
                 l'enseignement théorique avec des expériences pratiques pour former des professionnels 
                 compétents et adaptables.
@@ -110,54 +110,38 @@ const About: React.FC = () => {
       <section className="py-5 bg-light">
         <Container>
           <h2 className="text-center mb-5" data-aos="fade-up">Notre Équipe Pédagogique</h2>
-          <Row>
-            <Col md={6} lg={3} className="mb-4" data-aos="fade-up" data-aos-delay="100">
+          <Row className="justify-content-center">
+            <Col md={6} lg={4} className="mb-4" data-aos="fade-up" data-aos-delay="100">
               <Card className="border-0 shadow-sm text-center h-100">
-                <Card.Img variant="top" src="/images/teacher1.jpg" alt="Professeur" className="img-fluid" />
-                <Card.Body>
-                  <Card.Title className="fw-bold">Dr. Mohammed Alami</Card.Title>
-                  <Card.Subtitle className="mb-2 text-muted">Directeur des Études</Card.Subtitle>
+                <Card.Body className="p-4">
+                  <Card.Title className="fw-bold">M. Ayoub El Hajouji</Card.Title>
+                  <Card.Subtitle className="mb-3 text-muted">Directeur Général</Card.Subtitle>
                   <Card.Text>
-                    Docteur en sciences de gestion avec plus de 15 ans d'expérience dans l'enseignement supérieur.
+                    Expert en gestion d'établissements éducatifs avec une vision stratégique pour l'enseignement supérieur.
                   </Card.Text>
                 </Card.Body>
               </Card>
             </Col>
             
-            <Col md={6} lg={3} className="mb-4" data-aos="fade-up" data-aos-delay="200">
+            <Col md={6} lg={4} className="mb-4" data-aos="fade-up" data-aos-delay="200">
               <Card className="border-0 shadow-sm text-center h-100">
-                <Card.Img variant="top" src="/images/teacher2.jpg" alt="Professeur" className="img-fluid" />
-                <Card.Body>
-                  <Card.Title className="fw-bold">Pr. Fatima Bensouda</Card.Title>
-                  <Card.Subtitle className="mb-2 text-muted">Responsable Finance</Card.Subtitle>
+                <Card.Body className="p-4">
+                  <Card.Title className="fw-bold">M. Ayoub El Hajouji</Card.Title>
+                  <Card.Subtitle className="mb-3 text-muted">Directeur Pédagogique</Card.Subtitle>
                   <Card.Text>
-                    Spécialiste en finance d'entreprise avec une expérience professionnelle dans le secteur bancaire.
+                    Spécialiste en pédagogie et méthodes d'enseignement innovantes pour une formation de qualité.
                   </Card.Text>
                 </Card.Body>
               </Card>
             </Col>
             
-            <Col md={6} lg={3} className="mb-4" data-aos="fade-up" data-aos-delay="300">
+            <Col md={6} lg={4} className="mb-4" data-aos="fade-up" data-aos-delay="300">
               <Card className="border-0 shadow-sm text-center h-100">
-                <Card.Img variant="top" src="/images/teacher3.jpg" alt="Professeur" className="img-fluid" />
-                <Card.Body>
-                  <Card.Title className="fw-bold">Dr. Ahmed Benani</Card.Title>
-                  <Card.Subtitle className="mb-2 text-muted">Responsable Marketing</Card.Subtitle>
+                <Card.Body className="p-4">
+                  <Card.Title className="fw-bold">M. Majd Edine Benzbair</Card.Title>
+                  <Card.Subtitle className="mb-3 text-muted">Responsable Développement</Card.Subtitle>
                   <Card.Text>
-                    Expert en stratégies marketing avec une vaste expérience dans le conseil aux entreprises.
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-            
-            <Col md={6} lg={3} className="mb-4" data-aos="fade-up" data-aos-delay="400">
-              <Card className="border-0 shadow-sm text-center h-100">
-                <Card.Img variant="top" src="/images/teacher4.jpg" alt="Professeur" className="img-fluid" />
-                <Card.Body>
-                  <Card.Title className="fw-bold">Pr. Nadia Tazi</Card.Title>
-                  <Card.Subtitle className="mb-2 text-muted">Responsable RH</Card.Subtitle>
-                  <Card.Text>
-                    Spécialiste en gestion des ressources humaines avec une expérience internationale.
+                    Expert en développement de solutions numériques pour l'éducation et la formation professionnelle.
                   </Card.Text>
                 </Card.Body>
               </Card>

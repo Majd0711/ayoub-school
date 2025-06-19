@@ -74,21 +74,21 @@ const Contact: React.FC = () => {
                       <i className='bx bx-map text-primary mt-1 me-3'></i>
                       <div>
                         <strong>Adresse</strong>
-                        <p className="mb-0">123 Avenue Mohammed VI, Marrakech, Maroc</p>
+                        <p className="mb-0">Mhamid Maatalah, Marrakech, Maroc</p>
                       </div>
                     </li>
                     <li className="d-flex mb-3">
                       <i className='bx bx-phone text-primary mt-1 me-3'></i>
                       <div>
                         <strong>Téléphone</strong>
-                        <p className="mb-0">+212 5XX-XXXXXX</p>
+                        <p className="mb-0">+212 5 25 18 16 50</p>
                       </div>
                     </li>
                     <li className="d-flex mb-3">
                       <i className='bx bx-envelope text-primary mt-1 me-3'></i>
                       <div>
                         <strong>Email</strong>
-                        <p className="mb-0">info@horizons-school.ma</p>
+                        <p className="mb-0">horizonsschool4@gmail.com</p>
                       </div>
                     </li>
                     <li className="d-flex">
@@ -112,10 +112,10 @@ const Contact: React.FC = () => {
                     service dédié par téléphone ou par email.
                   </p>
                   <p className="mb-0">
-                    <strong>Email:</strong> admissions@horizons-school.ma
+                    <strong>Email:</strong> horizonsschool4@gmail.com
                   </p>
                   <p className="mb-0">
-                    <strong>Téléphone:</strong> +212 5XX-XXXXXX
+                    <strong>Téléphone:</strong> +212 5 25 18 16 50
                   </p>
                 </Card.Body>
               </Card>
@@ -216,14 +216,14 @@ const Contact: React.FC = () => {
           <h2 className="text-center mb-5" data-aos="fade-up">Notre Emplacement</h2>
           <div className="ratio ratio-21x9" data-aos="fade-up" style={{ maxHeight: '400px' }}>
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3398.6942839313303!2d-8.024097823685293!3d31.63094997507248!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xdafee9465ae0bf7%3A0x31707d45a74312de!2sMarrakech%2C%20Morocco!5e0!3m2!1sen!2sus!4v1695646583261!5m2!1sen!2sus"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3398.9529410414386!2d-8.052918!3d31.600363!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xdafe996d6de9e5d%3A0x324a1711386422ff!2sHorizons%20school!5e0!3m2!1sen!2sma!4v16249329284!5m2!1sen!2sma"
               width="100%"
               height="100%"
-              style={{ border: 0 }}
+              style={{ border: 0, borderRadius: '0.5rem' }}
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title="Horizons School Map"
+              title="Horizons School Location"
             />
           </div>
         </Container>
