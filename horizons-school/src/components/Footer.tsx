@@ -67,6 +67,9 @@ const Footer: React.FC = () => {
               <a href="https://www.instagram.com/horizons.school" target="_blank" rel="noopener noreferrer" className="me-2 text-white">
                 <i className="bx bxl-instagram bx-md"></i>
               </a>
+              <a href="https://www.linkedin.com/in/horizons-school-32402b36a/" target="_blank" rel="noopener noreferrer" className="me-2 text-white">
+                <i className="bx bxl-linkedin bx-md"></i>
+              </a>
               <a href="https://wa.me/212604916565" target="_blank" rel="noopener noreferrer" className="text-white">
                 <i className="bx bxl-whatsapp bx-md"></i>
               </a>
@@ -178,7 +181,7 @@ const Footer: React.FC = () => {
         
         <Row className="align-items-center position-relative">
           <Col className="text-center">
-            <p className="mb-0">&copy; {new Date().getFullYear()} Horizons School. Tous droits réservés.</p>
+            <p className="mb-0">&copy; 2022 Horizons School. Tous droits réservés.</p>
           </Col>
           <div className="position-absolute" style={{ right: '15px', bottom: '0' }}>
             <ScrollToTopButton />

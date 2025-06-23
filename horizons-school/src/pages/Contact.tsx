@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Form, Button, Card, Alert } from 'react-bootstrap';
 import 'boxicons/css/boxicons.min.css';
 import AOS from 'aos';
+import emailjs from '@emailjs/browser';
 
 const Contact: React.FC = () => {
   const [formState, setFormState] = useState({
@@ -12,9 +13,13 @@ const Contact: React.FC = () => {
     message: ''
   });
   const [showAlert, setShowAlert] = useState(false);
+  const [alertVariant, setAlertVariant] = useState<'success' | 'danger'>('success');
+  const [alertMessage, setAlertMessage] = useState('');
 
   useEffect(() => {
     AOS.refresh();
+    // Initialize EmailJS with your public key
+    emailjs.init("YOUR_PUBLIC_KEY"); // You'll need to replace this with your actual public key
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -25,18 +30,45 @@ const Contact: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formState);
-    // In a real app, you would send this data to your backend
-    setShowAlert(true);
-    setFormState({
-      name: '',
-      email: '',
-      phone: '',
-      subject: '',
-      message: ''
-    });
+    
+    try {
+      const templateParams = {
+        from_name: formState.name,
+        from_email: formState.email,
+        from_phone: formState.phone,
+        subject: formState.subject,
+        message: formState.message,
+        to_email: 'horizonsschool4@gmail.com'
+      };
+
+      await emailjs.send(
+        'YOUR_SERVICE_ID', // Replace with your EmailJS service ID
+        'YOUR_TEMPLATE_ID', // Replace with your EmailJS template ID
+        templateParams
+      );
+
+      setAlertVariant('success');
+      setAlertMessage('Votre message a été envoyé avec succès! Nous vous contacterons très bientôt.');
+      setShowAlert(true);
+      
+      // Reset form
+      setFormState({
+        name: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: ''
+      });
+    } catch (error) {
+      console.error('Error sending email:', error);
+      setAlertVariant('danger');
+      setAlertMessage('Une erreur est survenue lors de l\'envoi du message. Veuillez réessayer plus tard.');
+      setShowAlert(true);
+    }
+
+    // Hide alert after 5 seconds
     setTimeout(() => {
       setShowAlert(false);
     }, 5000);
@@ -95,8 +127,7 @@ const Contact: React.FC = () => {
                       <i className='bx bx-time text-primary mt-1 me-3'></i>
                       <div>
                         <strong>Horaires d'Ouverture</strong>
-                        <p className="mb-0">Lundi - Vendredi: 8h30 - 17h30</p>
-                        <p className="mb-0">Samedi: 9h00 - 13h00</p>
+                        <p className="mb-0">Lundi - Samedi: 8h30 - 22h00</p>
                       </div>
                     </li>
                   </ul>
@@ -124,8 +155,8 @@ const Contact: React.FC = () => {
             <Col lg={7} data-aos="fade-left">
               <h2 className="mb-4">Envoyez-nous un Message</h2>
               {showAlert && (
-                <Alert variant="success" onClose={() => setShowAlert(false)} dismissible>
-                  Votre message a été envoyé avec succès! Nous vous contacterons très bientôt.
+                <Alert variant={alertVariant} onClose={() => setShowAlert(false)} dismissible>
+                  {alertMessage}
                 </Alert>
               )}
               <Card className="border-0 shadow-sm">

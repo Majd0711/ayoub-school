@@ -1,11 +1,27 @@
-import React, { useEffect } from 'react';
-import { Container, Row, Col, Button, Card, Carousel } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Container, Row, Col, Carousel, Button, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import '../styles/Home.css';
 import 'boxicons/css/boxicons.min.css';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import carouselStyles from '../styles/Carousel.module.css';
 
 const Home: React.FC = () => {
+  const [index, setIndex] = useState(0);
+  
+  const handleSelect = (selectedIndex: number) => {
+    setIndex(selectedIndex);
+  };
+  
+  const handlePrev = () => {
+    setIndex(prevIndex => (prevIndex === 0 ? 3 : prevIndex - 1));
+  };
+  
+  const handleNext = () => {
+    setIndex(prevIndex => (prevIndex === 3 ? 0 : prevIndex + 1));
+  };
   useEffect(() => {
     AOS.refresh();
   }, []);
@@ -67,7 +83,7 @@ const Home: React.FC = () => {
               {/* Stats */}
               <div className="d-flex flex-wrap gap-4 mt-5 pt-3 border-top border-white-10">
                 <div className="text-center">
-                  <div className="fs-2 fw-bold mb-1">500+</div>
+                  <div className="fs-2 fw-bold mb-1">120+</div>
                   <div className="small">Diplômés</div>
                 </div>
                 <div className="text-center">
@@ -75,7 +91,7 @@ const Home: React.FC = () => {
                   <div className="small">Taux de réussite</div>
                 </div>
                 <div className="text-center">
-                  <div className="fs-2 fw-bold mb-1">50+</div>
+                  <div className="fs-2 fw-bold mb-1">20+</div>
                   <div className="small">Partenaires entreprises</div>
                 </div>
               </div>
@@ -96,13 +112,13 @@ const Home: React.FC = () => {
             </Col>
             <Col md={3} data-aos="fade-up" data-aos-delay="200">
               <div className="p-4 bg-white rounded-3 shadow-sm h-100">
-                <h3 className="display-4 text-primary mb-2">500+</h3>
+                <h3 className="display-4 text-primary mb-2">120+</h3>
                 <p className="mb-0 fw-medium">Diplômés</p>
               </div>
             </Col>
             <Col md={3} data-aos="fade-up" data-aos-delay="300">
               <div className="p-4 bg-white rounded-3 shadow-sm h-100">
-                <h3 className="display-4 text-primary mb-2">50+</h3>
+                <h3 className="display-4 text-primary mb-2">20+</h3>
                 <p className="mb-0 fw-medium">Partenaires entreprises</p>
               </div>
             </Col>
@@ -201,42 +217,128 @@ const Home: React.FC = () => {
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-5 bg-light">
-        <Container>
-          <Row className="align-items-center">
+      <section className="py-5 bg-light position-relative overflow-hidden why-choose-section">
+        {/* Background Pattern */}
+        <div 
+          className="position-absolute w-100 h-100 top-0 start-0 opacity-10"
+          style={{
+            backgroundImage: 'url("/images/pattern.png")',
+            backgroundRepeat: 'repeat',
+            zIndex: 0
+          }}
+        ></div>
+        
+        <Container className="position-relative" style={{ zIndex: 1 }}>
+          <Row className="align-items-center g-0">
             <Col lg={6} data-aos="fade-right">
-              <img 
-                src="/images/arrakesh.jpg" 
-                alt="Marrakech - Siège d'Horizons School" 
-                className="img-fluid rounded-3 shadow"
-              />
+              <div className="carousel-wrapper">
+                <Carousel 
+                  fade 
+                  controls={false} 
+                  indicators={true}
+                  interval={7000}
+                  className="why-choose-carousel"
+                >
+                  <Carousel.Item>
+                    <div className="carousel-image-container">
+                      <img 
+                        src="/images/1.jpg" 
+                        alt="Horizons School Students" 
+                        className="carousel-image"
+                      />
+                      <div className="carousel-overlay"></div>
+                    </div>
+                  </Carousel.Item>
+                  <Carousel.Item>
+                    <div className="carousel-image-container">
+                      <img 
+                        src="/images/2.jpg" 
+                        alt="Horizons School Campus" 
+                        className="carousel-image"
+                      />
+                      <div className="carousel-overlay"></div>
+                    </div>
+                  </Carousel.Item>
+                  <Carousel.Item>
+                    <div className="carousel-image-container">
+                      <img 
+                        src="/images/inscriptipn ouverte.jpg" 
+                        alt="Inscription Ouverte" 
+                        className="carousel-image"
+                      />
+                      <div className="carousel-overlay"></div>
+                    </div>
+                  </Carousel.Item>
+                  <Carousel.Item>
+                    <div className="carousel-image-container">
+                      <img 
+                        src="/images/Les langues.jpg" 
+                        alt="Formation en Langues" 
+                        className="carousel-image"
+                      />
+                      <div className="carousel-overlay"></div>
+                    </div>
+                  </Carousel.Item>
+                </Carousel>
+              </div>
             </Col>
-            <Col lg={6} className="mt-4 mt-lg-0" data-aos="fade-left">
-              <h2 className="mb-4">Pourquoi choisir Horizons School?</h2>
-              <p className="mb-4">
+            
+            <Col lg={6} className="mt-4 mt-lg-0 ps-lg-5 why-choose-content" data-aos="fade-left">
+              <span className="badge bg-primary bg-opacity-10 text-primary mb-2 px-3 py-2 rounded-pill fs-7">
+                Pourquoi Nous Choisir
+              </span>
+              <h2 className="h2 fw-bold mb-3">Pourquoi choisir Horizons School?</h2>
+              <p className="text-muted mb-4" style={{ fontSize: '1rem' }}>
                 Horizons School est une institution d'excellence qui offre une formation de qualité 
                 adaptée aux besoins du marché du travail. Notre approche pédagogique moderne et notre 
                 équipe de professionnels expérimentés garantissent votre réussite.
               </p>
-              <ul className="list-unstyled">
-                <li className="mb-3 d-flex align-items-center">
-                  <span className="bg-primary text-white rounded-circle p-2 me-3">1</span>
-                  <span>Des programmes adaptés aux besoins du marché</span>
-                </li>
-                <li className="mb-3 d-flex align-items-center">
-                  <span className="bg-primary text-white rounded-circle p-2 me-3">2</span>
-                  <span>Des professeurs experts dans leur domaine</span>
-                </li>
-                <li className="mb-3 d-flex align-items-center">
-                  <span className="bg-primary text-white rounded-circle p-2 me-3">3</span>
-                  <span>Un environnement d'apprentissage moderne</span>
-                </li>
-                <li className="mb-3 d-flex align-items-center">
-                  <span className="bg-primary text-white rounded-circle p-2 me-3">4</span>
-                  <span>Des stages et opportunités professionnelles</span>
-                </li>
-              </ul>
-              <Button variant="primary" href="#/about">Découvrir notre école</Button>
+              
+              <div className="d-flex flex-column gap-3 mb-4">
+                {[
+                  {
+                    title: "Des programmes adaptés aux besoins du marché",
+                    icon: "bx-book-open",
+                    description: "Formations conçues en collaboration avec les professionnels du secteur"
+                  },
+                  {
+                    title: "Des professeurs experts dans leur domaine",
+                    icon: "bx-user-voice",
+                    description: "Équipe pédagogique composée d'experts et de professionnels actifs"
+                  },
+                  {
+                    title: "Un environnement d'apprentissage moderne",
+                    icon: "bx-building-house",
+                    description: "Campus moderne équipé des dernières technologies éducatives"
+                  },
+                  {
+                    title: "Des stages et opportunités professionnelles",
+                    icon: "bx-briefcase",
+                    description: "Partenariats solides avec les entreprises leaders du marché"
+                  }
+                ].map((item, index) => (
+                  <div key={index} className="d-flex align-items-start">
+                    <div 
+                      className="d-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded-3"
+                      style={{ width: '40px', height: '40px', flexShrink: 0, marginRight: '0.75rem' }}
+                    >
+                      <i className={`bx ${item.icon} text-primary fs-5`}></i>
+                    </div>
+                    <div>
+                      <h4 className="h6 mb-1">{item.title}</h4>
+                      <p className="text-muted mb-0" style={{ fontSize: '0.9rem' }}>{item.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              <Link 
+                to="/about" 
+                className="btn btn-primary rounded-pill px-4 py-2"
+                style={{ fontSize: '0.95rem' }}
+              >
+                Découvrir notre école <i className='bx bx-right-arrow-alt ms-2'></i>
+              </Link>
             </Col>
           </Row>
         </Container>
@@ -259,22 +361,14 @@ const Home: React.FC = () => {
                     ))}
                   </div>
                   <p className="lead fst-italic mb-4">
-                    "Grâce à la formation à Horizons School, j'ai pu acquérir des compétences pratiques qui m'ont permis de décrocher mon premier emploi avant même l'obtention de mon diplôme."
+                    "La formation en Management à Horizons School m'a fourni une base solide pour ma carrière. Les cours pratiques et les études de cas réels m'ont préparé aux défis du monde professionnel."
                   </p>
-                  <div className="d-flex justify-content-center align-items-center">
-                    <img 
-                      src="/images/avatar1.jpg" 
-                      alt="Student" 
-                      className="rounded-circle me-3" 
-                      width="60" 
-                      height="60"
-                    />
-                    <div className="text-start">
-                      <h5 className="mb-0">Mehdi El Amrani</h5>
-                      <p className="text-muted mb-0">Promotion 2023 - Responsable Marketing Digital</p>
-                    </div>
+                  <div className="text-center mb-4">
+                    <h5 className="mb-1">Yassine Fatih</h5>
+                    <p className="text-muted mb-0">Promotion 2024 - Responsable Marketing Digital</p>
                   </div>
                 </Carousel.Item>
+
                 <Carousel.Item className="text-center px-5">
                   <div className="mb-4">
                     {[1, 2, 3, 4, 5].map((star) => (
@@ -282,20 +376,56 @@ const Home: React.FC = () => {
                     ))}
                   </div>
                   <p className="lead fst-italic mb-4">
-                    "L'accompagnement personnalisé et la qualité des enseignants font toute la différence. Je recommande vivement cette école !"
+                    "Le programme de Finance m'a donné une perspective approfondie du secteur financier. Les professeurs expérimentés et le réseau professionnel de l'école ont été déterminants dans mon parcours."
                   </p>
-                  <div className="d-flex justify-content-center align-items-center">
-                    <img 
-                      src="/images/avatar2.jpg" 
-                      alt="Student" 
-                      className="rounded-circle me-3" 
-                      width="60" 
-                      height="60"
-                    />
-                    <div className="text-start">
-                      <h5 className="mb-0">Amina Benjelloun</h5>
-                      <p className="text-muted mb-0">Promotion 2022 - Chef de Projet IT</p>
-                    </div>
+                  <div className="text-center mb-4">
+                    <h5 className="mb-1">Abdelah El Kabir</h5>
+                    <p className="text-muted mb-0">Promotion 2022 - Analyste Financier</p>
+                  </div>
+                </Carousel.Item>
+
+                <Carousel.Item className="text-center px-5">
+                  <div className="mb-4">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <i key={star} className="bx bxs-star text-warning fs-4"></i>
+                    ))}
+                  </div>
+                  <p className="lead fst-italic mb-4">
+                    "La formation en Ressources Humaines est complète et actualisée. J'ai particulièrement apprécié les ateliers pratiques et les interventions de professionnels du secteur."
+                  </p>
+                  <div className="text-center mb-4">
+                    <h5 className="mb-1">Sara Naji</h5>
+                    <p className="text-muted mb-0">Promotion 2023 - Responsable RH</p>
+                  </div>
+                </Carousel.Item>
+
+                <Carousel.Item className="text-center px-5">
+                  <div className="mb-4">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <i key={star} className="bx bxs-star text-warning fs-4"></i>
+                    ))}
+                  </div>
+                  <p className="lead fst-italic mb-4">
+                    "Le cursus en Commerce International m'a ouvert des portes vers une carrière internationale. Les cours de langues et la dimension multiculturelle de la formation sont de vrais atouts."
+                  </p>
+                  <div className="text-center mb-4">
+                    <h5 className="mb-1">Houda Miri</h5>
+                    <p className="text-muted mb-0">Promotion 2024 - Gestion d'entreprise</p>
+                  </div>
+                </Carousel.Item>
+
+                <Carousel.Item className="text-center px-5">
+                  <div className="mb-4">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <i key={star} className="bx bxs-star text-warning fs-4"></i>
+                    ))}
+                  </div>
+                  <p className="lead fst-italic mb-4">
+                    "L'approche pédagogique innovante et l'accent mis sur les projets pratiques m'ont permis de développer des compétences directement applicables dans mon travail actuel."
+                  </p>
+                  <div className="text-center mb-4">
+                    <h5 className="mb-1">Sara Naji</h5>
+                    <p className="text-muted mb-0">Promotion 2023 - Chef de Projet Digital</p>
                   </div>
                 </Carousel.Item>
               </Carousel>
@@ -398,16 +528,39 @@ const Home: React.FC = () => {
             <h2>Ils nous font confiance</h2>
           </div>
           <Row className="align-items-center justify-content-center g-4">
-            {[1, 2, 3, 4, 5].map((partner) => (
+            <Col xs={6} sm={4} md={2} data-aos="fade-up" data-aos-delay="100">
+              <div className="bg-white p-3 rounded-3 shadow-sm h-100 d-flex align-items-center justify-content-center">
+                <img 
+                  src="/images/toubkal.png"
+                  alt="Toubkal Centrale"
+                  className="img-fluid"
+                  style={{
+                    maxHeight: '80px',
+                    filter: 'grayscale(100%)', 
+                    opacity: 0.7, 
+                    transition: 'all 0.3s ease'
+                  }}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.filter = 'grayscale(0%)';
+                    e.currentTarget.style.opacity = '1';
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.filter = 'grayscale(100%)';
+                    e.currentTarget.style.opacity = '0.7';
+                  }}
+                />
+              </div>
+            </Col>
+            {[2, 3, 4, 5].map((partner) => (
               <Col xs={6} sm={4} md={2} key={partner} data-aos="fade-up" data-aos-delay={`${partner * 100}`}>
                 <div className="bg-white p-3 rounded-3 shadow-sm h-100 d-flex align-items-center justify-content-center">
-                  <img 
-                    src={`/images/partner${partner}.png`} 
-                    alt={`Partenaire ${partner}`} 
-                    className="img-fluid"
-                    style={{filter: 'grayscale(100%)', opacity: 0.7, transition: 'all 0.3s ease'}}
-                    onMouseOver={(e) => e.currentTarget.style.filter = 'grayscale(0%)'}
-                    onMouseOut={(e) => e.currentTarget.style.filter = 'grayscale(100%)'}
+                  <div 
+                    style={{
+                      width: '100%',
+                      height: '80px',
+                      backgroundColor: '#f8f9fa',
+                      borderRadius: '4px'
+                    }}
                   />
                 </div>
               </Col>
@@ -425,8 +578,18 @@ const Home: React.FC = () => {
               <p className="lead mb-0">Rejoignez une communauté dynamique d'apprenants et de professionnels passionnés.</p>
             </Col>
             <Col lg={4} className="text-lg-end" data-aos="fade-left">
-              <Button variant="light" size="lg" className="me-2 mb-2" href="#/programs">Découvrir nos formations</Button>
-              <Button variant="outline-light" size="lg" href="#/contact">Nous contacter</Button>
+              <Link 
+                to="/programs" 
+                className="btn btn-light btn-lg me-2 mb-2"
+              >
+                Découvrir nos formations
+              </Link>
+              <Link 
+                to="/contact" 
+                className="btn btn-outline-light btn-lg"
+              >
+                Nous contacter
+              </Link>
             </Col>
           </Row>
         </Container>
