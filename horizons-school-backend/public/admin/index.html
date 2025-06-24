@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Horizons School Admin</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .login-container {
+      max-width: 450px;
+      margin: 100px auto;
+      padding: 30px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+    .dashboard-container {
+      display: none;
+      padding: 20px;
+    }
+    .sidebar {
+      width: 250px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      background-color: #343a40;
+      padding-top: 20px;
+      color: white;
+    }
+    .content {
+      margin-left: 250px;
+      padding: 20px;
+    }
+    .nav-link {
+      color: rgba(255, 255, 255, 0.75);
+      padding: 10px 15px;
+    }
+    .nav-link:hover {
+      color: white;
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    .nav-link.active {
+      color: white;
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    .section {
+      display: none;
+      padding: 20px;
+      background-color: white;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .section.active {
+      display: block;
+    }
+    .table-container {
+      overflow-x: auto;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .btn-primary {
+      background-color: #0d6efd;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    #alert-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1050;
+      width: 350px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Alert Container -->
+  <div id="alert-container"></div>
+
+  <!-- Login Section -->
+  <div class="login-container" id="login-section">
+    <h2 class="text-center mb-4">Admin Login</h2>
+    <div id="login-error" class="alert alert-danger" style="display: none;"></div>
+    <form id="login-form">
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" value="admin@horizons-school.ma" required>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" id="password" value="Admin@123" required>
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Login</button>
+    </form>
+  </div>
+
+  <!-- Dashboard Section -->
+  <div class="dashboard-container" id="dashboard-section">
+    <div class="sidebar">
+      <h4 class="text-center mb-4">Horizons School</h4>
+      <nav class="nav flex-column">
+        <a class="nav-link active" data-section="dashboard" href="#">Dashboard</a>
+        <a class="nav-link" data-section="programs" href="#">Programs</a>
+        <a class="nav-link" data-section="news" href="#">News</a>
+        <a class="nav-link" data-section="team" href="#">Team</a>
+        <a class="nav-link" data-section="contacts" href="#">Contacts</a>
+        <a class="nav-link" data-section="settings" href="#">Settings</a>
+        <a class="nav-link" id="logout-btn" href="#">Logout</a>
+      </nav>
+    </div>
+    <div class="content">
+      <!-- Dashboard Section -->
+      <div class="section active" id="dashboard-section-content">
+        <div class="header">
+          <h2>Dashboard</h2>
+        </div>
+        <div class="row">
+          <div class="col-md-4 mb-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Total Programs</h5>
+                <p class="card-text" id="programs-count">Loading...</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Total News Articles</h5>
+                <p class="card-text" id="news-count">Loading...</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Total Contact Messages</h5>
+                <p class="card-text" id="contacts-count">Loading...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Programs Section -->
+      <div class="section" id="programs-section">
+        <div class="header">
+          <h2>Programs</h2>
+          <button class="btn btn-primary" id="add-program-btn">Add Program</button>
+        </div>
+        <div class="table-container">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Level</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="programs-table-body">
+              <tr>
+                <td colspan="5" class="text-center">Loading programs...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- News Section -->
+      <div class="section" id="news-section">
+        <div class="header">
+          <h2>News</h2>
+          <button class="btn btn-primary" id="add-news-btn">Add News</button>
+        </div>
+        <div class="table-container">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="news-table-body">
+              <tr>
+                <td colspan="4" class="text-center">Loading news...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Team Section -->
+      <div class="section" id="team-section">
+        <div class="header">
+          <h2>Team</h2>
+          <button class="btn btn-primary" id="add-team-btn">Add Team Member</button>
+        </div>
+        <div class="table-container">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="team-table-body">
+              <tr>
+                <td colspan="3" class="text-center">Loading team members...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Contacts Section -->
+      <div class="section" id="contacts-section">
+        <div class="header">
+          <h2>Contact Messages</h2>
+        </div>
+        <div class="table-container">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="contacts-table-body">
+              <tr>
+                <td colspan="4" class="text-center">Loading contacts...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Settings Section -->
+      <div class="section" id="settings-section">
+        <div class="header">
+          <h2>Settings</h2>
+        </div>
+        <form id="settings-form">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="site-title">Site Title</label>
+                <input type="text" class="form-control" id="site-title">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="site-email">Contact Email</label>
+                <input type="email" class="form-control" id="site-email">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="site-description">Site Description</label>
+            <textarea class="form-control" id="site-description" rows="3"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Save Settings</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Program Modal -->
+  <div class="modal fade" id="program-modal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="program-modal-title">Add Program</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="program-form">
+            <input type="hidden" id="program-id">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="program-title">Title</label>
+                  <input type="text" class="form-control" id="program-title" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="program-category">Category</label>
+                  <select class="form-control" id="program-category" required>
+                    <option value="">Select Category</option>
+                    <option value="Management">Management</option>
+                    <option value="Finance">Finance</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Human Resources">Human Resources</option>
+                    <option value="Languages">Languages</option>
+                    <option value="Professional Training">Professional Training</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="form-group mb-3">
+              <label for="program-description">Description</label>
+              <textarea class="form-control" id="program-description" rows="4" required></textarea>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group mb-3">
+                  <label for="program-duration">Duration</label>
+                  <input type="text" class="form-control" id="program-duration" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group mb-3">
+                  <label for="program-level">Level</label>
+                  <select class="form-control" id="program-level" required>
+                    <option value="">Select Level</option>
+                    <option value="Technicien">Technicien</option>
+                    <option value="Licence">Licence</option>
+                    <option value="Master">Master</option>
+                    <option value="Formation Continue">Formation Continue</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="form-group mb-3">
+              <label for="program-image">Image</label>
+              <input type="file" class="form-control" id="program-image">
+            </div>
+            <div class="form-group mb-3">
+              <label for="program-status">Status</label>
+              <select class="form-control" id="program-is-active" required>
+                <option value="true">Active</option>
+                <option value="false">Inactive</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="save-program-btn">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Global variables
+    let token = localStorage.getItem('token');
+    let currentSection = 'dashboard';
+    let programModal;
+
+    // API Base URL
+    const API_BASE_URL = '/api/v1';
+
+    // DOM Elements
+    const loginSection = document.getElementById('login-section');
+    const dashboardSection = document.getElementById('dashboard-section');
+    const loginForm = document.getElementById('login-form');
+    const loginError = document.getElementById('login-error');
+    const logoutBtn = document.getElementById('logout-btn');
+    const navLinks = document.querySelectorAll('.nav-link[data-section]');
+    const sections = document.querySelectorAll('.section');
+
+    // Initialize the application
+    document.addEventListener('DOMContentLoaded', () => {
+      // Check if user is logged in
+      checkAuth();
+
+      // Setup event listeners
+      loginForm.addEventListener('submit', handleLogin);
+      logoutBtn.addEventListener('click', handleLogout);
+      
+      // Navigation
+      navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          const section = link.getAttribute('data-section');
+          changeSection(section);
+        });
+      });
+
+      // Initialize Bootstrap components
+      programModal = new bootstrap.Modal(document.getElementById('program-modal'));
+      
+      // Program form handlers
+      document.getElementById('add-program-btn').addEventListener('click', () => {
+        document.getElementById('program-form').reset();
+        document.getElementById('program-id').value = '';
+        document.getElementById('program-modal-title').textContent = 'Add Program';
+        programModal.show();
+      });
+      
+      document.getElementById('save-program-btn').addEventListener('click', handleSaveProgram);
+    });
+
+    // Authentication functions
+    function checkAuth() {
+      if (token) {
+        // Verify token validity
+        fetch(`${API_BASE_URL}/auth/profile`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Invalid token');
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (data.success) {
+            showDashboard();
+            loadDashboardData();
+          } else {
+            showLogin();
+          }
+        })
+        .catch(error => {
+          console.error('Auth check failed:', error);
+          localStorage.removeItem('token');
+          showLogin();
+        });
+      } else {
+        showLogin();
+      }
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      
+      console.log('Login attempt with:', { email, password });
+      
+      loginError.style.display = 'none';
+      
+      fetch(`${API_BASE_URL}/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Login response:', data);
+        
+        if (data.success && data.token) {
+          // Save token and show dashboard
+          localStorage.setItem('token', data.token);
+          token = data.token;
+          showDashboard();
+          loadDashboardData();
+          showAlert('Login successful!', 'success');
+        } else {
+          // Show error
+          loginError.textContent = data.message || 'Login failed';
+          loginError.style.display = 'block';
+        }
+      })
+      .catch(error => {
+        console.error('Login error:', error);
+        loginError.textContent = 'An error occurred during login';
+        loginError.style.display = 'block';
+      });
+    }
+
+    function handleLogout() {
+      localStorage.removeItem('token');
+      token = null;
+      showLogin();
+      showAlert('Logged out successfully', 'info');
+    }
+
+    // UI functions
+    function showLogin() {
+      loginSection.style.display = 'block';
+      dashboardSection.style.display = 'none';
+    }
+
+    function showDashboard() {
+      loginSection.style.display = 'none';
+      dashboardSection.style.display = 'block';
+    }
+
+    function changeSection(section) {
+      currentSection = section;
+      
+      // Update navigation
+      navLinks.forEach(link => {
+        if (link.getAttribute('data-section') === section) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+      
+      // Update content sections
+      sections.forEach(sectionEl => {
+        if (sectionEl.id === `${section}-section` || sectionEl.id === `${section}-section-content`) {
+          sectionEl.classList.add('active');
+        } else {
+          sectionEl.classList.remove('active');
+        }
+      });
+      
+      // Load section data
+      if (section === 'programs') {
+        loadPrograms();
+      } else if (section === 'news') {
+        loadNews();
+      } else if (section === 'team') {
+        loadTeam();
+      } else if (section === 'contacts') {
+        loadContacts();
+      } else if (section === 'settings') {
+        loadSettings();
+      }
+    }
+
+    function showAlert(message, type = 'info') {
+      const alertDiv = document.createElement('div');
+      alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+      alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      `;
+      
+      const alertContainer = document.getElementById('alert-container');
+      alertContainer.appendChild(alertDiv);
+      
+      // Auto dismiss after 5 seconds
+      setTimeout(() => {
+        alertDiv.classList.remove('show');
+        setTimeout(() => alertDiv.remove(), 300);
+      }, 5000);
+    }
+
+    // Data loading functions
+    function loadDashboardData() {
+      // Load counts for dashboard
+      Promise.all([
+        fetch(`${API_BASE_URL}/stats/programs`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        }).then(res => res.json()).catch(() => ({ success: false })),
+        fetch(`${API_BASE_URL}/stats/news`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        }).then(res => res.json()).catch(() => ({ success: false })),
+        fetch(`${API_BASE_URL}/stats/contacts`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        }).then(res => res.json()).catch(() => ({ success: false }))
+      ])
+      .then(([programsData, newsData, contactsData]) => {
+        document.getElementById('programs-count').textContent = 
+          programsData.success ? programsData.count : 'Error loading';
+          
+        document.getElementById('news-count').textContent = 
+          newsData.success ? newsData.count : 'Error loading';
+          
+        document.getElementById('contacts-count').textContent = 
+          contactsData.success ? contactsData.count : 'Error loading';
+      })
+      .catch(error => {
+        console.error('Error loading dashboard data:', error);
+        showAlert('Error loading dashboard data', 'danger');
+      });
+    }
+
+    function loadPrograms() {
+      const tableBody = document.getElementById('programs-table-body');
+      tableBody.innerHTML = '<tr><td colspan="5" class="text-center">Loading programs...</td></tr>';
+      
+      fetch(`${API_BASE_URL}/programs`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success && data.data) {
+          if (data.data.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="5" class="text-center">No programs found</td></tr>';
+          } else {
+            tableBody.innerHTML = '';
+            data.data.forEach(program => {
+              const row = document.createElement('tr');
+              row.innerHTML = `
+                <td>${program.title}</td>
+                <td>${program.category || 'N/A'}</td>
+                <td>${program.level || 'N/A'}</td>
+                <td>
+                  <span class="badge bg-${program.isActive ? 'success' : 'secondary'}">
+                    ${program.isActive ? 'Active' : 'Inactive'}
+                  </span>
+                </td>
+                <td>
+                  <button class="btn btn-sm btn-primary edit-program" data-id="${program._id}">Edit</button>
+                  <button class="btn btn-sm btn-danger delete-program" data-id="${program._id}">Delete</button>
+                </td>
+              `;
+              tableBody.appendChild(row);
+            });
+            
+            // Add event listeners to edit and delete buttons
+            document.querySelectorAll('.edit-program').forEach(btn => {
+              btn.addEventListener('click', () => editProgram(btn.getAttribute('data-id')));
+            });
+            
+            document.querySelectorAll('.delete-program').forEach(btn => {
+              btn.addEventListener('click', () => deleteProgram(btn.getAttribute('data-id')));
+            });
+          }
+        } else {
+          tableBody.innerHTML = '<tr><td colspan="5" class="text-center">Error loading programs</td></tr>';
+          showAlert('Error loading programs', 'danger');
+        }
+      })
+      .catch(error => {
+        console.error('Error loading programs:', error);
+        tableBody.innerHTML = '<tr><td colspan="5" class="text-center">Error loading programs</td></tr>';
+        showAlert('Error loading programs', 'danger');
+      });
+    }
+
+    function editProgram(id) {
+      fetch(`${API_BASE_URL}/programs/${id}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success && data.data) {
+          const program = data.data;
+          
+          document.getElementById('program-id').value = program._id;
+          document.getElementById('program-title').value = program.title;
+          document.getElementById('program-category').value = program.category;
+          document.getElementById('program-description').value = program.description;
+          document.getElementById('program-duration').value = program.duration;
+          document.getElementById('program-level').value = program.level;
+          document.getElementById('program-is-active').value = program.isActive.toString();
+          
+          document.getElementById('program-modal-title').textContent = 'Edit Program';
+          programModal.show();
+        } else {
+          showAlert('Error loading program details', 'danger');
+        }
+      })
+      .catch(error => {
+        console.error('Error loading program details:', error);
+        showAlert('Error loading program details', 'danger');
+      });
+    }
+
+    function deleteProgram(id) {
+      if (confirm('Are you sure you want to delete this program?')) {
+        fetch(`${API_BASE_URL}/programs/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            showAlert('Program deleted successfully', 'success');
+            loadPrograms();
+          } else {
+            showAlert('Error deleting program', 'danger');
+          }
+        })
+        .catch(error => {
+          console.error('Error deleting program:', error);
+          showAlert('Error deleting program', 'danger');
+        });
+      }
+    }
+
+    function handleSaveProgram() {
+      const programId = document.getElementById('program-id').value;
+      const isEdit = programId !== '';
+      
+      // Create form data for file upload
+      const formData = new FormData();
+      formData.append('title', document.getElementById('program-title').value);
+      formData.append('category', document.getElementById('program-category').value);
+      formData.append('description', document.getElementById('program-description').value);
+      formData.append('duration', document.getElementById('program-duration').value);
+      formData.append('level', document.getElementById('program-level').value);
+      formData.append('isActive', document.getElementById('program-is-active').value);
+      
+      const imageFile = document.getElementById('program-image').files[0];
+      if (imageFile) {
+        formData.append('image', imageFile);
+      }
+      
+      const url = isEdit 
+        ? `${API_BASE_URL}/programs/${programId}` 
+        : `${API_BASE_URL}/programs`;
+        
+      const method = isEdit ? 'PUT' : 'POST';
+      
+      fetch(url, {
+        method: method,
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          programModal.hide();
+          showAlert(`Program ${isEdit ? 'updated' : 'created'} successfully`, 'success');
+          loadPrograms();
+        } else {
+          showAlert(data.message || `Error ${isEdit ? 'updating' : 'creating'} program`, 'danger');
+        }
+      })
+      .catch(error => {
+        console.error(`Error ${isEdit ? 'updating' : 'creating'} program:`, error);
+        showAlert(`Error ${isEdit ? 'updating' : 'creating'} program`, 'danger');
+      });
+    }
+
+    // Placeholder functions for other sections
+    function loadNews() {
+      const tableBody = document.getElementById('news-table-body');
+      tableBody.innerHTML = '<tr><td colspan="4" class="text-center">News feature coming soon</td></tr>';
+    }
+
+    function loadTeam() {
+      const tableBody = document.getElementById('team-table-body');
+      tableBody.innerHTML = '<tr><td colspan="3" class="text-center">Team management feature coming soon</td></tr>';
+    }
+
+    function loadContacts() {
+      const tableBody = document.getElementById('contacts-table-body');
+      tableBody.innerHTML = '<tr><td colspan="4" class="text-center">Contact messages feature coming soon</td></tr>';
+    }
+
+    function loadSettings() {
+      // Placeholder for settings loading
+      console.log('Settings loading not yet implemented');
+    }
+  </script>
+</body>
+</html> 

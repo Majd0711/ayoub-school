@@ -28,11 +28,19 @@ const About: React.FC = () => {
               </p>
             </Col>
             <Col lg={6} className="mt-4 mt-lg-0" data-aos="fade-left">
-              <img 
-                src="/images/school-building.jpg" 
-                alt="Bâtiment Horizons School" 
-                className="img-fluid rounded-3 shadow"
-              />
+              <div className="d-flex justify-content-center align-items-center h-100">
+                <img 
+                  src="/images/campus.jpeg" 
+                  alt="Journée portes ouvertes à Horizons School" 
+                  className="img-fluid rounded-3 shadow"
+                  style={{ 
+                    maxWidth: '90%',
+                    height: '400px',
+                    objectFit: 'cover',
+                    objectPosition: 'center'
+                  }}
+                />
+              </div>
             </Col>
           </Row>
         </Container>
@@ -138,10 +146,10 @@ const About: React.FC = () => {
             <Col md={6} lg={4} className="mb-4" data-aos="fade-up" data-aos-delay="300">
               <Card className="border-0 shadow-sm text-center h-100">
                 <Card.Body className="p-4">
-                  <Card.Title className="fw-bold">M. Majd Edine Benzbair</Card.Title>
-                  <Card.Subtitle className="mb-3 text-muted">Responsable Développement</Card.Subtitle>
+                  <Card.Title className="fw-bold">M. Majd Eddine Benzbair</Card.Title>
+                  <Card.Subtitle className="mb-3 text-muted">Développeur Full Stack</Card.Subtitle>
                   <Card.Text>
-                    Expert en développement de solutions numériques pour l'éducation et la formation professionnelle.
+                    Passionné par le développement web et les nouvelles technologies, créateur de solutions innovantes pour améliorer l'expérience éducative.
                   </Card.Text>
                 </Card.Body>
               </Card>

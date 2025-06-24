@@ -157,7 +157,7 @@ const Home: React.FC = () => {
                   </Card.Text>
                 </Card.Body>
                 <div>
-                  <Button variant="outline-primary" href="#/programs">En savoir plus</Button>
+                  <Link to="/programs" className="btn btn-outline-primary">En savoir plus</Link>
                 </div>
               </Card>
             </Col>
@@ -174,7 +174,7 @@ const Home: React.FC = () => {
                   </Card.Text>
                 </Card.Body>
                 <div>
-                  <Button variant="outline-primary" href="#/programs">En savoir plus</Button>
+                  <Link to="/programs" className="btn btn-outline-primary">En savoir plus</Link>
                 </div>
               </Card>
             </Col>
@@ -191,7 +191,7 @@ const Home: React.FC = () => {
                   </Card.Text>
                 </Card.Body>
                 <div>
-                  <Button variant="outline-primary" href="#/programs">En savoir plus</Button>
+                  <Link to="/programs" className="btn btn-outline-primary">En savoir plus</Link>
                 </div>
               </Card>
             </Col>
@@ -208,7 +208,7 @@ const Home: React.FC = () => {
                   </Card.Text>
                 </Card.Body>
                 <div>
-                  <Button variant="outline-primary" href="#/programs">En savoir plus</Button>
+                  <Link to="/programs" className="btn btn-outline-primary">En savoir plus</Link>
                 </div>
               </Card>
             </Col>
@@ -443,7 +443,9 @@ const Home: React.FC = () => {
               <h2>Dernières Nouvelles & Événements</h2>
             </Col>
             <Col lg={6} className="text-lg-end mt-4 mt-lg-0" data-aos="fade-left">
-              <Button variant="outline-primary" href="#/news">Voir toutes les actualités</Button>
+              <Link to="/news" className="btn btn-outline-primary">
+                Voir toutes les actualités
+              </Link>
             </Col>
           </Row>
           <Row>
@@ -466,7 +468,6 @@ const Home: React.FC = () => {
                   <Card.Text>
                     Découvrez nos locaux, rencontrez nos enseignants et nos étudiants lors de notre prochaine journée portes ouvertes.
                   </Card.Text>
-                  <Button variant="link" className="px-0">En savoir plus →</Button>
                 </Card.Body>
               </Card>
             </Col>
@@ -489,7 +490,6 @@ const Home: React.FC = () => {
                   <Card.Text>
                     Horizons School signe un nouveau partenariat avec une prestigieuse université européenne pour des échanges étudiants.
                   </Card.Text>
-                  <Button variant="link" className="px-0">Lire la suite →</Button>
                 </Card.Body>
               </Card>
             </Col>
@@ -512,7 +512,6 @@ const Home: React.FC = () => {
                   <Card.Text>
                     Participez à notre atelier pratique sur les dernières avancées en intelligence artificielle et leurs applications métiers.
                   </Card.Text>
-                  <Button variant="link" className="px-0">S'inscrire →</Button>
                 </Card.Body>
               </Card>
             </Col>

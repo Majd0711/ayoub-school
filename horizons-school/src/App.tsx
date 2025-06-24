@@ -13,6 +13,7 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Programs from './pages/Programs';
 import Contact from './pages/Contact';
+import News from './pages/News';
 
 // Import utils
 import { initSmoothScrolling } from './utils/smoothScroll';
@@ -67,6 +68,11 @@ const AppContent = () => {
       <Route path="/contact" element={
         <MainLayout>
           <Contact />
+        </MainLayout>
+      } />
+      <Route path="/news" element={
+        <MainLayout>
+          <News />
         </MainLayout>
       } />
     </Routes>
