@@ -1,4 +1,29 @@
 {
+  "name": "horizons-school-monorepo",
+  "version": "1.0.0",
+  "description": "Horizons School website and admin panel",
+  "main": "index.js",
+  "scripts": {
+    "start:backend": "cd horizons-school-backend && npm run start",
+    "start:frontend": "cd horizons-school && npm run start",
+    "dev:backend": "cd horizons-school-backend && npm run dev",
+    "dev:frontend": "cd horizons-school && npm run start",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "install:all": "npm install && cd horizons-school && npm install && cd ../horizons-school-backend && npm install",
+    "build": "cd horizons-school && npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "school",
+    "education",
+    "website",
+    "admin"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",

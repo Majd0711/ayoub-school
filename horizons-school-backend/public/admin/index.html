@@ -309,6 +309,11 @@
                     <option value="Human Resources">Human Resources</option>
                     <option value="Languages">Languages</option>
                     <option value="Professional Training">Professional Training</option>
+                    <option value="Technicien">Technicien</option>
+                    <option value="Licence">Licence</option>
+                    <option value="Master">Master</option>
+                    <option value="Formation Continue">Formation Continue</option>
+                    <option value="Langues">Langues</option>
                   </select>
                 </div>
               </div>
@@ -325,7 +330,7 @@
                 </div>
               </div>
               <div class="col-md-6">
-                <div class="form-group mb-3">
+                <div class="form-group">
                   <label for="program-level">Level</label>
                   <select class="form-control" id="program-level" required>
                     <option value="">Select Level</option>
@@ -333,6 +338,10 @@
                     <option value="Licence">Licence</option>
                     <option value="Master">Master</option>
                     <option value="Formation Continue">Formation Continue</option>
+                    <option value="Bac+2">Bac+2</option>
+                    <option value="Bac+3">Bac+3</option>
+                    <option value="Bac+4">Bac+4</option>
+                    <option value="Tous niveaux">Tous niveaux</option>
                   </select>
                 </div>
               </div>
@@ -342,11 +351,33 @@
               <input type="file" class="form-control" id="program-image">
             </div>
             <div class="form-group mb-3">
-              <label for="program-status">Status</label>
-              <select class="form-control" id="program-is-active" required>
-                <option value="true">Active</option>
-                <option value="false">Inactive</option>
-              </select>
+              <label for="program-features">Features/Conditions (comma-separated)</label>
+              <textarea class="form-control" id="program-features" rows="3" placeholder="Enter features separated by commas"></textarea>
+              <small class="form-text text-muted">Example: Bac+2 en gestion, Connaissances en management, Stage obligatoire</small>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group mb-3">
+                  <label for="program-is-active">Status</label>
+                  <select class="form-control" id="program-is-active" required>
+                    <option value="true">Active</option>
+                    <option value="false">Inactive</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group mb-3">
+                  <label for="program-is-featured">Featured</label>
+                  <select class="form-control" id="program-is-featured">
+                    <option value="false">No</option>
+                    <option value="true">Yes</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="form-group mb-3">
+              <label for="program-seats">Available Seats</label>
+              <input type="number" class="form-control" id="program-seats" min="1" value="20">
             </div>
           </form>
         </div>
@@ -658,6 +689,13 @@
           document.getElementById('program-duration').value = program.duration;
           document.getElementById('program-level').value = program.level;
           document.getElementById('program-is-active').value = program.isActive.toString();
+          document.getElementById('program-is-featured').value = (program.isFeatured || false).toString();
+          document.getElementById('program-seats').value = program.seats || 20;
+          
+          // Handle features array
+          if (program.features && Array.isArray(program.features)) {
+            document.getElementById('program-features').value = program.features.join(', ');
+          }
           
           document.getElementById('program-modal-title').textContent = 'Edit Program';
           programModal.show();
@@ -707,6 +745,14 @@
       formData.append('duration', document.getElementById('program-duration').value);
       formData.append('level', document.getElementById('program-level').value);
       formData.append('isActive', document.getElementById('program-is-active').value);
+      formData.append('isFeatured', document.getElementById('program-is-featured').value);
+      formData.append('seats', document.getElementById('program-seats').value);
+      
+      // Handle features
+      const featuresText = document.getElementById('program-features').value;
+      if (featuresText) {
+        formData.append('features', featuresText);
+      }
       
       const imageFile = document.getElementById('program-image').files[0];
       if (imageFile) {

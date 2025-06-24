@@ -1,88 +1,113 @@
-# Horizons School Platform
+# Horizons School Website and Admin Panel
 
-This project is a comprehensive school management platform that includes:
-- Public-facing website for Horizons School (to be implemented)
-- Admin dashboard for managing school content (integrated in the backend)
-- Backend API that serves both the website and admin dashboard
+This project consists of a front-end website for Horizons School and an admin panel to manage the content displayed on the website.
 
 ## Project Structure
 
-```
-ayoub-school/
-└── horizons-school-backend/ # Backend API with integrated Admin Panel
-    ├── src/                 # Source code
-    │   ├── config/          # Configuration files
-    │   ├── controllers/     # API controllers
-    │   ├── middleware/      # Middleware functions
-    │   ├── models/          # Database models
-    │   ├── routes/          # API routes
-    │   ├── scripts/         # Utility scripts
-    │   └── server.js        # Main server file
-    └── public/              # Static files
-        ├── admin/           # Admin panel interface
-        └── uploads/         # Uploaded files
-```
+- `horizons-school/` - Front-end React application
+- `horizons-school-backend/` - Backend Node.js/Express API
 
-## Getting Started
+## Prerequisites
 
-### Prerequisites
+- Node.js (v14 or later)
+- MongoDB (local or Atlas)
+- npm or yarn
 
-- Node.js (v14 or higher)
-- MongoDB (running locally or remote connection)
+## Setup Instructions
 
-### Installation
+### 1. Clone the repository
 
-1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd ayoub-school/horizons-school-backend
+cd ayoub-school
 ```
 
-2. Install dependencies:
+### 2. Install dependencies
+
 ```bash
-npm install
+# Install all dependencies (root, frontend, and backend)
+npm run install:all
 ```
 
-### Development Mode
+### 3. Configure environment variables
 
-To run the server in development mode:
+Create `.env` files in both the frontend and backend directories:
+
+**horizons-school/.env**
+```
+REACT_APP_API_URL=http://localhost:5000/api/v1
+```
+
+**horizons-school-backend/.env**
+```
+PORT=5000
+MONGO_URI=mongodb://localhost:27017/horizons-school
+JWT_SECRET=your-secret-key
+JWT_EXPIRE=30d
+NODE_ENV=development
+FRONTEND_URL=http://localhost:3000
+```
+
+### 4. Start the development servers
 
 ```bash
+# Start both frontend and backend in development mode
 npm run dev
+
+# Or start them separately
+npm run dev:backend
+npm run dev:frontend
 ```
 
-This will start:
-- Backend API on port 5000
-- Admin dashboard at http://localhost:5000/admin
+## Admin Panel Access
 
-### Production Mode
+- URL: http://localhost:5000/admin
+- Default credentials:
+  - Email: admin@horizons-school.ma
+  - Password: Admin@123
 
-To run the server in production mode:
+## Features
 
-```bash
-npm start
-```
+### Front-end Website
+- Home page with featured programs
+- Programs listing page with filtering by category
+- About page with school information
+- News and events page
+- Contact page with form submission
 
-## Admin Access
-
-To create an admin user:
-
-```bash
-npm run create-admin
-```
-
-Default admin credentials:
-- Email: admin@horizons-school.ma
-- Password: Admin@123
+### Admin Panel
+- Authentication and user management
+- Dashboard with statistics
+- Program management (create, read, update, delete)
+- News management
+- Team member management
+- Contact form submissions
+- Site settings
 
 ## API Documentation
 
-The API endpoints are available at `/api/v1/`:
+### Authentication
+- `POST /api/v1/auth/login` - Login with email and password
+- `GET /api/v1/auth/profile` - Get current user profile
 
-- `/api/v1/auth` - Authentication endpoints
-- `/api/v1/programs` - Programs management
-- `/api/v1/news` - News management
-- `/api/v1/contacts` - Contact form submissions
-- `/api/v1/settings` - Site settings
-- `/api/v1/team` - Team members management
-- `/api/v1/stats` - Statistics 
+### Programs
+- `GET /api/v1/programs` - Get all programs
+- `GET /api/v1/programs/:id` - Get a specific program
+- `POST /api/v1/programs` - Create a new program (requires authentication)
+- `PUT /api/v1/programs/:id` - Update a program (requires authentication)
+- `DELETE /api/v1/programs/:id` - Delete a program (requires authentication)
+
+### News
+- `GET /api/v1/news` - Get all news articles
+- `GET /api/v1/news/:id` - Get a specific news article
+- `POST /api/v1/news` - Create a news article (requires authentication)
+- `PUT /api/v1/news/:id` - Update a news article (requires authentication)
+- `DELETE /api/v1/news/:id` - Delete a news article (requires authentication)
+
+### Contacts
+- `GET /api/v1/contacts` - Get all contact submissions (requires authentication)
+- `POST /api/v1/contacts` - Submit a contact form
+
+## License
+
+This project is licensed under the ISC License. 

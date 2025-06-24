@@ -23,7 +23,12 @@ const programSchema = new mongoose.Schema({
       'Marketing',
       'Human Resources',
       'Languages',
-      'Professional Training'
+      'Professional Training',
+      'Technicien',
+      'Licence',
+      'Master',
+      'Formation Continue',
+      'Langues'
     ]
   },
   duration: {
@@ -33,7 +38,7 @@ const programSchema = new mongoose.Schema({
   level: {
     type: String,
     required: [true, 'Please add program level'],
-    enum: ['Technicien', 'Licence', 'Master', 'Formation Continue']
+    enum: ['Technicien', 'Licence', 'Master', 'Formation Continue', 'Bac+2', 'Bac+3', 'Bac+4', 'Tous niveaux']
   },
   image: {
     type: String,
@@ -49,6 +54,14 @@ const programSchema = new mongoose.Schema({
   isActive: {
     type: Boolean,
     default: true
+  },
+  isFeatured: {
+    type: Boolean,
+    default: false
+  },
+  seats: {
+    type: Number,
+    default: 20
   },
   createdBy: {
     type: mongoose.Schema.ObjectId,

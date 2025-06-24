@@ -11,12 +11,14 @@ dotenv.config();
 const app = express();
 
 // CORS configuration with full access
-app.use(cors({
-  origin: '*',
+const corsOptions = {
+  origin: ['http://localhost:3000', 'http://localhost:5000', process.env.FRONTEND_URL].filter(Boolean),
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
   credentials: true
-}));
+};
+
+app.use(cors(corsOptions));
 
 // Body parser middleware
 app.use(express.json());

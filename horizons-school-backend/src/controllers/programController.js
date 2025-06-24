@@ -15,7 +15,9 @@ exports.getPrograms = async (req, res) => {
 
     // Filter by category
     if (req.query.category) {
-      query = query.where('category').equals(req.query.category);
+      // Handle both uppercase and lowercase category names
+      const categoryRegex = new RegExp('^' + req.query.category + '$', 'i');
+      query = query.where('category').regex(categoryRegex);
     }
 
     // Filter by level
@@ -26,6 +28,11 @@ exports.getPrograms = async (req, res) => {
     // Filter by active status
     if (req.query.isActive) {
       query = query.where('isActive').equals(req.query.isActive === 'true');
+    }
+
+    // Filter by featured status
+    if (req.query.isFeatured) {
+      query = query.where('isFeatured').equals(req.query.isFeatured === 'true');
     }
 
     // Search by title
@@ -114,6 +121,11 @@ exports.createProgram = async (req, res) => {
       req.body.image = req.file.filename;
     }
     
+    // Handle features as array
+    if (req.body.features && typeof req.body.features === 'string') {
+      req.body.features = req.body.features.split(',').map(feature => feature.trim());
+    }
+    
     const program = await Program.create(req.body);
 
     res.status(201).json({
@@ -156,6 +168,11 @@ exports.updateProgram = async (req, res) => {
       req.body.image = req.file.filename;
     }
 
+    // Handle features as array
+    if (req.body.features && typeof req.body.features === 'string') {
+      req.body.features = req.body.features.split(',').map(feature => feature.trim());
+    }
+
     program = await Program.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true
@@ -196,7 +213,7 @@ exports.deleteProgram = async (req, res) => {
       });
     }
 
-    await program.remove();
+    await program.deleteOne();
 
     res.status(200).json({
       success: true,
@@ -216,10 +233,10 @@ exports.deleteProgram = async (req, res) => {
 // @access  Public
 exports.getFeaturedPrograms = async (req, res) => {
   try {
-    const programs = await Program.find({ isActive: true })
+    const programs = await Program.find({ isActive: true, isFeatured: true })
       .sort('-createdAt')
       .limit(4)
-      .select('title description image category level');
+      .select('title description image category level duration');
 
     res.status(200).json({
       success: true,

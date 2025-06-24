@@ -1,15 +1,67 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Accordion, Button } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import AOS from 'aos';
 import ProgramCard from '../components/ProgramCard';
-import { programs } from '../data/programs';
+import { programsApi, Program as ApiProgram } from '../utils/api';
+import { programs as staticPrograms } from '../data/programs';
+
+// Map API program to the format expected by ProgramCard
+const mapApiProgramToCardProps = (program: ApiProgram) => {
+  return {
+    id: program._id,
+    title: program.title,
+    level: program.level,
+    duration: program.duration,
+    conditions: program.features || ["Contactez-nous pour plus d'informations"],
+    imageUrl: program.image ? `/uploads/programs/${program.image}` : '/images/placeholder.svg',
+    category: program.category.toLowerCase()
+  };
+};
 
 const Programs: React.FC = () => {
+  const [programs, setPrograms] = useState<ReturnType<typeof mapApiProgramToCardProps>[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
     AOS.refresh();
+    
+    // Fetch programs from API
+    const fetchPrograms = async () => {
+      try {
+        setLoading(true);
+        const apiPrograms = await programsApi.getAll();
+        
+        if (apiPrograms && apiPrograms.length > 0) {
+          // Map API programs to the format expected by ProgramCard
+          const mappedPrograms = apiPrograms
+            .filter(program => program.isActive)
+            .map(mapApiProgramToCardProps);
+          setPrograms(mappedPrograms);
+        } else {
+          // Fallback to static data if API returns no programs
+          setPrograms(staticPrograms);
+        }
+      } catch (err) {
+        console.error('Error fetching programs:', err);
+        setError('Failed to load programs. Using static data instead.');
+        setPrograms(staticPrograms);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPrograms();
   }, []);
+
+  // Group programs by category
+  const technicienPrograms = programs.filter(program => program.category === 'technicien');
+  const licencePrograms = programs.filter(program => program.category === 'licence');
+  const masterPrograms = programs.filter(program => program.category === 'master');
+  const formationPrograms = programs.filter(program => program.category === 'formation');
+  const languesPrograms = programs.filter(program => program.category === 'langues');
 
   return (
     <>
@@ -238,140 +290,155 @@ const Programs: React.FC = () => {
         transition={{ delay: 0.4 }}
       >
         <Container>
-          {/* Formations Techniques Section */}
-          <div id="technicien" className="mb-5">
-            <motion.h2 
-              className="text-center mb-4"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              Formations Techniques
-            </motion.h2>
-            <Row className="g-4">
-              {programs
-                .filter(program => program.category === 'technicien')
-                .map((program, index) => (
-                  <Col key={program.id} lg={4} md={6}>
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.15 }}
-                    >
-                      <ProgramCard {...program} />
-                    </motion.div>
-                  </Col>
-                ))}
-            </Row>
-          </div>
+          {loading ? (
+            <div className="text-center py-5">
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+              <p className="mt-3">Chargement des programmes...</p>
+            </div>
+          ) : error ? (
+            <div className="alert alert-warning">
+              {error}
+            </div>
+          ) : (
+            <>
+              {/* Formations Techniques Section */}
+              {technicienPrograms.length > 0 && (
+                <div id="technicien" className="mb-5">
+                  <motion.h2 
+                    className="text-center mb-4"
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    Formations Techniques
+                  </motion.h2>
+                  <Row className="g-4">
+                    {technicienPrograms.map((program, index) => (
+                      <Col key={program.id} lg={4} md={6}>
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.15 }}
+                        >
+                          <ProgramCard {...program} />
+                        </motion.div>
+                      </Col>
+                    ))}
+                  </Row>
+                </div>
+              )}
 
-          {/* Licence Professionnelle Section */}
-          <div id="licence" className="my-5 pt-5">
-            <motion.h2 
-              className="text-center mb-4"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              Licence Professionnelle
-            </motion.h2>
-            <Row className="g-4">
-              {programs
-                .filter(program => program.category === 'licence')
-                .map((program, index) => (
-                  <Col key={program.id} lg={4} md={6}>
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.15 }}
-                    >
-                      <ProgramCard {...program} />
-                    </motion.div>
-                  </Col>
-                ))}
-            </Row>
-          </div>
+              {/* Licence Professionnelle Section */}
+              {licencePrograms.length > 0 && (
+                <div id="licence" className="my-5 pt-5">
+                  <motion.h2 
+                    className="text-center mb-4"
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    Licence Professionnelle
+                  </motion.h2>
+                  <Row className="g-4">
+                    {licencePrograms.map((program, index) => (
+                      <Col key={program.id} lg={4} md={6}>
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.15 }}
+                        >
+                          <ProgramCard {...program} />
+                        </motion.div>
+                      </Col>
+                    ))}
+                  </Row>
+                </div>
+              )}
 
-          {/* Master Professionnel Section */}
-          <div id="master" className="my-5 pt-5">
-            <motion.h2 
-              className="text-center mb-4"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              Master Professionnel
-            </motion.h2>
-            <Row className="g-4">
-              {programs
-                .filter(program => program.category === 'master')
-                .map((program, index) => (
-                  <Col key={program.id} lg={4} md={6}>
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.15 }}
-                    >
-                      <ProgramCard {...program} />
-                    </motion.div>
-                  </Col>
-                ))}
-            </Row>
-          </div>
+              {/* Master Professionnel Section */}
+              {masterPrograms.length > 0 && (
+                <div id="master" className="my-5 pt-5">
+                  <motion.h2 
+                    className="text-center mb-4"
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    Master Professionnel
+                  </motion.h2>
+                  <Row className="g-4">
+                    {masterPrograms.map((program, index) => (
+                      <Col key={program.id} lg={4} md={6}>
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.15 }}
+                        >
+                          <ProgramCard {...program} />
+                        </motion.div>
+                      </Col>
+                    ))}
+                  </Row>
+                </div>
+              )}
 
-          {/* Formations Continues Section */}
-          <div id="formation" className="my-5 pt-5">
-            <motion.h2 
-              className="text-center mb-4"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              Formations Continues
-            </motion.h2>
-            <Row className="g-4">
-              {programs
-                .filter(program => program.category === 'formation')
-                .map((program, index) => (
-                  <Col key={program.id} lg={4} md={6}>
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.15 }}
-                    >
-                      <ProgramCard {...program} />
-                    </motion.div>
-                  </Col>
-                ))}
-            </Row>
-          </div>
+              {/* Formations Continues Section */}
+              {formationPrograms.length > 0 && (
+                <div id="formation" className="my-5 pt-5">
+                  <motion.h2 
+                    className="text-center mb-4"
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    Formations Continues
+                  </motion.h2>
+                  <Row className="g-4">
+                    {formationPrograms.map((program, index) => (
+                      <Col key={program.id} lg={4} md={6}>
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.15 }}
+                        >
+                          <ProgramCard {...program} />
+                        </motion.div>
+                      </Col>
+                    ))}
+                  </Row>
+                </div>
+              )}
 
-          {/* Formations en Langues Section */}
-          <div id="langues" className="my-5 pt-5">
-            <motion.h2 
-              className="text-center mb-4"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              Formations en Langues
-            </motion.h2>
-            <Row className="g-4">
-              {programs
-                .filter(program => program.category === 'langues')
-                .map((program, index) => (
-                  <Col key={program.id} lg={4} md={6}>
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.15 }}
-                    >
-                      <ProgramCard {...program} />
-                    </motion.div>
-                  </Col>
-                ))}
-            </Row>
-          </div>
+              {/* Formations en Langues Section */}
+              {languesPrograms.length > 0 && (
+                <div id="langues" className="my-5 pt-5">
+                  <motion.h2 
+                    className="text-center mb-4"
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    Formations en Langues
+                  </motion.h2>
+                  <Row className="g-4">
+                    {languesPrograms.map((program, index) => (
+                      <Col key={program.id} lg={4} md={6}>
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.15 }}
+                        >
+                          <ProgramCard {...program} />
+                        </motion.div>
+                      </Col>
+                    ))}
+                  </Row>
+                </div>
+              )}
+            </>
+          )}
         </Container>
       </motion.section>
 
@@ -398,7 +465,7 @@ const Programs: React.FC = () => {
                   to="/contact" 
                   className="btn btn-primary btn-lg rounded-pill px-5 text-decoration-none"
                 >
-                  S'inscrire Maintenant
+                  Contactez-nous
                 </Link>
               </motion.div>
             </Col>
