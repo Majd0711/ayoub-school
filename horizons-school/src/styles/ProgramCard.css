@@ -1,19 +1,22 @@
 /* Program Card Styles */
 .program-card {
-  background: #fff;
-  border: 1px solid #e0e0e0;
+  background-color: white;
   border-radius: 8px;
-  padding: 1.25rem;
-  margin-bottom: 1.5rem;
-  transition: all 0.3s ease;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
   height: 100%;
   display: flex;
   flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  margin-bottom: 25px;
+  margin-left: 8px;
+  margin-right: 8px;
 }
 
 .program-card:hover {
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  transform: translateY(-2px);
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
 }
 
 .program-header {

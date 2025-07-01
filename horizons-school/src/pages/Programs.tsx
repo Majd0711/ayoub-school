@@ -156,7 +156,7 @@ const Programs: React.FC = () => {
           {programsByCategory.technical.length > 0 && (
             <div id="technical" className="program-category">
               <h3>Formations Techniques</h3>
-              <Row>
+              <Row className="g-4">
                 {programsByCategory.technical.map((program) => (
                   <Col key={program._id} md={6} lg={4}>
                     <ProgramCard program={program} />
@@ -170,7 +170,7 @@ const Programs: React.FC = () => {
           {programsByCategory.license.length > 0 && (
             <div id="license" className="program-category">
               <h3>Licence Professionnelle</h3>
-              <Row>
+              <Row className="g-4">
                 {programsByCategory.license.map((program) => (
                   <Col key={program._id} md={6} lg={4}>
                     <ProgramCard program={program} />
@@ -184,7 +184,7 @@ const Programs: React.FC = () => {
           {programsByCategory.master.length > 0 && (
             <div id="master" className="program-category">
               <h3>Master Professionnel</h3>
-              <Row>
+              <Row className="g-4">
                 {programsByCategory.master.map((program) => (
                   <Col key={program._id} md={6} lg={4}>
                     <ProgramCard program={program} />
@@ -198,7 +198,7 @@ const Programs: React.FC = () => {
           {programsByCategory.continuous.length > 0 && (
             <div id="continuous" className="program-category">
               <h3>Formations Continues</h3>
-              <Row>
+              <Row className="g-4">
                 {programsByCategory.continuous.map((program) => (
                   <Col key={program._id} md={6} lg={4}>
                     <ProgramCard program={program} />
@@ -212,7 +212,7 @@ const Programs: React.FC = () => {
           {programsByCategory.languages.length > 0 && (
             <div id="languages" className="program-category">
               <h3>Formations en Langues</h3>
-              <Row>
+              <Row className="g-4">
                 {programsByCategory.languages.map((program) => (
                   <Col key={program._id} md={6} lg={4}>
                     <ProgramCard program={program} />
