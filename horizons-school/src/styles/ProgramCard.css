@@ -1,90 +1,89 @@
 /* Program Card Styles */
 .program-card {
-  background-color: white;
+  background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem;
   height: 100%;
   display: flex;
   flex-direction: column;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 1rem;
   position: relative;
-  margin-bottom: 25px;
-  margin-left: 8px;
-  margin-right: 8px;
+  overflow: hidden;
 }
 
 .program-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
 .program-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.75rem;
+  margin-bottom: 1rem;
 }
 
 .level-badge {
-  font-size: 0.75rem;
-  padding: 0.35rem 0.7rem;
-  border-radius: 20px;
-  background-color: #007bff !important;
-  font-weight: 500;
+  font-size: 0.8rem;
+  padding: 0.3rem 0.6rem;
+  background-color: #0056b3 !important;
 }
 
 .duration {
   display: flex;
   align-items: center;
-  color: #666;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
+  color: #6c757d;
 }
 
 .duration-icon {
-  margin-right: 0.4rem;
-  color: #007bff;
+  margin-right: 0.5rem;
+  color: #0056b3;
 }
 
 .program-title {
-  font-size: 1.1rem;
-  color: #333;
-  margin-bottom: 1rem;
+  font-size: 1.25rem;
   font-weight: 600;
-  line-height: 1.4;
+  margin-bottom: 1rem;
+  color: #333;
+  min-height: 3rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .program-details {
   flex-grow: 1;
+  margin-bottom: 1rem;
 }
 
 .conditions h4 {
-  font-size: 0.95rem;
-  color: #333;
+  font-size: 1rem;
+  color: #495057;
   margin-bottom: 0.75rem;
-  font-weight: 500;
 }
 
 .conditions-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  list-style-type: none;
+  padding-left: 0;
+  margin-bottom: 0;
 }
 
 .conditions-list li {
   display: flex;
   align-items: flex-start;
-  margin-bottom: 0.6rem;
-  color: #666;
-  font-size: 0.85rem;
-  line-height: 1.4;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: #6c757d;
 }
 
 .check-icon {
   color: #28a745;
-  margin-right: 0.6rem;
-  margin-top: 0.2rem;
-  font-size: 0.75rem;
+  margin-right: 0.5rem;
+  margin-top: 0.25rem;
   flex-shrink: 0;
 }
 
@@ -92,30 +91,27 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 1.25rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid #eee;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid #e9ecef;
 }
 
 .places-badge {
   font-size: 0.75rem;
-  padding: 0.35rem 0.7rem;
-  border-radius: 20px;
   background-color: #dc3545 !important;
-  font-weight: 500;
 }
 
-.btn-link {
-  color: #007bff;
-  text-decoration: none;
-  font-size: 0.85rem;
-  font-weight: 500;
-  padding: 0;
-}
-
-.btn-link:hover {
+.program-actions .btn-link {
   color: #0056b3;
+  padding: 0;
+  font-weight: 600;
+  font-size: 0.9rem;
   text-decoration: none;
+}
+
+.program-actions .btn-link:hover {
+  color: #003d7a;
+  text-decoration: underline;
 }
 
 /* Ensure the card content takes full height */
@@ -174,6 +170,10 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .program-card {
-    margin-bottom: 1.5rem;
+    padding: 1.25rem;
+  }
+  
+  .program-title {
+    font-size: 1.1rem;
   }
 }

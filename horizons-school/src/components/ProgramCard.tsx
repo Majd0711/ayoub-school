@@ -14,6 +14,9 @@ const ProgramCard: React.FC<{ program: Program }> = ({ program }) => {
     navigate('/contact', { state: { program: program.title } });
   };
 
+  // Ensure we have an array of features
+  const features = Array.isArray(program.features) ? program.features : [];
+
   return (
     <div className="program-card">
       <div className="program-header">
@@ -32,7 +35,7 @@ const ProgramCard: React.FC<{ program: Program }> = ({ program }) => {
         <div className="conditions">
           <h4>Conditions d'admission :</h4>
           <ul className="conditions-list">
-            {program.features.map((feature, index) => (
+            {features.map((feature, index) => (
               <li key={index}>
                 <FaCheck className="check-icon" />
                 {feature}

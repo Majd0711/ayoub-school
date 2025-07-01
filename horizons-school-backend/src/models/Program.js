@@ -24,11 +24,11 @@ const programSchema = new mongoose.Schema({
       'Human Resources',
       'Languages',
       'Professional Training',
-      'Technicien',
-      'Licence',
-      'Master',
-      'Formation Continue',
-      'Langues',
+      'technical',
+      'license',
+      'master',
+      'continuous',
+      'languages',
       'Business'
     ]
   },
@@ -39,7 +39,22 @@ const programSchema = new mongoose.Schema({
   level: {
     type: String,
     default: 'Tous niveaux',
-    enum: ['Technicien', 'Licence', 'Master', 'Formation Continue', 'Bac+2', 'Bac+3', 'Bac+4', 'Tous niveaux', 'Débutant', 'Intermédiaire', 'Avancé']
+    enum: [
+      'Technicien',
+      'Licence',
+      'Master',
+      'Formation Continue',
+      'Bac+2',
+      'Bac+3',
+      'Bac+4',
+      'Tous niveaux',
+      'Débutant',
+      'Intermédiaire',
+      'Avancé',
+      'Baccalauréat',
+      'Niveau Bac et plus',
+      'Bac+2 (DUT, BTS, DEUG)'
+    ]
   },
   image: {
     type: String,
