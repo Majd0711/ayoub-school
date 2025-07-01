@@ -7,6 +7,7 @@ import '../styles/Navbar.css';
 const logo = `${process.env.PUBLIC_URL}/images/logo-seul-horizons.jpg`;
 
 const Navbar: React.FC = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   
@@ -24,6 +25,14 @@ const Navbar: React.FC = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    setIsOpen(false); // Close menu when route changes
+  }, [location]);
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
 
   const navVariants = {
     hidden: { y: -100 },
@@ -62,11 +71,16 @@ const Navbar: React.FC = () => {
           <span className="brand-text">HORIZONS SCHOOL</span>
         </BootstrapNavbar.Brand>
         
-        <BootstrapNavbar.Toggle aria-controls="basic-navbar-nav" className="navbar-toggler-custom">
+        <BootstrapNavbar.Toggle 
+          aria-controls="basic-navbar-nav" 
+          className="navbar-toggler-custom"
+          aria-label="toggle navigation"
+          onClick={toggleMenu}
+        >
           <span className="navbar-toggler-icon"></span>
         </BootstrapNavbar.Toggle>
 
-        <BootstrapNavbar.Collapse id="basic-navbar-nav">
+        <BootstrapNavbar.Collapse id="basic-navbar-nav" data-testid="navbar-collapse">
           <Nav className="ms-auto">
             {[
               { path: '/', text: 'Accueil' },
@@ -85,6 +99,7 @@ const Navbar: React.FC = () => {
                       window.scrollTo(0, 0);
                     }
                   }}
+                  data-testid={`nav-link-${item.text.toLowerCase()}`}
                 >
                   {item.text}
                   {location.pathname === item.path && <span className="nav-active-indicator"></span>}

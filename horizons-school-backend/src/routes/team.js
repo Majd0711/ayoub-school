@@ -1,32 +1,22 @@
 const express = require('express');
 const router = express.Router();
-const upload = require('../utils/fileUpload');
-const { protect, authorize } = require('../middleware/auth');
-const {
-  getTeamMembers,
-  getTeamMember,
-  createTeamMember,
-  updateTeamMember,
-  deleteTeamMember
+const { 
+  getTeamMembers, 
+  getTeamMember, 
+  createTeamMember, 
+  updateTeamMember, 
+  deleteTeamMember 
 } = require('../controllers/teamController');
+const { protect } = require('../middleware/auth');
+const { uploadTeamMemberImage } = require('../utils/fileUpload');
 
-router.route('/')
-  .get(getTeamMembers)
-  .post(
-    protect,
-    authorize('super-admin'),
-    upload.single('image'),
-    createTeamMember
-  );
+// Public routes
+router.get('/', getTeamMembers);
+router.get('/:id', getTeamMember);
 
-router.route('/:id')
-  .get(getTeamMember)
-  .put(
-    protect,
-    authorize('super-admin'),
-    upload.single('image'),
-    updateTeamMember
-  )
-  .delete(protect, authorize('super-admin'), deleteTeamMember);
+// Protected routes
+router.post('/', protect, uploadTeamMemberImage, createTeamMember);
+router.put('/:id', protect, uploadTeamMemberImage, updateTeamMember);
+router.delete('/:id', protect, deleteTeamMember);
 
 module.exports = router; 

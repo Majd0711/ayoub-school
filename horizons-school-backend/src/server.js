@@ -1,8 +1,8 @@
 const express = require('express');
-const cors = require('cors');
 const dotenv = require('dotenv');
-const connectDB = require('./config/database');
+const cors = require('cors');
 const path = require('path');
+const connectDB = require('./config/database');
 
 // Load env vars
 dotenv.config();
@@ -10,132 +10,102 @@ dotenv.config();
 // Create Express app
 const app = express();
 
-// CORS configuration with full access
+// Body parser
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+// CORS Configuration
 const corsOptions = {
-  origin: ['http://localhost:3000', 'http://localhost:5000', process.env.FRONTEND_URL].filter(Boolean),
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
-  credentials: true
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: false
 };
 
 app.use(cors(corsOptions));
 
-// Body parser middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// Request logging middleware
+// Log all incoming requests for debugging
 app.use((req, res, next) => {
-  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.originalUrl}`);
+  if (req.body && Object.keys(req.body).length > 0) {
+    console.log('Request body:', JSON.stringify(req.body, null, 2));
+  }
   next();
 });
 
-// Serve static files from the public directory
+// Set static folder for public files
+app.use(express.static(path.join(__dirname, '../public')));
+
+// Set specific route for uploads to ensure they're accessible
 app.use('/uploads', express.static(path.join(__dirname, '../public/uploads')));
 
-// Serve admin panel static files
+// Define routes
+const authRoutes = require('./routes/auth');
+const programRoutes = require('./routes/programs');
+const newsRoutes = require('./routes/news');
+const teamRoutes = require('./routes/team');
+const contactRoutes = require('./routes/contacts');
+const settingsRoutes = require('./routes/settings');
+const statsRoutes = require('./routes/stats');
+const partnerRoutes = require('./routes/partners');
+
+// Mount routes
+app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/programs', programRoutes);
+app.use('/api/v1/news', newsRoutes);
+app.use('/api/v1/team', teamRoutes);
+app.use('/api/v1/contacts', contactRoutes);
+app.use('/api/v1/settings', settingsRoutes);
+app.use('/api/v1/stats', statsRoutes);
+app.use('/api/v1/partners', partnerRoutes);
+
+// Serve admin panel
 app.use('/admin', express.static(path.join(__dirname, '../public/admin')));
 
-// Import API routes
-const routes = {
-  auth: require('./routes/auth'),
-  programs: require('./routes/programs'),
-  news: require('./routes/news'),
-  contacts: require('./routes/contacts'),
-  settings: require('./routes/settings'),
-  team: require('./routes/team'),
-  stats: require('./routes/stats')
-};
-
-// Mount API routes
-Object.entries(routes).forEach(([name, router]) => {
-  if (router && router.stack) {
-    app.use(`/api/v1/${name}`, router);
-  }
+// Simple route for testing
+app.get('/', (req, res) => {
+  res.json({ message: 'API is running' });
 });
 
-// Admin panel routes
-app.get('/admin', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/admin/index.html'));
-});
-
+// Catch-all route for admin panel SPA
 app.get('/admin/*', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/admin/index.html'));
 });
 
-// API info route
-app.get('/', (req, res) => {
-  res.json({
-    message: 'Horizons School API is running',
-    endpoints: {
-      api: '/api/v1',
-      admin: '/admin'
-    }
-  });
-});
-
-// Error handling middleware
+// Error handler
 app.use((err, req, res, next) => {
-  console.error('Error:', err);
+  console.error('Server Error:', err);
   res.status(500).json({
     success: false,
-    message: 'Something went wrong!',
+    message: 'Server Error',
     error: process.env.NODE_ENV === 'development' ? err.message : 'Internal server error'
   });
 });
 
-// Handle 404 for API routes only
-app.use('/api', (req, res) => {
-  console.log(`404 - API route not found: ${req.method} ${req.url}`);
+// Handle 404
+app.use((req, res) => {
   res.status(404).json({
     success: false,
-    message: 'API route not found'
+    message: 'Route not found'
   });
 });
 
-// Handle 404 for all other routes - redirect to admin panel
-app.use((req, res) => {
-  if (req.url.startsWith('/admin')) {
-    res.sendFile(path.join(__dirname, '../public/admin/index.html'));
-  } else {
-    res.redirect('/admin');
-  }
-});
-
-// Start server
+// Connect to database and start server
 const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
   try {
-    // Connect to MongoDB first
     await connectDB();
     console.log('MongoDB connected successfully');
-
-    // Then start the server
+    
     app.listen(PORT, () => {
-      console.log('='.repeat(50));
-      console.log(`Server is running on port ${PORT}`);
-      console.log(`API URL: http://localhost:${PORT}/api/v1`);
-      console.log(`Admin URL: http://localhost:${PORT}/admin`);
-      console.log(`Time: ${new Date().toISOString()}`);
-      console.log('='.repeat(50));
+      console.log(`Server running on port ${PORT}`);
+      console.log(`Admin panel available at: http://localhost:${PORT}/admin`);
+      console.log(`API available at: http://localhost:${PORT}/api/v1`);
     });
-  } catch (error) {
-    console.error('Failed to start server:', error);
-    process.exit(1);
+  } catch (err) {
+    console.error('Failed to start server:', err);
   }
 };
-
-// Handle uncaught exceptions
-process.on('uncaughtException', (err) => {
-  console.error('Uncaught Exception:', err);
-  process.exit(1);
-});
-
-// Handle unhandled promise rejections
-process.on('unhandledRejection', (err) => {
-  console.error('Unhandled Rejection:', err);
-  process.exit(1);
-});
 
 startServer(); 

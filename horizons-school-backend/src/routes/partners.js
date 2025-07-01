@@ -1,32 +1,22 @@
 const express = require('express');
 const router = express.Router();
-const upload = require('../utils/fileUpload');
-const { protect, authorize } = require('../middleware/auth');
-const {
-  getPartners,
-  getPartner,
-  createPartner,
-  updatePartner,
-  deletePartner
+const { 
+  getPartners, 
+  getPartner, 
+  createPartner, 
+  updatePartner, 
+  deletePartner 
 } = require('../controllers/partnerController');
+const { protect } = require('../middleware/auth');
+const { uploadProgramImage } = require('../utils/fileUpload');
 
-router.route('/')
-  .get(getPartners)
-  .post(
-    protect,
-    authorize('admin', 'super-admin'),
-    upload.single('image'),
-    createPartner
-  );
+// Public routes
+router.get('/', getPartners);
+router.get('/:id', getPartner);
 
-router.route('/:id')
-  .get(getPartner)
-  .put(
-    protect,
-    authorize('admin', 'super-admin'),
-    upload.single('image'),
-    updatePartner
-  )
-  .delete(protect, authorize('admin', 'super-admin'), deletePartner);
+// Protected routes
+router.post('/', protect, uploadProgramImage, createPartner);
+router.put('/:id', protect, uploadProgramImage, updatePartner);
+router.delete('/:id', protect, deletePartner);
 
 module.exports = router; 

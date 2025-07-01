@@ -16,7 +16,7 @@ const programSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    required: [true, 'Please add a category'],
+    default: 'Management',
     enum: [
       'Management',
       'Finance',
@@ -28,17 +28,18 @@ const programSchema = new mongoose.Schema({
       'Licence',
       'Master',
       'Formation Continue',
-      'Langues'
+      'Langues',
+      'Business'
     ]
   },
   duration: {
     type: String,
-    required: [true, 'Please add program duration']
+    default: '1 an'
   },
   level: {
     type: String,
-    required: [true, 'Please add program level'],
-    enum: ['Technicien', 'Licence', 'Master', 'Formation Continue', 'Bac+2', 'Bac+3', 'Bac+4', 'Tous niveaux']
+    default: 'Tous niveaux',
+    enum: ['Technicien', 'Licence', 'Master', 'Formation Continue', 'Bac+2', 'Bac+3', 'Bac+4', 'Tous niveaux', 'Débutant', 'Intermédiaire', 'Avancé']
   },
   image: {
     type: String,

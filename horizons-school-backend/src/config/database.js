@@ -2,7 +2,10 @@ const mongoose = require('mongoose');
 
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect('mongodb://localhost:27017/horizons-school', {
+    // Use environment variable with fallback
+    const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/horizons-school';
+    
+    const conn = await mongoose.connect(mongoURI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });

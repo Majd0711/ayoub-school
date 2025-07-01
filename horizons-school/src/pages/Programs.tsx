@@ -1,521 +1,245 @@
-import React, { useEffect, useState } from 'react';
-import { Container, Row, Col, Accordion, Button } from 'react-bootstrap';
-import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import AOS from 'aos';
+import React from 'react';
+import { Container, Row, Col, Button } from 'react-bootstrap';
+import { FaBook, FaGraduationCap, FaBriefcase, FaAward, FaWhatsapp } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import ProgramCard from '../components/ProgramCard';
-import { programsApi, Program as ApiProgram } from '../utils/api';
-import { programs as staticPrograms } from '../data/programs';
+import { programs } from '../data/programs';
+import './Programs.css';
 
-// Map API program to the format expected by ProgramCard
-const mapApiProgramToCardProps = (program: ApiProgram) => {
-  return {
-    id: program._id,
-    title: program.title,
-    level: program.level,
-    duration: program.duration,
-    conditions: program.features || ["Contactez-nous pour plus d'informations"],
-    imageUrl: program.image ? `/uploads/programs/${program.image}` : '/images/placeholder.svg',
-    category: program.category.toLowerCase()
-  };
-};
+export interface Program {
+  _id: string;
+  title: string;
+  level: string;
+  duration: string;
+  features: string[];
+  category: string;
+}
 
 const Programs: React.FC = () => {
-  const [programs, setPrograms] = useState<ReturnType<typeof mapApiProgramToCardProps>[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    AOS.refresh();
-    
-    // Fetch programs from API
-    const fetchPrograms = async () => {
-      try {
-        setLoading(true);
-        const apiPrograms = await programsApi.getAll();
-        
-        if (apiPrograms && apiPrograms.length > 0) {
-          // Map API programs to the format expected by ProgramCard
-          const mappedPrograms = apiPrograms
-            .filter(program => program.isActive)
-            .map(mapApiProgramToCardProps);
-          setPrograms(mappedPrograms);
-        } else {
-          // Fallback to static data if API returns no programs
-          setPrograms(staticPrograms);
-        }
-      } catch (err) {
-        console.error('Error fetching programs:', err);
-        setError('Failed to load programs. Using static data instead.');
-        setPrograms(staticPrograms);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const programsByCategory = {
+    technical: programs.filter(p => p.category === 'technical'),
+    license: programs.filter(p => p.category === 'license'),
+    master: programs.filter(p => p.category === 'master'),
+    continuous: programs.filter(p => p.category === 'continuous'),
+    languages: programs.filter(p => p.category === 'languages')
+  };
 
-    fetchPrograms();
-  }, []);
+  const scrollToCategory = (categoryId: string) => {
+    const element = document.getElementById(categoryId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
-  // Group programs by category
-  const technicienPrograms = programs.filter(program => program.category === 'technicien');
-  const licencePrograms = programs.filter(program => program.category === 'licence');
-  const masterPrograms = programs.filter(program => program.category === 'master');
-  const formationPrograms = programs.filter(program => program.category === 'formation');
-  const languesPrograms = programs.filter(program => program.category === 'langues');
+  const handleWhatsAppClick = () => {
+    const phoneNumber = '+212661754108'; // Replace with your actual WhatsApp number
+    const message = encodeURIComponent('Bonjour, je souhaite m\'inscrire à une formation.');
+    window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+  };
 
   return (
-    <>
-      {/* Programs Hero */}
-      <motion.section 
-        className="programs-hero text-white py-5 mb-5 position-relative"
+    <div className="programs-page">
+      {/* Hero Section with Marrakech Background */}
+      <section className="hero-section" 
         style={{
-          backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(/images/programs-hero.jpg)',
+          backgroundImage: `linear-gradient(rgba(0, 26, 51, 0.75), rgba(0, 53, 102, 0.7)), url('/images/arrakesh.jpg')`,
           backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'fixed'
+          backgroundPosition: 'center'
         }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6 }}
-      >
-        <Container className="py-5 position-relative" style={{ zIndex: 1 }}>
-          <Row className="align-items-center min-vh-50">
-            <Col lg={8} className="mx-auto text-center">
-              <motion.div
-                initial={{ y: 50, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.2, duration: 0.8 }}
-              >
-                <h1 className="display-4 fw-bold mb-4">
-                  Nos Programmes de Formation
-                </h1>
-                <p className="lead fs-4">
-                  Découvrez nos programmes conçus pour développer vos compétences et vous préparer 
-                  à une carrière réussie dans le monde professionnel.
-                </p>
-              </motion.div>
-            </Col>
-          </Row>
-        </Container>
-      </motion.section>
-
-      {/* Program Structure Section */}
-      <motion.section 
-        className="py-5 bg-white"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
       >
         <Container>
+          <div className="text-container">
+            <h1>Nos Programmes de Formation</h1>
+            <p>Découvrez nos programmes conçus pour développer vos compétences et vous préparer à une carrière réussie dans le monde professionnel.</p>
+          </div>
+        </Container>
+      </section>
+
+      {/* Structure Section */}
+      <section className="structure-section">
+        <Container>
           <div className="text-center mb-5">
-            <span className="badge bg-primary bg-opacity-10 text-primary mb-3 px-4 py-2 rounded-pill">Notre Approche</span>
-            <h2 className="display-5 fw-bold mb-3">Structure des Programmes de Formation</h2>
-            <p className="lead text-muted mx-auto" style={{ maxWidth: '700px' }}>
-              Une architecture pédagogique conçue pour former les leaders de demain à travers un apprentissage progressif et professionnalisant
+            <span className="section-badge">Notre Approche</span>
+            <h2 className="section-title">Structure des Programmes de Formation</h2>
+            <p className="section-subtitle">
+              Une architecture pédagogique conçue pour former les leaders de demain à travers<br />
+              un apprentissage progressif et professionnalisant
             </p>
           </div>
 
-          {/* Program Structure Timeline */}
-          <div className="position-relative py-4">
-            {/* Timeline Line */}
-            <div className="timeline-line position-absolute top-0 start-50 translate-middle-x h-100 d-none d-md-block">
-              <div className="bg-primary" style={{ width: '2px', height: '100%', margin: '0 auto' }}></div>
-            </div>
-            
-            {/* Timeline Items */}
-            <div className="row g-4 position-relative">
-              {/* Cycle Préparatoire */}
-              <div className="col-md-6 mb-4 mb-md-0">
-                <div className="card h-100 border-0 shadow-sm hover-lift">
-                  <div className="card-body p-4">
-                    <div className="d-flex align-items-center mb-3">
-                      <div className="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3" style={{ width: '60px', height: '60px' }}>
-                        <i className="bx bx-layer text-primary fs-3"></i>
-                      </div>
-                      <h3 className="h4 mb-0">Cycle Préparatoire</h3>
-                    </div>
-                    <p className="text-muted mb-0">
-                      Acquisition des fondamentaux théoriques et méthodologiques nécessaires à la spécialisation
-                    </p>
-                    <ul className="list-unstyled mt-3 mb-0">
-                      <li className="mb-2"><i className="bx bx-check-circle text-primary me-2"></i> Tronc commun renforcé</li>
-                      <li className="mb-2"><i className="bx bx-check-circle text-primary me-2"></i> Méthodologie de travail universitaire</li>
-                      <li className="mb-2"><i className="bx bx-check-circle text-primary me-2"></i> Projets transversaux</li>
-                    </ul>
-                  </div>
+          <Row className="structure-items">
+            <Col md={6} lg={3}>
+              <div className="structure-item">
+                <div className="icon-box">
+                  <FaBook />
                 </div>
-              </div>
-
-              {/* Cycle d'Approfondissement */}
-              <div className="col-md-6 mt-md-5">
-                <div className="card h-100 border-0 shadow-sm hover-lift">
-                  <div className="card-body p-4">
-                    <div className="d-flex align-items-center mb-3">
-                      <div className="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3" style={{ width: '60px', height: '60px' }}>
-                        <i className="bx bx-target-lock text-primary fs-3"></i>
-                      </div>
-                      <h3 className="h4 mb-0">Cycle d'Approfondissement</h3>
-                    </div>
-                    <p className="text-muted mb-0">
-                      Spécialisation progressive avec des enseignements avancés et des parcours personnalisables
-                    </p>
-                    <ul className="list-unstyled mt-3 mb-0">
-                      <li className="mb-2"><i className="bx bx-check-circle text-primary me-2"></i> Parcours de spécialisation</li>
-                      <li className="mb-2"><i className="bx bx-check-circle text-primary me-2"></i> Projets professionnels</li>
-                      <li className="mb-2"><i className="bx bx-check-circle text-primary me-2"></i> Préparation à l'insertion professionnelle</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
-              {/* Stage & Expérience Professionnelle */}
-              <div className="col-md-6 mb-4 mb-md-0">
-                <div className="card h-100 border-0 shadow-sm hover-lift">
-                  <div className="card-body p-4">
-                    <div className="d-flex align-items-center mb-3">
-                      <div className="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3" style={{ width: '60px', height: '60px' }}>
-                        <i className="bx bx-briefcase-alt-2 text-primary fs-3"></i>
-                      </div>
-                      <h3 className="h4 mb-0">Stage & Expérience Pro</h3>
-                    </div>
-                    <p className="text-muted mb-0">
-                      Mise en pratique des acquis à travers des stages en entreprise et des projets concrets
-                    </p>
-                    <ul className="list-unstyled mt-3 mb-0">
-                      <li className="mb-2"><i className="bx bx-check-circle text-primary me-2"></i> Stages obligatoires</li>
-                      <li className="mb-2"><i className="bx bx-check-circle text-primary me-2"></i> Projets en partenariat avec des entreprises</li>
-                      <li className="mb-2"><i className="bx bx-check-circle text-primary me-2"></i> Ateliers professionnels</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
-              {/* Projet de Fin d'Études */}
-              <div className="col-md-6">
-                <div className="card h-100 border-0 shadow-sm hover-lift">
-                  <div className="card-body p-4">
-                    <div className="d-flex align-items-center mb-3">
-                      <div className="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3" style={{ width: '60px', height: '60px' }}>
-                        <i className="bx bx-trophy text-primary fs-3"></i>
-                      </div>
-                      <h3 className="h4 mb-0">Projet de Fin d'Études</h3>
-                    </div>
-                    <p className="text-muted mb-0">
-                      Réalisation d'un projet d'envergure qui synthétise l'ensemble des compétences acquises
-                    </p>
-                    <ul className="list-unstyled mt-3 mb-0">
-                      <li className="mb-2"><i className="bx bx-check-circle text-primary me-2"></i> Travail de recherche appliquée</li>
-                      <li className="mb-2"><i className="bx bx-check-circle text-primary me-2"></i> Défense devant un jury professionnel</li>
-                      <li className="mb-2"><i className="bx bx-check-circle text-primary me-2"></i> Valorisation du projet professionnel</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Key Features */}
-          <Row className="mt-5 g-4">
-            <Col md={4}>
-              <div className="text-center p-4 bg-light rounded-3 h-100">
-                <div className="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style={{ width: '60px', height: '60px' }}>
-                  <i className="bx bx-book-open text-primary fs-3"></i>
-                </div>
-                <h3 className="h5 mb-3">Pédagogie Active</h3>
-                <p className="text-muted mb-0">
-                  Méthodes d'apprentissage innovantes centrées sur l'étudiant et ses projets
-                </p>
+                <h4>Cycle Préparatoire</h4>
+                <p>Acquisition des fondamentaux théoriques et méthodologiques nécessaires à la spécialisation</p>
+                <ul>
+                  <li>Tronc commun renforcé</li>
+                  <li>Méthodologie de travail universitaire</li>
+                  <li>Projets transversaux</li>
+                </ul>
               </div>
             </Col>
-            <Col md={4}>
-              <div className="text-center p-4 bg-light rounded-3 h-100">
-                <div className="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style={{ width: '60px', height: '60px' }}>
-                  <i className="bx bx-briefcase-alt-2 text-primary fs-3"></i>
+            <Col md={6} lg={3}>
+              <div className="structure-item">
+                <div className="icon-box">
+                  <FaGraduationCap />
                 </div>
-                <h3 className="h5 mb-3">Expertise Professionnelle</h3>
-                <p className="text-muted mb-0">
-                  Interventions d'experts et professionnels en activité dans chaque domaine
-                </p>
+                <h4>Cycle d'Approfondissement</h4>
+                <p>Spécialisation progressive avec des enseignements avancés et des parcours personnalisables</p>
+                <ul>
+                  <li>Parcours de spécialisation</li>
+                  <li>Projets professionnels</li>
+                  <li>Préparation à l'insertion professionnelle</li>
+                </ul>
               </div>
             </Col>
-            <Col md={4}>
-              <div className="text-center p-4 bg-white rounded-3 shadow-sm h-100">
-                <div className="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style={{ width: '80px', height: '80px' }}>
-                  <i className="bx bx-group text-primary" style={{ fontSize: '2rem' }}></i>
+            <Col md={6} lg={3}>
+              <div className="structure-item">
+                <div className="icon-box">
+                  <FaBriefcase />
                 </div>
-                <h3 className="h5 mb-3">Accompagnement Personnalisé</h3>
-                <p className="text-muted mb-0">
-                  Un suivi individuel pour chaque étudiant tout au long de son parcours.
-                </p>
+                <h4>Stage & Expérience Pro</h4>
+                <p>Mise en pratique des acquis à travers des stages en entreprise et des projets concrets</p>
+                <ul>
+                  <li>Stages obligatoires</li>
+                  <li>Projets en partenariat avec des entreprises</li>
+                  <li>Ateliers professionnels</li>
+                </ul>
+              </div>
+            </Col>
+            <Col md={6} lg={3}>
+              <div className="structure-item">
+                <div className="icon-box">
+                  <FaAward />
+                </div>
+                <h4>Projet de Fin d'Études</h4>
+                <p>Réalisation d'un projet d'envergure qui synthétise l'ensemble des compétences acquises</p>
+                <ul>
+                  <li>Travail de recherche appliquée</li>
+                  <li>Défense devant un jury professionnel</li>
+                  <li>Valorisation du projet professionnel</li>
+                </ul>
               </div>
             </Col>
           </Row>
-        </Container>
-      </motion.section>
 
-      {/* Quick Navigation */}
-      <motion.section 
-        className="py-3 bg-light"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-      >
-        <Container>
-          <div className="d-flex flex-wrap justify-content-center gap-2">
-            <a href="#technicien" className="btn btn-outline-primary btn-sm rounded-pill px-3">
+          {/* Quick Navigation */}
+          <div className="quick-nav text-center">
+            <Button variant="outline-primary" onClick={() => scrollToCategory('technical')}>
               Formations Techniques
-            </a>
-            <a href="#licence" className="btn btn-outline-primary btn-sm rounded-pill px-3">
+            </Button>
+            <Button variant="outline-primary" onClick={() => scrollToCategory('license')}>
               Licence Pro
-            </a>
-            <a href="#master" className="btn btn-outline-primary btn-sm rounded-pill px-3">
+            </Button>
+            <Button variant="outline-primary" onClick={() => scrollToCategory('master')}>
               Master Professionnel
-            </a>
-            <a href="#formation" className="btn btn-outline-primary btn-sm rounded-pill px-3">
+            </Button>
+            <Button variant="outline-primary" onClick={() => scrollToCategory('continuous')}>
               Formations Continues
-            </a>
-            <a href="#langues" className="btn btn-outline-primary btn-sm rounded-pill px-3">
+            </Button>
+            <Button variant="outline-primary" onClick={() => scrollToCategory('languages')}>
               Formations en Langues
-            </a>
+            </Button>
           </div>
         </Container>
-      </motion.section>
+      </section>
 
-      {/* Programs Grid */}
-      <motion.section 
-        className="py-5 programs-grid"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.4 }}
-      >
+      {/* Programs Sections */}
+      <section className="programs-section">
         <Container>
-          {loading ? (
-            <div className="text-center py-5">
-              <div className="spinner-border text-primary" role="status">
-                <span className="visually-hidden">Loading...</span>
-              </div>
-              <p className="mt-3">Chargement des programmes...</p>
+          {/* Technical Programs */}
+          {programsByCategory.technical.length > 0 && (
+            <div id="technical" className="program-category">
+              <h3>Formations Techniques</h3>
+              <Row>
+                {programsByCategory.technical.map((program) => (
+                  <Col key={program._id} md={6} lg={4}>
+                    <ProgramCard program={program} />
+                  </Col>
+                ))}
+              </Row>
             </div>
-          ) : error ? (
-            <div className="alert alert-warning">
-              {error}
+          )}
+
+          {/* License Programs */}
+          {programsByCategory.license.length > 0 && (
+            <div id="license" className="program-category">
+              <h3>Licence Professionnelle</h3>
+              <Row>
+                {programsByCategory.license.map((program) => (
+                  <Col key={program._id} md={6} lg={4}>
+                    <ProgramCard program={program} />
+                  </Col>
+                ))}
+              </Row>
             </div>
-          ) : (
-            <>
-              {/* Formations Techniques Section */}
-              {technicienPrograms.length > 0 && (
-                <div id="technicien" className="mb-5">
-                  <motion.h2 
-                    className="text-center mb-4"
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    Formations Techniques
-                  </motion.h2>
-                  <Row className="g-4">
-                    {technicienPrograms.map((program, index) => (
-                      <Col key={program.id} lg={4} md={6}>
-                        <motion.div
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: index * 0.15 }}
-                        >
-                          <ProgramCard {...program} />
-                        </motion.div>
-                      </Col>
-                    ))}
-                  </Row>
-                </div>
-              )}
+          )}
 
-              {/* Licence Professionnelle Section */}
-              {licencePrograms.length > 0 && (
-                <div id="licence" className="my-5 pt-5">
-                  <motion.h2 
-                    className="text-center mb-4"
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    Licence Professionnelle
-                  </motion.h2>
-                  <Row className="g-4">
-                    {licencePrograms.map((program, index) => (
-                      <Col key={program.id} lg={4} md={6}>
-                        <motion.div
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: index * 0.15 }}
-                        >
-                          <ProgramCard {...program} />
-                        </motion.div>
-                      </Col>
-                    ))}
-                  </Row>
-                </div>
-              )}
+          {/* Master Programs */}
+          {programsByCategory.master.length > 0 && (
+            <div id="master" className="program-category">
+              <h3>Master Professionnel</h3>
+              <Row>
+                {programsByCategory.master.map((program) => (
+                  <Col key={program._id} md={6} lg={4}>
+                    <ProgramCard program={program} />
+                  </Col>
+                ))}
+              </Row>
+            </div>
+          )}
 
-              {/* Master Professionnel Section */}
-              {masterPrograms.length > 0 && (
-                <div id="master" className="my-5 pt-5">
-                  <motion.h2 
-                    className="text-center mb-4"
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    Master Professionnel
-                  </motion.h2>
-                  <Row className="g-4">
-                    {masterPrograms.map((program, index) => (
-                      <Col key={program.id} lg={4} md={6}>
-                        <motion.div
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: index * 0.15 }}
-                        >
-                          <ProgramCard {...program} />
-                        </motion.div>
-                      </Col>
-                    ))}
-                  </Row>
-                </div>
-              )}
+          {/* Continuous Education Programs */}
+          {programsByCategory.continuous.length > 0 && (
+            <div id="continuous" className="program-category">
+              <h3>Formations Continues</h3>
+              <Row>
+                {programsByCategory.continuous.map((program) => (
+                  <Col key={program._id} md={6} lg={4}>
+                    <ProgramCard program={program} />
+                  </Col>
+                ))}
+              </Row>
+            </div>
+          )}
 
-              {/* Formations Continues Section */}
-              {formationPrograms.length > 0 && (
-                <div id="formation" className="my-5 pt-5">
-                  <motion.h2 
-                    className="text-center mb-4"
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    Formations Continues
-                  </motion.h2>
-                  <Row className="g-4">
-                    {formationPrograms.map((program, index) => (
-                      <Col key={program.id} lg={4} md={6}>
-                        <motion.div
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: index * 0.15 }}
-                        >
-                          <ProgramCard {...program} />
-                        </motion.div>
-                      </Col>
-                    ))}
-                  </Row>
-                </div>
-              )}
-
-              {/* Formations en Langues Section */}
-              {languesPrograms.length > 0 && (
-                <div id="langues" className="my-5 pt-5">
-                  <motion.h2 
-                    className="text-center mb-4"
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    Formations en Langues
-                  </motion.h2>
-                  <Row className="g-4">
-                    {languesPrograms.map((program, index) => (
-                      <Col key={program.id} lg={4} md={6}>
-                        <motion.div
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: index * 0.15 }}
-                        >
-                          <ProgramCard {...program} />
-                        </motion.div>
-                      </Col>
-                    ))}
-                  </Row>
-                </div>
-              )}
-            </>
+          {/* Language Programs */}
+          {programsByCategory.languages.length > 0 && (
+            <div id="languages" className="program-category">
+              <h3>Formations en Langues</h3>
+              <Row>
+                {programsByCategory.languages.map((program) => (
+                  <Col key={program._id} md={6} lg={4}>
+                    <ProgramCard program={program} />
+                  </Col>
+                ))}
+              </Row>
+            </div>
           )}
         </Container>
-      </motion.section>
+      </section>
 
-      {/* Call to Action */}
-      <motion.section 
-        className="py-5 bg-light"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-      >
-        <Container>
-          <Row>
-            <Col lg={8} className="mx-auto text-center">
-              <h2 className="h3 mb-4">Prêt à commencer votre formation ?</h2>
-              <p className="lead mb-4">
-                Les inscriptions sont ouvertes pour l'année académique 2025/2026.
-                Places limitées !
-              </p>
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Link 
-                  to="/contact" 
-                  className="btn btn-primary btn-lg rounded-pill px-5 text-decoration-none"
-                >
-                  Contactez-nous
-                </Link>
-              </motion.div>
-            </Col>
-          </Row>
+      {/* CTA Section */}
+      <section className="cta-section">
+        <Container className="text-center">
+          <h2>Prêt à commencer votre formation ?</h2>
+          <p>Les inscriptions sont ouvertes. Places limitées !</p>
+          <a 
+            href={`https://wa.me/+212661754108?text=${encodeURIComponent('Bonjour, je souhaite m\'inscrire à une formation.')}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="cta-button"
+          >
+            S'inscrire Maintenant
+          </a>
         </Container>
-      </motion.section>
-
-      {/* Additional Info */}
-      <motion.section 
-        className="py-5"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-      >
-        <Container>
-          <Row>
-            <Col lg={8} className="mx-auto">
-              <Accordion>
-                <Accordion.Item eventKey="0">
-                  <Accordion.Header>
-                    Conditions d'admission
-                  </Accordion.Header>
-                  <Accordion.Body>
-                    <ul className="list-unstyled mb-0">
-                      <li className="mb-2">✓ Baccalauréat ou niveau équivalent</li>
-                      <li className="mb-2">✓ Dossier de candidature complet</li>
-                      <li className="mb-2">✓ Entretien de motivation</li>
-                      <li className="mb-2">✓ Test d'admission selon le programme choisi</li>
-                    </ul>
-                  </Accordion.Body>
-                </Accordion.Item>
-                <Accordion.Item eventKey="1">
-                  <Accordion.Header>
-                    Pourquoi choisir notre école ?
-                  </Accordion.Header>
-                  <Accordion.Body>
-                    <ul className="list-unstyled mb-0">
-                      <li className="mb-2">✓ Formation professionnelle de qualité</li>
-                      <li className="mb-2">✓ Corps enseignant expérimenté</li>
-                      <li className="mb-2">✓ Stage en entreprise garanti</li>
-                      <li className="mb-2">✓ Accompagnement personnalisé</li>
-                    </ul>
-                  </Accordion.Body>
-                </Accordion.Item>
-              </Accordion>
-            </Col>
-          </Row>
-        </Container>
-      </motion.section>
-    </>
+      </section>
+    </div>
   );
 };
 

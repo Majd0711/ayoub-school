@@ -1,10 +1,15 @@
 const mongoose = require('mongoose');
+const slugify = require('slugify');
 
 const teamMemberSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, 'Please add a name'],
     trim: true
+  },
+  slug: {
+    type: String,
+    unique: true
   },
   position: {
     type: String,
@@ -18,10 +23,23 @@ const teamMemberSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please add a bio']
   },
+  education: [{
+    degree: String,
+    institution: String,
+    year: String
+  }],
+  experience: [{
+    title: String,
+    company: String,
+    period: String,
+    description: String
+  }],
+  specializations: [String],
   socialLinks: {
     linkedin: String,
     twitter: String,
-    email: String
+    email: String,
+    website: String
   },
   order: {
     type: Number,
@@ -41,6 +59,10 @@ const teamMemberSchema = new mongoose.Schema({
     type: Boolean,
     default: true
   },
+  isFeatured: {
+    type: Boolean,
+    default: false
+  },
   createdBy: {
     type: mongoose.Schema.ObjectId,
     ref: 'Admin',
@@ -48,6 +70,17 @@ const teamMemberSchema = new mongoose.Schema({
   }
 }, {
   timestamps: true
+});
+
+// Create slug from name
+teamMemberSchema.pre('save', function(next) {
+  if (!this.isModified('name')) {
+    next();
+    return;
+  }
+  
+  this.slug = slugify(this.name, { lower: true });
+  next();
 });
 
 const TeamMember = mongoose.model('TeamMember', teamMemberSchema);

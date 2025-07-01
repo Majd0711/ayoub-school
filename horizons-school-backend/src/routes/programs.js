@@ -1,39 +1,22 @@
 const express = require('express');
 const router = express.Router();
-const upload = require('../utils/fileUpload');
-const { protect, authorize } = require('../middleware/auth');
-const { validateProgram } = require('../middleware/validate');
-const {
-  getPrograms,
-  getProgram,
-  createProgram,
-  updateProgram,
-  deleteProgram,
-  getFeaturedPrograms
+const { 
+  getPrograms, 
+  getProgram, 
+  createProgram, 
+  updateProgram, 
+  deleteProgram 
 } = require('../controllers/programController');
+const { protect } = require('../middleware/auth');
+const { uploadProgramImage } = require('../utils/fileUpload');
 
-// Featured programs route should come before /:id route to avoid conflict
-router.get('/featured', getFeaturedPrograms);
+// Public routes
+router.get('/', getPrograms);
+router.get('/:id', getProgram);
 
-router.route('/')
-  .get(getPrograms)
-  .post(
-    protect, 
-    authorize('admin', 'super-admin'), 
-    upload.single('image'),
-    validateProgram,
-    createProgram
-  );
-
-router.route('/:id')
-  .get(getProgram)
-  .put(
-    protect, 
-    authorize('admin', 'super-admin'), 
-    upload.single('image'),
-    validateProgram,
-    updateProgram
-  )
-  .delete(protect, authorize('admin', 'super-admin'), deleteProgram);
+// Protected routes
+router.post('/', protect, uploadProgramImage, createProgram);
+router.put('/:id', protect, uploadProgramImage, updateProgram);
+router.delete('/:id', protect, deleteProgram);
 
 module.exports = router; 

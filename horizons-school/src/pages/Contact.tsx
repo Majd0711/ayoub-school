@@ -3,6 +3,7 @@ import { Container, Row, Col, Form, Button, Card, Alert } from 'react-bootstrap'
 import 'boxicons/css/boxicons.min.css';
 import AOS from 'aos';
 import emailjs from '@emailjs/browser';
+import { sendContactForm } from '../utils/api';
 
 const Contact: React.FC = () => {
   const [formState, setFormState] = useState({
@@ -15,11 +16,12 @@ const Contact: React.FC = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [alertVariant, setAlertVariant] = useState<'success' | 'danger'>('success');
   const [alertMessage, setAlertMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     AOS.refresh();
     // Initialize EmailJS with your public key
-    emailjs.init("YOUR_PUBLIC_KEY"); // You'll need to replace this with your actual public key
+    emailjs.init("yDXm3wZrRmZT-jR0r"); // Your EmailJS public key
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -32,8 +34,10 @@ const Contact: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
     
     try {
+      // First try to send via EmailJS
       const templateParams = {
         from_name: formState.name,
         from_email: formState.email,
@@ -44,10 +48,24 @@ const Contact: React.FC = () => {
       };
 
       await emailjs.send(
-        'YOUR_SERVICE_ID', // Replace with your EmailJS service ID
-        'YOUR_TEMPLATE_ID', // Replace with your EmailJS template ID
+        'service_qnq0oi9', // Your EmailJS service ID
+        'template_hc2b5gs', // Your EmailJS template ID
         templateParams
       );
+
+      // Also save to backend database
+      try {
+        await sendContactForm({
+          name: formState.name,
+          email: formState.email,
+          phone: formState.phone,
+          subject: formState.subject,
+          message: formState.message
+        });
+      } catch (backendError) {
+        console.error('Error saving to backend:', backendError);
+        // Continue even if backend save fails
+      }
 
       setAlertVariant('success');
       setAlertMessage('Votre message a été envoyé avec succès! Nous vous contacterons très bientôt.');
@@ -66,12 +84,14 @@ const Contact: React.FC = () => {
       setAlertVariant('danger');
       setAlertMessage('Une erreur est survenue lors de l\'envoi du message. Veuillez réessayer plus tard.');
       setShowAlert(true);
+    } finally {
+      setIsSubmitting(false);
+      
+      // Hide alert after 5 seconds
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 5000);
     }
-
-    // Hide alert after 5 seconds
-    setTimeout(() => {
-      setShowAlert(false);
-    }, 5000);
   };
 
   return (
@@ -230,8 +250,13 @@ const Contact: React.FC = () => {
                         required 
                       />
                     </Form.Group>
-                    <Button type="submit" variant="primary" size="lg">
-                      Envoyer le Message
+                    <Button 
+                      type="submit" 
+                      variant="primary" 
+                      size="lg" 
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? 'Envoi en cours...' : 'Envoyer le Message'}
                     </Button>
                   </Form>
                 </Card.Body>

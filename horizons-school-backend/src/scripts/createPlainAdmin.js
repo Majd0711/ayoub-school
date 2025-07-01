@@ -1,60 +1,59 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-require('dotenv').config();
+const dotenv = require('dotenv');
+const Admin = require('../models/Admin');
 
-// MongoDB connection string
-const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/horizons-school';
+// Load env vars
+dotenv.config({ path: './.env' });
 
 // Connect to MongoDB
-mongoose.connect(mongoURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(async () => {
-  console.log('MongoDB Connected:', mongoURI);
-  await createPlainAdmin();
-  process.exit(0);
-})
-.catch(err => {
-  console.error('MongoDB Connection Error:', err);
-  process.exit(1);
-});
+mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/horizons-school')
+  .then(() => console.log('MongoDB Connected'))
+  .catch(err => console.error('MongoDB Connection Error:', err));
 
-// Create a plain admin directly in the database
-const createPlainAdmin = async () => {
+// Admin data
+const adminData = {
+  username: 'admin',
+  name: 'Admin User',
+  email: 'admin@horizons-school.com',
+  password: 'Admin@123',
+  role: 'super-admin'
+};
+
+// Create admin user
+const createAdmin = async () => {
   try {
-    // Hash the password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash('Admin@123', salt);
+    // Check if admin already exists
+    const existingAdmin = await Admin.findOne({ email: adminData.email });
     
-    // Drop the admins collection to start fresh
-    try {
-      await mongoose.connection.db.collection('admins').drop();
-      console.log('Dropped existing admins collection');
-    } catch (error) {
-      console.log('No admins collection to drop or error dropping:', error.message);
+    if (existingAdmin) {
+      console.log('Admin user already exists');
+      process.exit(0);
     }
     
-    // Insert admin with hashed password
-    const result = await mongoose.connection.db.collection('admins').insertOne({
-      username: 'admin',
-      email: 'admin@horizons-school.ma',
+    // Hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(adminData.password, salt);
+    
+    // Create admin
+    const admin = await Admin.create({
+      username: adminData.username,
+      email: adminData.email,
       password: hashedPassword,
-      role: 'super-admin',
-      createdAt: new Date(),
-      updatedAt: new Date()
+      role: adminData.role
     });
-
-    console.log('Admin created successfully with ID:', result.insertedId);
-    console.log({
-      username: 'admin',
-      email: 'admin@horizons-school.ma',
-      password: 'Admin@123', // Just for display
-      passwordHash: hashedPassword,
-      role: 'super-admin'
-    });
+    
+    console.log('Admin user created successfully:');
+    console.log(`Username: ${admin.username}`);
+    console.log(`Email: ${admin.email}`);
+    console.log(`Password: ${adminData.password} (unhashed)`);
+    console.log(`Role: ${admin.role}`);
+    
+    process.exit(0);
   } catch (error) {
-    console.error('Error creating admin:', error);
+    console.error('Error creating admin user:', error);
     process.exit(1);
   }
-}; 
+};
+
+createAdmin(); 

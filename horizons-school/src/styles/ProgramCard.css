@@ -1,34 +1,123 @@
 /* Program Card Styles */
 .program-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
   transition: all 0.3s ease;
-  border-radius: 0.5rem;
-  overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.1);
   height: 100%;
   display: flex;
   flex-direction: column;
-  min-height: 400px; /* Set a minimum height for all cards */
 }
 
-.program-card .card-body {
-  flex: 1;
+.program-card:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.program-header {
   display: flex;
-  flex-direction: column;
-  height: 100%;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
 }
 
-.program-card .card-body > *:last-child {
-  margin-top: auto;
+.level-badge {
+  font-size: 0.75rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 20px;
+  background-color: #007bff !important;
+  font-weight: 500;
+}
+
+.duration {
+  display: flex;
+  align-items: center;
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.duration-icon {
+  margin-right: 0.4rem;
+  color: #007bff;
+}
+
+.program-title {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.program-details {
+  flex-grow: 1;
+}
+
+.conditions h4 {
+  font-size: 0.95rem;
+  color: #333;
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+}
+
+.conditions-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.conditions-list li {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 0.6rem;
+  color: #666;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.check-icon {
+  color: #28a745;
+  margin-right: 0.6rem;
+  margin-top: 0.2rem;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+.program-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.25rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #eee;
+}
+
+.places-badge {
+  font-size: 0.75rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 20px;
+  background-color: #dc3545 !important;
+  font-weight: 500;
+}
+
+.btn-link {
+  color: #007bff;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0;
+}
+
+.btn-link:hover {
+  color: #0056b3;
+  text-decoration: none;
 }
 
 /* Ensure the card content takes full height */
 .program-card .card-body > div:not(:last-child) {
   flex: 1;
-}
-
-.program-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
 }
 
 .program-card .card-img {

@@ -109,33 +109,71 @@ exports.getProgram = async (req, res) => {
   }
 };
 
-// @desc    Create program
+// @desc    Create new program
 // @route   POST /api/v1/programs
 // @access  Private
 exports.createProgram = async (req, res) => {
   try {
-    req.body.createdBy = req.admin.id;
+    console.log('Creating program with data:', req.body);
+    console.log('File uploaded:', req.file);
+    console.log('User:', req.user);
     
-    // Handle image upload
-    if (req.file) {
-      req.body.image = req.file.filename;
+    // Check for required fields
+    if (!req.body.title || !req.body.description) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide title and description'
+      });
+    }
+
+    // Set default category if not provided
+    if (!req.body.category) {
+      req.body.category = 'Management';
+    }
+
+    // Set default level if not provided
+    if (!req.body.level) {
+      req.body.level = 'Tous niveaux';
+    }
+
+    // Set default duration if not provided
+    if (!req.body.duration) {
+      req.body.duration = '1 an';
     }
     
-    // Handle features as array
+    // Set createdBy to the authenticated user's ID
+    if (req.user && req.user._id) {
+      req.body.createdBy = req.user._id;
+    } else {
+      // For testing purposes, use a default ID if no user is authenticated
+      req.body.createdBy = '60d0fe4f5311236168a109ca'; // Replace with an actual admin ID from your database
+    }
+    
+    // Handle features array
     if (req.body.features && typeof req.body.features === 'string') {
       req.body.features = req.body.features.split(',').map(feature => feature.trim());
     }
     
+    // Handle boolean values
+    req.body.isActive = req.body.isActive === 'true' || req.body.isActive === true;
+    req.body.isFeatured = req.body.isFeatured === 'true' || req.body.isFeatured === true;
+    
+    // Add image if uploaded
+    if (req.file) {
+      req.body.image = req.file.filename;
+    }
+    
     const program = await Program.create(req.body);
-
+    
     res.status(201).json({
       success: true,
       data: program
     });
   } catch (error) {
+    console.error('Error creating program:', error);
     res.status(500).json({
       success: false,
-      message: 'Server Error',
+      message: 'Server Error: ' + error.message,
       error: error.message
     });
   }
@@ -146,43 +184,59 @@ exports.createProgram = async (req, res) => {
 // @access  Private
 exports.updateProgram = async (req, res) => {
   try {
+    console.log('Updating program with ID:', req.params.id);
+    console.log('Update data:', req.body);
+    console.log('File uploaded:', req.file);
+    console.log('User:', req.user);
+    
     let program = await Program.findById(req.params.id);
-
+    
     if (!program) {
       return res.status(404).json({
         success: false,
         message: 'Program not found'
       });
     }
-
-    // Make sure user is program owner or super-admin
-    if (program.createdBy.toString() !== req.admin.id && req.admin.role !== 'super-admin') {
+    
+    // Check ownership if not super-admin
+    if (req.user && req.user.role !== 'super-admin' && 
+        program.createdBy && program.createdBy.toString() !== req.user._id.toString()) {
       return res.status(401).json({
         success: false,
         message: 'Not authorized to update this program'
       });
     }
-
-    // Handle image upload
-    if (req.file) {
-      req.body.image = req.file.filename;
-    }
-
-    // Handle features as array
+    
+    // Handle features array
     if (req.body.features && typeof req.body.features === 'string') {
       req.body.features = req.body.features.split(',').map(feature => feature.trim());
     }
-
+    
+    // Handle boolean values
+    if (req.body.isActive) {
+      req.body.isActive = req.body.isActive === 'true';
+    }
+    
+    if (req.body.isFeatured) {
+      req.body.isFeatured = req.body.isFeatured === 'true';
+    }
+    
+    // Add image if uploaded
+    if (req.file) {
+      req.body.image = req.file.filename;
+    }
+    
     program = await Program.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true
     });
-
+    
     res.status(200).json({
       success: true,
       data: program
     });
   } catch (error) {
+    console.error('Error updating program:', error);
     res.status(500).json({
       success: false,
       message: 'Server Error',
@@ -196,6 +250,9 @@ exports.updateProgram = async (req, res) => {
 // @access  Private
 exports.deleteProgram = async (req, res) => {
   try {
+    console.log('Deleting program with ID:', req.params.id);
+    console.log('User:', req.user);
+    
     const program = await Program.findById(req.params.id);
 
     if (!program) {
@@ -205,8 +262,9 @@ exports.deleteProgram = async (req, res) => {
       });
     }
 
-    // Make sure user is program owner or super-admin
-    if (program.createdBy.toString() !== req.admin.id && req.admin.role !== 'super-admin') {
+    // Check ownership if not super-admin
+    if (req.user && req.user.role !== 'super-admin' && 
+        program.createdBy && program.createdBy.toString() !== req.user._id.toString()) {
       return res.status(401).json({
         success: false,
         message: 'Not authorized to delete this program'
@@ -220,6 +278,7 @@ exports.deleteProgram = async (req, res) => {
       data: {}
     });
   } catch (error) {
+    console.error('Error deleting program:', error);
     res.status(500).json({
       success: false,
       message: 'Server Error',

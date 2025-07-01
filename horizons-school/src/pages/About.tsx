@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import 'boxicons/css/boxicons.min.css';
 import AOS from 'aos';
+import TeamSection from '../components/TeamSection';
 
 const About: React.FC = () => {
   useEffect(() => {
@@ -114,49 +115,8 @@ const About: React.FC = () => {
         </Container>
       </section>
 
-      {/* Our Team */}
-      <section className="py-5 bg-light">
-        <Container>
-          <h2 className="text-center mb-5" data-aos="fade-up">Notre Équipe Pédagogique</h2>
-          <Row className="justify-content-center">
-            <Col md={6} lg={4} className="mb-4" data-aos="fade-up" data-aos-delay="100">
-              <Card className="border-0 shadow-sm text-center h-100">
-                <Card.Body className="p-4">
-                  <Card.Title className="fw-bold">M. Ayoub El Hajouji</Card.Title>
-                  <Card.Subtitle className="mb-3 text-muted">Directeur Général</Card.Subtitle>
-                  <Card.Text>
-                    Expert en gestion d'établissements éducatifs avec une vision stratégique pour l'enseignement supérieur.
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-            
-            <Col md={6} lg={4} className="mb-4" data-aos="fade-up" data-aos-delay="200">
-              <Card className="border-0 shadow-sm text-center h-100">
-                <Card.Body className="p-4">
-                  <Card.Title className="fw-bold">M. Ayoub El Hajouji</Card.Title>
-                  <Card.Subtitle className="mb-3 text-muted">Directeur Pédagogique</Card.Subtitle>
-                  <Card.Text>
-                    Spécialiste en pédagogie et méthodes d'enseignement innovantes pour une formation de qualité.
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-            
-            <Col md={6} lg={4} className="mb-4" data-aos="fade-up" data-aos-delay="300">
-              <Card className="border-0 shadow-sm text-center h-100">
-                <Card.Body className="p-4">
-                  <Card.Title className="fw-bold">M. Majd Eddine Benzbair</Card.Title>
-                  <Card.Subtitle className="mb-3 text-muted">Développeur Full Stack</Card.Subtitle>
-                  <Card.Text>
-                    Passionné par le développement web et les nouvelles technologies, créateur de solutions innovantes pour améliorer l'expérience éducative.
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-      </section>
+      {/* Our Team Section - Now using the TeamSection component */}
+      <TeamSection title="Notre Équipe Pédagogique" />
     </>
   );
 };

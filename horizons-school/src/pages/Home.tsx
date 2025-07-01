@@ -7,6 +7,8 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import carouselStyles from '../styles/Carousel.module.css';
+import NewsSection from '../components/NewsSection';
+import ProgramsSection from '../components/ProgramsSection';
 
 const Home: React.FC = () => {
   const [index, setIndex] = useState(0);
@@ -140,79 +142,7 @@ const Home: React.FC = () => {
             <h2 className="h1">Formations d'Excellence</h2>
             <p className="lead text-muted">Découvrez nos programmes conçus pour votre réussite professionnelle</p>
           </div>
-          <Row>
-            <Col md={6} lg={3} className="mb-4" data-aos="fade-up" data-aos-delay="100">
-              <Card className="h-100 shadow-sm border-0 text-center p-3 hover-lift">
-                <div className="text-primary mb-3">
-                  <img 
-                    src="/images/managment-icon.jpg" 
-                    alt="Management Icon" 
-                    style={{ width: '2.5rem', height: '2.5rem', objectFit: 'contain' }}
-                  />
-                </div>
-                <Card.Body>
-                  <Card.Title className="fw-bold">Management</Card.Title>
-                  <Card.Text>
-                    Développez vos compétences en gestion d'entreprise et leadership.
-                  </Card.Text>
-                </Card.Body>
-                <div>
-                  <Link to="/programs" className="btn btn-outline-primary">En savoir plus</Link>
-                </div>
-              </Card>
-            </Col>
-            
-            <Col md={6} lg={3} className="mb-4" data-aos="fade-up" data-aos-delay="200">
-              <Card className="h-100 shadow-sm border-0 text-center p-3">
-                <div className="text-primary mb-3">
-                  <i className='bx bx-group fs-1'></i>
-                </div>
-                <Card.Body>
-                  <Card.Title className="fw-bold">Ressources Humaines</Card.Title>
-                  <Card.Text>
-                    Maîtrisez les techniques modernes de gestion du capital humain.
-                  </Card.Text>
-                </Card.Body>
-                <div>
-                  <Link to="/programs" className="btn btn-outline-primary">En savoir plus</Link>
-                </div>
-              </Card>
-            </Col>
-            
-            <Col md={6} lg={3} className="mb-4" data-aos="fade-up" data-aos-delay="300">
-              <Card className="h-100 shadow-sm border-0 text-center p-3">
-                <div className="text-primary mb-3">
-                  <i className='bx bx-line-chart fs-1'></i>
-                </div>
-                <Card.Body>
-                  <Card.Title className="fw-bold">Finance</Card.Title>
-                  <Card.Text>
-                    Apprenez à analyser, prévoir et optimiser les ressources financières.
-                  </Card.Text>
-                </Card.Body>
-                <div>
-                  <Link to="/programs" className="btn btn-outline-primary">En savoir plus</Link>
-                </div>
-              </Card>
-            </Col>
-            
-            <Col md={6} lg={3} className="mb-4" data-aos="fade-up" data-aos-delay="400">
-              <Card className="h-100 shadow-sm border-0 text-center p-3">
-                <div className="text-primary mb-3">
-                  <i className='bx bx-laptop fs-1'></i>
-                </div>
-                <Card.Body>
-                  <Card.Title className="fw-bold">Commerce</Card.Title>
-                  <Card.Text>
-                    Développez vos compétences en marketing, vente et stratégies commerciales.
-                  </Card.Text>
-                </Card.Body>
-                <div>
-                  <Link to="/programs" className="btn btn-outline-primary">En savoir plus</Link>
-                </div>
-              </Card>
-            </Col>
-          </Row>
+          <ProgramsSection />
         </Container>
       </section>
 
@@ -448,74 +378,7 @@ const Home: React.FC = () => {
               </Link>
             </Col>
           </Row>
-          <Row>
-            <Col md={6} lg={4} className="mb-4" data-aos="fade-up" data-aos-delay="100">
-              <Card className="h-100 border-0 shadow-sm hover-lift">
-                <div className="card-img-top overflow-hidden">
-                  <img 
-                    src="/images/event1.jpg" 
-                    alt="Événement à venir" 
-                    className="img-fluid"
-                    style={{height: '200px', width: '100%', objectFit: 'cover'}}
-                  />
-                </div>
-                <Card.Body>
-                  <div className="d-flex mb-2">
-                    <span className="badge bg-primary me-2">Événement</span>
-                    <small className="text-muted">15 Juin 2025</small>
-                  </div>
-                  <Card.Title>Journée Portes Ouvertes</Card.Title>
-                  <Card.Text>
-                    Découvrez nos locaux, rencontrez nos enseignants et nos étudiants lors de notre prochaine journée portes ouvertes.
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-            <Col md={6} lg={4} className="mb-4" data-aos="fade-up" data-aos-delay="200">
-              <Card className="h-100 border-0 shadow-sm hover-lift">
-                <div className="card-img-top overflow-hidden">
-                  <img 
-                    src="/images/news1.jpg" 
-                    alt="Actualité" 
-                    className="img-fluid"
-                    style={{height: '200px', width: '100%', objectFit: 'cover'}}
-                  />
-                </div>
-                <Card.Body>
-                  <div className="d-flex mb-2">
-                    <span className="badge bg-success me-2">Actualité</span>
-                    <small className="text-muted">5 Juin 2025</small>
-                  </div>
-                  <Card.Title>Nouveau Partenariat International</Card.Title>
-                  <Card.Text>
-                    Horizons School signe un nouveau partenariat avec une prestigieuse université européenne pour des échanges étudiants.
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-            <Col md={6} lg={4} className="mb-4" data-aos="fade-up" data-aos-delay="300">
-              <Card className="h-100 border-0 shadow-sm hover-lift">
-                <div className="card-img-top overflow-hidden">
-                  <img 
-                    src="/images/event2.jpg" 
-                    alt="Atelier" 
-                    className="img-fluid"
-                    style={{height: '200px', width: '100%', objectFit: 'cover'}}
-                  />
-                </div>
-                <Card.Body>
-                  <div className="d-flex mb-2">
-                    <span className="badge bg-info me-2">Atelier</span>
-                    <small className="text-muted">22 Juin 2025</small>
-                  </div>
-                  <Card.Title>Atelier sur l'Intelligence Artificielle</Card.Title>
-                  <Card.Text>
-                    Participez à notre atelier pratique sur les dernières avancées en intelligence artificielle et leurs applications métiers.
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
+          <NewsSection />
         </Container>
       </section>
 

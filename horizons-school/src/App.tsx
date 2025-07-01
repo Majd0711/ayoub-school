@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
-import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import './App.css';
 import './styles/Home.css';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
-// Import our layout
+// Import our layouts
 import MainLayout from './layouts/MainLayout';
+import AdminLayout from './layouts/AdminLayout';
 
 // Import our pages
 import Home from './pages/Home';
@@ -14,6 +15,20 @@ import About from './pages/About';
 import Programs from './pages/Programs';
 import Contact from './pages/Contact';
 import News from './pages/News';
+
+// Import admin pages
+import Login from './pages/admin/Login';
+import Dashboard from './pages/admin/Dashboard';
+import NewsManagement from './pages/admin/NewsManagement';
+import TeamManagement from './pages/admin/TeamManagement';
+import SettingsManagement from './pages/admin/SettingsManagement';
+import ContactsManagement from './pages/admin/ContactsManagement';
+
+// Import components
+import ProtectedRoute from './components/ProtectedRoute';
+
+// Import context providers
+import { AuthProvider } from './contexts/AuthContext';
 
 // Import utils
 import { initSmoothScrolling } from './utils/smoothScroll';
@@ -50,6 +65,7 @@ const AppContent = () => {
 
   return (
     <Routes>
+      {/* Public Routes */}
       <Route path="/" element={
         <MainLayout>
           <Home />
@@ -75,15 +91,62 @@ const AppContent = () => {
           <News />
         </MainLayout>
       } />
+      
+      {/* Admin Routes */}
+      <Route path="/admin/login" element={<Login />} />
+      
+      <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
+      
+      <Route path="/admin/dashboard" element={
+        <ProtectedRoute>
+          <AdminLayout>
+            <Dashboard />
+          </AdminLayout>
+        </ProtectedRoute>
+      } />
+      
+      <Route path="/admin/news" element={
+        <ProtectedRoute>
+          <AdminLayout>
+            <NewsManagement />
+          </AdminLayout>
+        </ProtectedRoute>
+      } />
+      
+      <Route path="/admin/team" element={
+        <ProtectedRoute>
+          <AdminLayout>
+            <TeamManagement />
+          </AdminLayout>
+        </ProtectedRoute>
+      } />
+      
+      <Route path="/admin/settings" element={
+        <ProtectedRoute>
+          <AdminLayout>
+            <SettingsManagement />
+          </AdminLayout>
+        </ProtectedRoute>
+      } />
+      
+      <Route path="/admin/contacts" element={
+        <ProtectedRoute>
+          <AdminLayout>
+            <ContactsManagement />
+          </AdminLayout>
+        </ProtectedRoute>
+      } />
     </Routes>
   );
 };
 
-// Main App Component (wraps everything with Router)
+// Main App Component (wraps everything with Router and AuthProvider)
 function App() {
   return (
     <Router>
-      <AppContent />
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
     </Router>
   );
 }

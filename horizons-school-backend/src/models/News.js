@@ -8,12 +8,15 @@ const newsSchema = new mongoose.Schema({
     maxlength: [200, 'Title cannot be more than 200 characters']
   },
   slug: {
-    type: String,
-    unique: true
+    type: String
   },
   content: {
     type: String,
     required: [true, 'Please add content']
+  },
+  summary: {
+    type: String,
+    maxlength: [300, 'Summary cannot be more than 300 characters']
   },
   image: {
     type: String,
@@ -22,20 +25,41 @@ const newsSchema = new mongoose.Schema({
   type: {
     type: String,
     required: true,
-    enum: ['news', 'event']
+    enum: ['news', 'event', 'workshop'],
+    default: 'news'
+  },
+  category: {
+    type: String,
+    enum: ['academic', 'campus', 'admissions', 'partnership', 'career', 'general'],
+    default: 'general'
   },
   eventDate: {
     type: Date,
-    required: function() { return this.type === 'event'; }
+    required: function() { 
+      return this.type === 'event' || this.type === 'workshop'; 
+    }
+  },
+  eventLocation: {
+    type: String,
+    required: function() { 
+      return this.type === 'event' || this.type === 'workshop'; 
+    }
+  },
+  isFeatured: {
+    type: Boolean,
+    default: false
   },
   isActive: {
     type: Boolean,
     default: true
   },
+  tags: [{
+    type: String
+  }],
   createdBy: {
     type: mongoose.Schema.ObjectId,
     ref: 'Admin',
-    required: true
+    required: false
   }
 }, {
   timestamps: true,
@@ -45,10 +69,18 @@ const newsSchema = new mongoose.Schema({
 
 // Create news/event slug from title
 newsSchema.pre('save', function(next) {
-  this.slug = this.title
-    .toLowerCase()
-    .replace(/[^\w ]+/g, '')
-    .replace(/ +/g, '-');
+  if (this.title) {
+    this.slug = this.title
+      .toLowerCase()
+      .replace(/[^\w ]+/g, '')
+      .replace(/ +/g, '-');
+  }
+  
+  // Generate summary from content if not provided
+  if (!this.summary && this.content) {
+    this.summary = this.content.substring(0, 250) + (this.content.length > 250 ? '...' : '');
+  }
+  
   next();
 });
 
