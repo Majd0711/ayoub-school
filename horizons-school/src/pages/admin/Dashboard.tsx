@@ -4,18 +4,18 @@ import { BsNewspaper, BsPeople, BsEnvelope, BsEye } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 
 interface DashboardStats {
-  newsCount: number;
-  teamCount: number;
-  contactCount: number;
-  visitorCount: number;
+  programs: number;
+  news: number;
+  contacts: number;
+  team: number;
 }
 
 const Dashboard: React.FC = () => {
   const [stats, setStats] = useState<DashboardStats>({
-    newsCount: 0,
-    teamCount: 0,
-    contactCount: 0,
-    visitorCount: 0
+    programs: 0,
+    news: 0,
+    contacts: 0,
+    team: 0
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -25,12 +25,12 @@ const Dashboard: React.FC = () => {
       try {
         setLoading(true);
         // Fetch stats from API
-        const response = await fetch('/api/v1/stats', {
+        const response = await fetch('http://localhost:8080/api/stats', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-          },
-          credentials: 'include'
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
         });
         
         if (!response.ok) {
@@ -41,10 +41,10 @@ const Dashboard: React.FC = () => {
         
         if (data.success) {
           setStats({
-            newsCount: data.data.newsCount || 0,
-            teamCount: data.data.teamCount || 0,
-            contactCount: data.data.contactCount || 0,
-            visitorCount: data.data.visitorCount || 0
+            programs: data.data.programs || 0,
+            news: data.data.news || 0,
+            contacts: data.data.contacts || 0,
+            team: data.data.team || 0
           });
         } else {
           throw new Error(data.message || 'Failed to load dashboard statistics');
@@ -77,32 +77,32 @@ const Dashboard: React.FC = () => {
 
   const statCards = [
     {
-      title: 'News Articles',
-      value: stats.newsCount,
+      title: 'Total Programs',
+      value: stats.programs,
       icon: <BsNewspaper size={24} />,
       color: 'primary',
+      link: '/admin/programs'
+    },
+    {
+      title: 'News Articles',
+      value: stats.news,
+      icon: <BsNewspaper size={24} />,
+      color: 'success',
       link: '/admin/news'
     },
     {
-      title: 'Team Members',
-      value: stats.teamCount,
-      icon: <BsPeople size={24} />,
-      color: 'success',
-      link: '/admin/team'
-    },
-    {
       title: 'Contact Messages',
-      value: stats.contactCount,
+      value: stats.contacts,
       icon: <BsEnvelope size={24} />,
       color: 'warning',
       link: '/admin/contacts'
     },
     {
-      title: 'Website Visitors',
-      value: stats.visitorCount,
-      icon: <BsEye size={24} />,
+      title: 'Team Members',
+      value: stats.team,
+      icon: <BsPeople size={24} />,
       color: 'info',
-      link: '#'
+      link: '/admin/team'
     }
   ];
 
@@ -155,6 +155,9 @@ const Dashboard: React.FC = () => {
             <Card.Body>
               <ul className="list-group list-group-flush">
                 <li className="list-group-item">
+                  <Link to="/admin/programs" className="text-decoration-none">Add new program</Link>
+                </li>
+                <li className="list-group-item">
                   <Link to="/admin/news" className="text-decoration-none">Add new news article</Link>
                 </li>
                 <li className="list-group-item">
@@ -162,9 +165,6 @@ const Dashboard: React.FC = () => {
                 </li>
                 <li className="list-group-item">
                   <Link to="/admin/contacts" className="text-decoration-none">View contact messages</Link>
-                </li>
-                <li className="list-group-item">
-                  <Link to="/admin/settings" className="text-decoration-none">Update website settings</Link>
                 </li>
               </ul>
             </Card.Body>

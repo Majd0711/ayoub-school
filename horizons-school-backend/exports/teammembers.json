@@ -1,0 +1,80 @@
+[
+  {
+    "_id": "685d249241f799bd045ff580",
+    "name": "M. Ayoub El Hajouji",
+    "position": "Directeur Général",
+    "image": "default-profile.jpg",
+    "bio": "Expert en gestion d'établissements éducatifs avec une vision stratégique pour l'enseignement supérieur.",
+    "socialLinks": {
+      "linkedin": "https://linkedin.com/in/ayoub-el-hajouji",
+      "email": "ayoub@horizons-school.ma"
+    },
+    "order": 1,
+    "department": "Management",
+    "isActive": true,
+    "createdBy": "685ac1d6ed6c525ee450bd8c",
+    "__v": 0,
+    "createdAt": "2025-06-26T10:44:34.486Z",
+    "updatedAt": "2025-06-26T10:44:34.486Z"
+  },
+  {
+    "_id": "685d249241f799bd045ff581",
+    "name": "Dr. Fatima Zahra Bennani",
+    "position": "Directrice Pédagogique",
+    "image": "default-profile.jpg",
+    "bio": "Docteur en sciences de l'éducation avec plus de 15 ans d'expérience dans le développement de programmes académiques innovants.",
+    "socialLinks": {
+      "linkedin": "https://linkedin.com/in/fatima-bennani",
+      "email": "fatima@horizons-school.ma"
+    },
+    "order": 2,
+    "department": "Academic",
+    "isActive": true,
+    "createdBy": "685ac1d6ed6c525ee450bd8c",
+    "__v": 0,
+    "createdAt": "2025-06-26T10:44:34.486Z",
+    "updatedAt": "2025-06-26T10:44:34.486Z"
+  },
+  {
+    "_id": "685d249241f799bd045ff585",
+    "name": "Mme. Laila Chraibi",
+    "position": "Responsable Admission",
+    "image": "default-profile.jpg",
+    "bio": "En charge du processus d'admission et d'orientation des nouveaux étudiants.",
+    "socialLinks": {
+      "email": "laila@horizons-school.ma"
+    },
+    "order": 6,
+    "department": "Administrative",
+    "isActive": true,
+    "createdBy": "685ac1d6ed6c525ee450bd8c",
+    "__v": 0,
+    "createdAt": "2025-06-26T10:44:34.486Z",
+    "updatedAt": "2025-06-26T10:44:34.486Z"
+  },
+  {
+    "_id": "686294b6463766df82492bb8",
+    "name": "Majd Eddine Benzbair",
+    "position": "Développer ",
+    "image": "default-profile.jpg",
+    "bio": "Full Stack",
+    "education": [],
+    "experience": [],
+    "specializations": [],
+    "socialLinks": {
+      "linkedin": "",
+      "twitter": "",
+      "email": "",
+      "website": ""
+    },
+    "order": 0,
+    "department": "Support",
+    "isActive": true,
+    "isFeatured": false,
+    "createdBy": "685ac1d6ed6c525ee450bd8c",
+    "createdAt": "2025-06-30T13:44:22.124Z",
+    "updatedAt": "2025-06-30T13:44:22.124Z",
+    "slug": "majd-eddine-benzbair",
+    "__v": 0
+  }
+]

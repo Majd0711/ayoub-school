@@ -11,7 +11,18 @@
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
     "install:all": "npm install && cd horizons-school && npm install && cd ../horizons-school-backend && npm install",
     "build": "cd horizons-school && npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-atlas": "cd horizons-school-backend && npm run start-atlas",
+    "dev-atlas": "cd horizons-school-backend && npm run dev-atlas",
+    "test-atlas": "cd horizons-school-backend && npm run test-atlas",
+    "test-mongo": "cd horizons-school-backend && npm run test-mongo",
+    "setup-atlas": "cd horizons-school-backend && npm run setup-atlas",
+    "check-data": "cd horizons-school-backend && npm run check-data",
+    "migrate-to-atlas": "cd horizons-school-backend && npm run migrate-to-atlas",
+    "create-test-data": "cd horizons-school-backend && npm run create-test-data",
+    "export-local-data": "cd horizons-school-backend && npm run export-local-data",
+    "import-to-atlas": "cd horizons-school-backend && npm run import-to-atlas",
+    "full-migration": "cd horizons-school-backend && npm run full-migration"
   },
   "keywords": [
     "school",

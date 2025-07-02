@@ -6,7 +6,20 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "create-admin": "node src/scripts/createAdmin.js"
+    "create-admin": "node src/scripts/createAdmin.js",
+    "setup-env": "node src/scripts/setupEnv.js",
+    "start-atlas": "node src/scripts/startWithAtlas.js",
+    "dev-atlas": "nodemon src/scripts/startWithAtlas.js",
+    "test-atlas": "node src/scripts/testAtlasConnection.js",
+    "setup-atlas": "node src/scripts/setupAtlasConnection.js",
+    "test-mongo": "node src/scripts/testMongoDriver.js",
+    "simple-server": "node src/scripts/simpleServer.js",
+    "check-data": "node src/scripts/checkData.js",
+    "migrate-to-atlas": "node src/scripts/migrateToAtlas.js",
+    "create-test-data": "node src/scripts/createTestData.js",
+    "export-local-data": "node src/scripts/exportLocalData.js",
+    "import-to-atlas": "node src/scripts/importToAtlas.js",
+    "full-migration": "npm run export-local-data && npm run import-to-atlas"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
