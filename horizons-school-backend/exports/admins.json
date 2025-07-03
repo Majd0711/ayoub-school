@@ -1,0 +1,11 @@
+[
+  {
+    "_id": "685ac1d6ed6c525ee450bd8c",
+    "username": "admin",
+    "email": "admin@horizons-school.ma",
+    "password": "$2a$10$h1NHFUb1VgUruHozPURQNuil.RorlFCAuDIgWslAPC1PWrPX2/4z2",
+    "role": "super-admin",
+    "createdAt": "2025-06-24T15:18:46.696Z",
+    "updatedAt": "2025-06-24T15:18:46.696Z"
+  }
+]

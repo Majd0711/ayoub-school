@@ -66,15 +66,23 @@ const settingsRoutes = require('./routes/settings');
 const statsRoutes = require('./routes/stats');
 const partnerRoutes = require('./routes/partners');
 
-// Mount routes
+// Mount routes - both with and without v1 prefix for compatibility
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/auth', authRoutes);
 app.use('/api/v1/programs', programRoutes);
+app.use('/api/programs', programRoutes);
 app.use('/api/v1/news', newsRoutes);
+app.use('/api/news', newsRoutes);
 app.use('/api/v1/team', teamRoutes);
+app.use('/api/team', teamRoutes);
 app.use('/api/v1/contacts', contactRoutes);
+app.use('/api/contacts', contactRoutes);
 app.use('/api/v1/settings', settingsRoutes);
+app.use('/api/settings', settingsRoutes);
 app.use('/api/v1/stats', statsRoutes);
+app.use('/api/stats', statsRoutes);
 app.use('/api/v1/partners', partnerRoutes);
+app.use('/api/partners', partnerRoutes);
 
 // Serve admin panel
 app.use('/admin', express.static(path.join(__dirname, '../public/admin')));
@@ -125,6 +133,7 @@ const startServer = async () => {
       console.log(`Server running on port ${PORT}`);
       console.log(`Admin panel available at: http://localhost:${PORT}/admin`);
       console.log(`API available at: http://localhost:${PORT}/api/v1`);
+      console.log(`API also available at: http://localhost:${PORT}/api`);
     });
   } catch (err) {
     console.error('Failed to start server:');

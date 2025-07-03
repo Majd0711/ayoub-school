@@ -1,5 +1,5 @@
 // API base URL
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api/v1';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
 // Upload URL for images
 const UPLOADS_URL = process.env.REACT_APP_UPLOADS_URL || 'http://localhost:5000/uploads';
@@ -20,6 +20,21 @@ const NEVER_CACHE_ENDPOINTS = [
   '/news',
   '/team'
 ];
+
+// Helper function to get auth token
+const getAuthToken = () => localStorage.getItem('token');
+
+// Helper function to add auth headers
+const addAuthHeaders = (headers: HeadersInit = {}): HeadersInit => {
+  const token = getAuthToken();
+  if (token) {
+    return {
+      ...headers,
+      'Authorization': `Bearer ${token}`
+    };
+  }
+  return headers;
+};
 
 // Request queue interface
 interface QueuedRequest {
@@ -52,7 +67,10 @@ const processQueue = () => {
     
     const processRequest = async () => {
       try {
-        const response = await fetch(url, options);
+        const response = await fetch(url, {
+          ...options,
+          headers: addAuthHeaders(options.headers)
+        });
         resolve(response);
       } catch (error) {
         reject(error);
@@ -226,12 +244,15 @@ export interface Program {
   duration: string;
   level: string;
   image: string;
+  features: string[];
+  modules: { title: string; description: string }[];
+  seats: number;
   isActive: boolean;
-  features?: string[];
-  modules?: { title: string; description: string }[];
+  displayOnHome: boolean;
+  displayOrder: number;
+  slug: string;
   createdAt: string;
   updatedAt: string;
-  seats?: number;
 }
 
 export interface News {
@@ -504,16 +525,26 @@ export default api;
 export async function getPrograms() {
   try {
     console.log('Fetching programs from:', `${API_BASE_URL}/programs`);
+    const token = localStorage.getItem('token');
+    console.log('Auth token:', token ? 'Present' : 'Missing');
+
     const response = await fetch(`${API_BASE_URL}/programs`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
+        'Authorization': `Bearer ${token}`
       },
       mode: 'cors',
       credentials: 'omit'
     });
     
     if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Error response:', {
+        status: response.status,
+        statusText: response.statusText,
+        body: errorText
+      });
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     
@@ -526,11 +557,12 @@ export async function getPrograms() {
     } else if (data.success && !data.data) {
       return [];
     } else {
+      console.error('Invalid API response format:', data);
       throw new Error('Invalid response format from API');
     }
   } catch (error) {
     console.error('Error fetching programs:', error);
-    return [];
+    throw error; // Re-throw the error to be handled by the component
   }
 }
 
@@ -907,4 +939,31 @@ export const getImageUrl = (path: string, type: 'news' | 'programs' | 'team' = '
   
   // Otherwise, assume it's from the backend uploads folder
   return `${UPLOADS_URL}/${type}/${path}`;
+};
+
+// Program Management Functions
+export const getHomePrograms = async (): Promise<Program[]> => {
+  const response = await fetch(`${API_BASE_URL}/programs/home`);
+  const data = await response.json();
+  return data.data;
+};
+
+export const toggleProgramHomeVisibility = async (programId: string): Promise<Program> => {
+  const response = await fetch(`${API_BASE_URL}/programs/${programId}/toggle-home`, {
+    method: 'PUT',
+    headers: addAuthHeaders()
+  });
+  const data = await response.json();
+  return data.data;
+};
+
+export const reorderPrograms = async (programs: { id: string; displayOrder: number }[]): Promise<void> => {
+  await fetch(`${API_BASE_URL}/programs/reorder`, {
+    method: 'POST',
+    headers: {
+      ...addAuthHeaders(),
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ programs })
+  });
 };

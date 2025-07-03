@@ -1,14 +1,17 @@
 const mongoose = require('mongoose');
+const slugify = require('slugify');
 
 const programSchema = new mongoose.Schema({
   title: {
     type: String,
     required: [true, 'Please add a title'],
+    unique: true,
     trim: true,
     maxlength: [100, 'Title cannot be more than 100 characters']
   },
   slug: {
-    type: String
+    type: String,
+    unique: true
   },
   description: {
     type: String,
@@ -16,45 +19,26 @@ const programSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    default: 'Management',
+    required: [true, 'Please add a category'],
     enum: [
-      'Management',
+      'Business',
       'Finance',
+      'Management',
       'Marketing',
       'Human Resources',
+      'Technology',
       'Languages',
-      'Professional Training',
-      'technical',
-      'license',
-      'master',
-      'continuous',
-      'languages',
-      'Business'
+      'Other'
     ]
   },
   duration: {
     type: String,
-    default: '1 an'
+    required: [true, 'Please add a duration']
   },
   level: {
     type: String,
-    default: 'Tous niveaux',
-    enum: [
-      'Technicien',
-      'Licence',
-      'Master',
-      'Formation Continue',
-      'Bac+2',
-      'Bac+3',
-      'Bac+4',
-      'Tous niveaux',
-      'Débutant',
-      'Intermédiaire',
-      'Avancé',
-      'Baccalauréat',
-      'Niveau Bac et plus',
-      'Bac+2 (DUT, BTS, DEUG)'
-    ]
+    required: [true, 'Please add a level'],
+    enum: ['Beginner', 'Intermediate', 'Advanced']
   },
   image: {
     type: String,
@@ -67,17 +51,29 @@ const programSchema = new mongoose.Schema({
     title: String,
     description: String
   }],
+  seats: {
+    type: Number,
+    min: [0, 'Seats cannot be negative']
+  },
   isActive: {
     type: Boolean,
     default: true
   },
-  isFeatured: {
+  displayOnHome: {
     type: Boolean,
     default: false
   },
-  seats: {
+  displayOrder: {
     type: Number,
-    default: 20
+    default: 0
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now
   },
   createdBy: {
     type: mongoose.Schema.ObjectId,
@@ -92,12 +88,8 @@ const programSchema = new mongoose.Schema({
 
 // Create program slug from title
 programSchema.pre('save', function(next) {
-  if (this.title) {
-    this.slug = this.title
-      .toLowerCase()
-      .replace(/[^\w ]+/g, '')
-      .replace(/ +/g, '-');
-  }
+  this.slug = slugify(this.title, { lower: true });
+  this.updatedAt = Date.now();
   next();
 });
 

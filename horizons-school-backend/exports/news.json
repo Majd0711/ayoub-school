@@ -1,0 +1,148 @@
+[
+  {
+    "_id": "6863c15cb9489b7c31b9fcb4",
+    "title": "Journée Portes Ouvertes",
+    "content": "Découvrez nos locaux, rencontrez nos enseignants et nos étudiants lors de notre prochaine journée portes ouvertes. Venez nous rencontrer et découvrir nos programmes, nos installations et notre équipe pédagogique. Des présentations sur nos différentes filières seront organisées tout au long de la journée.",
+    "summary": "Découvrez nos locaux, rencontrez nos enseignants et nos étudiants lors de notre prochaine journée portes ouvertes.",
+    "image": "default-news.jpg",
+    "type": "event",
+    "category": "campus",
+    "eventDate": "2025-06-15T00:00:00.000Z",
+    "eventLocation": "Campus principal, Marrakech",
+    "isFeatured": true,
+    "isActive": true,
+    "tags": [
+      "portes ouvertes",
+      "campus",
+      "visite"
+    ],
+    "createdAt": "2025-07-01T11:07:08.197Z",
+    "updatedAt": "2025-07-01T11:07:08.197Z",
+    "slug": "journe-portes-ouvertes",
+    "__v": 0
+  },
+  {
+    "_id": "6863c15cb9489b7c31b9fcb6",
+    "title": "Cérémonie de Remise des Diplômes",
+    "content": "Rejoignez-nous pour célébrer la réussite de nos diplômés de la promotion 2025. La cérémonie se tiendra dans notre amphithéâtre principal et sera suivie d'un cocktail dans les jardins du campus. Les familles et amis des diplômés sont les bienvenus.",
+    "summary": "Rejoignez-nous pour célébrer la réussite de nos diplômés de la promotion 2025.",
+    "image": "default-news.jpg",
+    "type": "event",
+    "category": "academic",
+    "eventDate": "2025-07-10T00:00:00.000Z",
+    "eventLocation": "Amphithéâtre principal, Campus Horizons",
+    "isFeatured": true,
+    "isActive": true,
+    "tags": [
+      "diplômes",
+      "cérémonie",
+      "graduation"
+    ],
+    "createdAt": "2025-07-01T11:07:08.198Z",
+    "updatedAt": "2025-07-01T11:07:08.198Z",
+    "slug": "crmonie-de-remise-des-diplmes",
+    "__v": 0
+  },
+  {
+    "_id": "6863c15cb9489b7c31b9fcb5",
+    "title": "Nouveau Partenariat International",
+    "content": "Horizons School signe un nouveau partenariat avec une prestigieuse université européenne pour des échanges étudiants. Ce partenariat permettra à nos étudiants de bénéficier d'une expérience internationale enrichissante et d'obtenir un double diplôme reconnu à l'échelle internationale.",
+    "summary": "Horizons School signe un nouveau partenariat avec une prestigieuse université européenne pour des échanges étudiants.",
+    "image": "default-news.jpg",
+    "type": "news",
+    "category": "partnership",
+    "isFeatured": true,
+    "isActive": true,
+    "tags": [
+      "partenariat",
+      "international",
+      "échange"
+    ],
+    "createdAt": "2025-07-01T11:07:08.198Z",
+    "updatedAt": "2025-07-01T11:07:08.198Z",
+    "slug": "nouveau-partenariat-international",
+    "__v": 0
+  },
+  {
+    "_id": "6863c15cb9489b7c31b9fcba",
+    "title": "Conférence sur l'Intelligence Artificielle",
+    "content": "Horizons School organise une conférence sur l'Intelligence Artificielle et son impact sur le monde des affaires. Des experts internationaux viendront partager leurs connaissances et expériences. La conférence est ouverte aux étudiants, aux professionnels et au grand public.",
+    "summary": "Horizons School organise une conférence sur l'Intelligence Artificielle et son impact sur le monde des affaires.",
+    "image": "default-news.jpg",
+    "type": "event",
+    "category": "academic",
+    "eventDate": "2025-09-20T00:00:00.000Z",
+    "eventLocation": "Salle de conférence, Campus Horizons",
+    "isFeatured": false,
+    "isActive": true,
+    "tags": [
+      "conférence",
+      "IA",
+      "technologie"
+    ],
+    "createdAt": "2025-07-01T11:07:08.199Z",
+    "updatedAt": "2025-07-01T11:07:08.199Z",
+    "slug": "confrence-sur-lintelligence-artificielle",
+    "__v": 0
+  },
+  {
+    "_id": "6863c15cb9489b7c31b9fcbb",
+    "title": "Lancement du Club Entrepreneuriat",
+    "content": "Horizons School lance son nouveau Club Entrepreneuriat, un espace dédié aux étudiants passionnés par la création d'entreprise. Le club organisera des ateliers, des rencontres avec des entrepreneurs et des concours de pitch. Rejoignez-nous pour développer vos compétences entrepreneuriales!",
+    "summary": "Horizons School lance son nouveau Club Entrepreneuriat, un espace dédié aux étudiants passionnés par la création d'entreprise.",
+    "image": "default-news.jpg",
+    "type": "news",
+    "category": "campus",
+    "isFeatured": false,
+    "isActive": true,
+    "tags": [
+      "entrepreneuriat",
+      "club",
+      "innovation"
+    ],
+    "createdAt": "2025-07-01T11:07:08.199Z",
+    "updatedAt": "2025-07-01T11:07:08.199Z",
+    "slug": "lancement-du-club-entrepreneuriat",
+    "__v": 0
+  },
+  {
+    "_id": "6863c15cb9489b7c31b9fcb7",
+    "title": "Nouveau Programme de Double Diplôme",
+    "content": "Horizons School lance un nouveau programme de double diplôme en partenariat avec une université canadienne. Ce programme permet aux étudiants d'obtenir deux diplômes en seulement 4 ans d'études, avec une année passée au Canada. Les inscriptions sont ouvertes pour la rentrée prochaine.",
+    "summary": "Horizons School lance un nouveau programme de double diplôme en partenariat avec une université canadienne.",
+    "image": "default-news.jpg",
+    "type": "news",
+    "category": "academic",
+    "isFeatured": false,
+    "isActive": true,
+    "tags": [
+      "double diplôme",
+      "international",
+      "programme"
+    ],
+    "createdAt": "2025-07-01T11:07:08.198Z",
+    "updatedAt": "2025-07-01T11:07:08.198Z",
+    "slug": "nouveau-programme-de-double-diplme",
+    "__v": 0
+  },
+  {
+    "_id": "6863c15cb9489b7c31b9fcb8",
+    "title": "LICENCE PROFESSIONNELLE",
+    "content": "Notre programme de Licence Professionnelle vous offre une formation complète avec plusieurs spécialisations au choix : Management des organisations, Gestion des ressources humaines, Commerce International, et Gestion comptable et financière. Formez-vous aux métiers d'avenir avec des professionnels du secteur.",
+    "summary": "Notre programme de Licence Professionnelle vous offre une formation complète avec plusieurs spécialisations au choix.",
+    "image": "default-news.jpg",
+    "type": "news",
+    "category": "academic",
+    "isFeatured": false,
+    "isActive": true,
+    "tags": [
+      "licence",
+      "formation",
+      "spécialisation"
+    ],
+    "createdAt": "2025-07-01T11:07:08.198Z",
+    "updatedAt": "2025-07-01T11:07:08.198Z",
+    "slug": "licence-professionnelle",
+    "__v": 0
+  }
+]

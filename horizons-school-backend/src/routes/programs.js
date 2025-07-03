@@ -5,18 +5,25 @@ const {
   getProgram, 
   createProgram, 
   updateProgram, 
-  deleteProgram 
+  deleteProgram,
+  getHomePrograms,
+  toggleHomeVisibility,
+  reorderPrograms
 } = require('../controllers/programController');
 const { protect } = require('../middleware/auth');
 const { uploadProgramImage } = require('../utils/fileUpload');
 
 // Public routes
 router.get('/', getPrograms);
+router.get('/home', getHomePrograms);
 router.get('/:id', getProgram);
 
 // Protected routes
-router.post('/', protect, uploadProgramImage, createProgram);
-router.put('/:id', protect, uploadProgramImage, updateProgram);
-router.delete('/:id', protect, deleteProgram);
+router.use(protect);
+router.post('/', uploadProgramImage, createProgram);
+router.put('/:id', uploadProgramImage, updateProgram);
+router.delete('/:id', deleteProgram);
+router.put('/:id/toggle-home', toggleHomeVisibility);
+router.post('/reorder', reorderPrograms);
 
 module.exports = router; 
