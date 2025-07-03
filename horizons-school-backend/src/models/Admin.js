@@ -34,12 +34,17 @@ const adminSchema = new mongoose.Schema({
 
 // Hash password before saving
 adminSchema.pre('save', async function(next) {
-  if (!this.isModified('password')) return next();
-  
+  if (!this.isModified('password')) {
+    return next();
+  }
+
   try {
-    console.log('Hashing password before save...');
+    console.log('Hashing password for admin:', this.email);
     const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
+    const hashedPassword = await bcrypt.hash(this.password, salt);
+    console.log('Original password length:', this.password.length);
+    console.log('Hashed password length:', hashedPassword.length);
+    this.password = hashedPassword;
     console.log('Password hashed successfully');
     next();
   } catch (error) {
@@ -51,9 +56,15 @@ adminSchema.pre('save', async function(next) {
 // Method to check password
 adminSchema.methods.matchPassword = async function(enteredPassword) {
   try {
-    console.log('Matching password using method...');
-    console.log('Stored hash:', this.password);
-    console.log('Entered password:', enteredPassword);
+    if (!this.password) {
+      console.error('No password hash found for admin:', this.email);
+      return false;
+    }
+    
+    console.log('Matching password for admin:', this.email);
+    console.log('Stored hash length:', this.password.length);
+    console.log('Entered password length:', enteredPassword.length);
+    
     const isMatch = await bcrypt.compare(enteredPassword, this.password);
     console.log('Password match result:', isMatch);
     return isMatch;

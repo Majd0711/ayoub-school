@@ -21,6 +21,7 @@ import Login from './pages/admin/Login';
 import Dashboard from './pages/admin/Dashboard';
 import NewsManagement from './pages/admin/NewsManagement';
 import TeamManagement from './pages/admin/TeamManagement';
+import ProgramManagement from './pages/admin/ProgramManagement';
 import SettingsManagement from './pages/admin/SettingsManagement';
 import ContactsManagement from './pages/admin/ContactsManagement';
 
@@ -101,6 +102,14 @@ const AppContent = () => {
         <ProtectedRoute>
           <AdminLayout>
             <Dashboard />
+          </AdminLayout>
+        </ProtectedRoute>
+      } />
+      
+      <Route path="/admin/programs" element={
+        <ProtectedRoute>
+          <AdminLayout>
+            <ProgramManagement />
           </AdminLayout>
         </ProtectedRoute>
       } />

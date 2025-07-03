@@ -239,4 +239,34 @@ exports.getFeaturedPrograms = async (req, res) => {
       error: error.message
     });
   }
+};
+
+// @desc    Toggle program active status
+// @route   PUT /api/programs/:id/toggle-active
+// @access  Private
+exports.toggleActive = async (req, res) => {
+  try {
+    const program = await Program.findById(req.params.id);
+
+    if (!program) {
+      return res.status(404).json({
+        success: false,
+        message: 'Program not found'
+      });
+    }
+
+    program.isActive = !program.isActive;
+    await program.save();
+
+    res.status(200).json({
+      success: true,
+      data: program
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Server Error',
+      error: error.message
+    });
+  }
 }; 

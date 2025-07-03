@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // CORS Configuration - More secure for production
 const corsOptions = {
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: true, // Allow all origins during development
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,

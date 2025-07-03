@@ -2,7 +2,17 @@ import React, { useState } from 'react';
 import { Container, Nav, Navbar, Button, Offcanvas } from 'react-bootstrap';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { BsList, BsNewspaper, BsPeople, BsGrid, BsGear, BsBoxArrowRight, BsSpeedometer2, BsEnvelope } from 'react-icons/bs';
+import { 
+  BsList, 
+  BsNewspaper, 
+  BsPeople, 
+  BsGrid, 
+  BsGear, 
+  BsBoxArrowRight, 
+  BsSpeedometer2, 
+  BsEnvelope,
+  BsBook
+} from 'react-icons/bs';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -23,6 +33,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
 
   const navItems = [
     { path: '/admin/dashboard', label: 'Dashboard', icon: <BsSpeedometer2 className="me-2" /> },
+    { path: '/admin/programs', label: 'Programs Management', icon: <BsBook className="me-2" /> },
     { path: '/admin/news', label: 'News Management', icon: <BsNewspaper className="me-2" /> },
     { path: '/admin/team', label: 'Team Management', icon: <BsPeople className="me-2" /> },
     { path: '/admin/contacts', label: 'Contact Messages', icon: <BsEnvelope className="me-2" /> },

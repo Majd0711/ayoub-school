@@ -18,7 +18,8 @@ const cache = new Map<string, CacheEntry<any>>();
 const NEVER_CACHE_ENDPOINTS = [
   '/programs',
   '/news',
-  '/team'
+  '/team',
+  '/contacts'
 ];
 
 // Helper function to get auth token
@@ -524,18 +525,14 @@ export default api;
 // Programs
 export async function getPrograms() {
   try {
-    console.log('Fetching programs from:', `${API_BASE_URL}/programs`);
-    const token = localStorage.getItem('token');
-    console.log('Auth token:', token ? 'Present' : 'Missing');
-
+    console.log('Fetching all programs from API');
     const response = await fetch(`${API_BASE_URL}/programs`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${getAuthToken()}`
       },
-      mode: 'cors',
-      credentials: 'omit'
+      credentials: 'include'
     });
     
     if (!response.ok) {
@@ -573,8 +570,12 @@ export async function getProgram(idOrSlug: string) {
 
 export const createProgram = async (formData: FormData): Promise<Program> => {
   try {
+    const token = getAuthToken();
     const response = await fetch(`${API_BASE_URL}/programs`, {
       method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
       credentials: 'include',
       body: formData, // Don't set Content-Type header for multipart/form-data
     });
@@ -585,6 +586,7 @@ export const createProgram = async (formData: FormData): Promise<Program> => {
     }
     
     const result = await response.json();
+    clearProgramsCache();
     return result.data;
   } catch (error: any) {
     throw new Error(`Failed to create program: ${error.message}`);
@@ -593,8 +595,12 @@ export const createProgram = async (formData: FormData): Promise<Program> => {
 
 export const updateProgram = async (id: string, formData: FormData): Promise<Program> => {
   try {
+    const token = getAuthToken();
     const response = await fetch(`${API_BASE_URL}/programs/${id}`, {
       method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
       credentials: 'include',
       body: formData, // Don't set Content-Type header for multipart/form-data
     });
@@ -605,6 +611,7 @@ export const updateProgram = async (id: string, formData: FormData): Promise<Pro
     }
     
     const result = await response.json();
+    clearProgramsCache();
     return result.data;
   } catch (error: any) {
     throw new Error(`Failed to update program: ${error.message}`);
@@ -612,16 +619,51 @@ export const updateProgram = async (id: string, formData: FormData): Promise<Pro
 };
 
 export const deleteProgram = async (id: string): Promise<void> => {
-  await apiRequest(`${API_BASE_URL}/programs/${id}`, {
-    method: 'DELETE',
-  });
+  try {
+    const token = getAuthToken();
+    const response = await fetch(`${API_BASE_URL}/programs/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include'
+    });
+    
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Failed to delete program');
+    }
+    
+    clearProgramsCache();
+  } catch (error: any) {
+    throw new Error(`Failed to delete program: ${error.message}`);
+  }
 };
 
 export const toggleProgramActive = async (id: string): Promise<Program> => {
-  const { data } = await apiRequest<Program>(`${API_BASE_URL}/programs/${id}/toggle-active`, {
-    method: 'PUT',
-  });
-  return data as Program;
+  try {
+    const token = getAuthToken();
+    const response = await fetch(`${API_BASE_URL}/programs/${id}/toggle-active`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include'
+    });
+    
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Failed to toggle program status');
+    }
+    
+    const result = await response.json();
+    clearProgramsCache();
+    return result.data;
+  } catch (error: any) {
+    throw new Error(`Failed to toggle program status: ${error.message}`);
+  }
 };
 
 // News
@@ -943,27 +985,92 @@ export const getImageUrl = (path: string, type: 'news' | 'programs' | 'team' = '
 
 // Program Management Functions
 export const getHomePrograms = async (): Promise<Program[]> => {
-  const response = await fetch(`${API_BASE_URL}/programs/home`);
-  const data = await response.json();
-  return data.data;
+  const { data } = await apiRequest<Program[]>(`${API_BASE_URL}/programs/home`);
+  return data || [];
 };
 
 export const toggleProgramHomeVisibility = async (programId: string): Promise<Program> => {
-  const response = await fetch(`${API_BASE_URL}/programs/${programId}/toggle-home`, {
-    method: 'PUT',
-    headers: addAuthHeaders()
-  });
-  const data = await response.json();
-  return data.data;
+  try {
+    const token = getAuthToken();
+    const response = await fetch(`${API_BASE_URL}/programs/${programId}/toggle-home`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include'
+    });
+    
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Failed to toggle program home visibility');
+    }
+    
+    const result = await response.json();
+    clearProgramsCache();
+    return result.data;
+  } catch (error: any) {
+    throw new Error(`Failed to toggle program home visibility: ${error.message}`);
+  }
 };
 
 export const reorderPrograms = async (programs: { id: string; displayOrder: number }[]): Promise<void> => {
-  await fetch(`${API_BASE_URL}/programs/reorder`, {
-    method: 'POST',
-    headers: {
-      ...addAuthHeaders(),
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ programs })
-  });
+  try {
+    const token = getAuthToken();
+    const response = await fetch(`${API_BASE_URL}/programs/reorder`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include',
+      body: JSON.stringify({ programs })
+    });
+    
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Failed to reorder programs');
+    }
+    
+    clearProgramsCache();
+  } catch (error: any) {
+    throw new Error(`Failed to reorder programs: ${error.message}`);
+  }
 };
+
+// Stats
+export async function getAllStats() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/stats`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${getAuthToken()}`
+      },
+      credentials: 'include'
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Error response:', {
+        status: response.status,
+        statusText: response.statusText,
+        body: errorText
+      });
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('Stats data:', data);
+
+    if (data.success && data.data) {
+      return data.data;
+    } else {
+      console.error('Invalid API response format:', data);
+      throw new Error('Invalid response format from API');
+    }
+  } catch (error) {
+    console.error('Error fetching stats:', error);
+    throw error;
+  }
+}

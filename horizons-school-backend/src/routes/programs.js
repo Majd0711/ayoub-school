@@ -8,7 +8,8 @@ const {
   deleteProgram,
   getHomePrograms,
   toggleHomeVisibility,
-  reorderPrograms
+  reorderPrograms,
+  toggleActive
 } = require('../controllers/programController');
 const { protect } = require('../middleware/auth');
 const { uploadProgramImage } = require('../utils/fileUpload');
@@ -24,6 +25,7 @@ router.post('/', uploadProgramImage, createProgram);
 router.put('/:id', uploadProgramImage, updateProgram);
 router.delete('/:id', deleteProgram);
 router.put('/:id/toggle-home', toggleHomeVisibility);
+router.put('/:id/toggle-active', toggleActive);
 router.post('/reorder', reorderPrograms);
 
 module.exports = router; 

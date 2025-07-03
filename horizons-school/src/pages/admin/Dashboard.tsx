@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, Alert, Spinner } from 'react-bootstrap';
 import { BsNewspaper, BsPeople, BsEnvelope, BsEye } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
+import { getAllStats } from '../../utils/api';
 
 interface DashboardStats {
   programs: number;
@@ -24,31 +25,17 @@ const Dashboard: React.FC = () => {
     const fetchStats = async () => {
       try {
         setLoading(true);
-        // Fetch stats from API
-        const response = await fetch('http://localhost:8080/api/stats', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
+        setError(null);
+
+        const data = await getAllStats();
+        console.log('Fetched stats:', data);
+
+        setStats({
+          programs: data.programs || 0,
+          news: data.news || 0,
+          contacts: data.contacts || 0,
+          team: data.team || 0
         });
-        
-        if (!response.ok) {
-          throw new Error('Failed to fetch statistics');
-        }
-        
-        const data = await response.json();
-        
-        if (data.success) {
-          setStats({
-            programs: data.data.programs || 0,
-            news: data.data.news || 0,
-            contacts: data.data.contacts || 0,
-            team: data.data.team || 0
-          });
-        } else {
-          throw new Error(data.message || 'Failed to load dashboard statistics');
-        }
       } catch (err: any) {
         console.error('Error fetching stats:', err);
         setError(err.message || 'Failed to load dashboard statistics');
@@ -69,10 +56,6 @@ const Dashboard: React.FC = () => {
         <p className="mt-3">Loading dashboard data...</p>
       </div>
     );
-  }
-
-  if (error) {
-    return <Alert variant="danger">{error}</Alert>;
   }
 
   const statCards = [
@@ -109,6 +92,12 @@ const Dashboard: React.FC = () => {
   return (
     <div>
       <h1 className="mb-4">Dashboard</h1>
+      
+      {error && (
+        <Alert variant="danger" className="mb-4" dismissible onClose={() => setError(null)}>
+          {error}
+        </Alert>
+      )}
       
       <Row>
         {statCards.map((card, index) => (
@@ -155,13 +144,13 @@ const Dashboard: React.FC = () => {
             <Card.Body>
               <ul className="list-group list-group-flush">
                 <li className="list-group-item">
-                  <Link to="/admin/programs" className="text-decoration-none">Add new program</Link>
+                  <Link to="/admin/programs/new" className="text-decoration-none">Add new program</Link>
                 </li>
                 <li className="list-group-item">
-                  <Link to="/admin/news" className="text-decoration-none">Add new news article</Link>
+                  <Link to="/admin/news/new" className="text-decoration-none">Add new news article</Link>
                 </li>
                 <li className="list-group-item">
-                  <Link to="/admin/team" className="text-decoration-none">Add new team member</Link>
+                  <Link to="/admin/team/new" className="text-decoration-none">Add new team member</Link>
                 </li>
                 <li className="list-group-item">
                   <Link to="/admin/contacts" className="text-decoration-none">View contact messages</Link>

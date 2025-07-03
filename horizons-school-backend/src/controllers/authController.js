@@ -53,7 +53,7 @@ const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     
-    console.log('Login attempt:', { email });
+    console.log('Login attempt for:', email);
 
     // Check if admin exists - explicitly include password field
     const admin = await Admin.findOne({ email }).select('+password');
@@ -66,24 +66,24 @@ const login = async (req, res) => {
     }
 
     console.log('Admin found:', { id: admin._id, email: admin.email });
-    console.log('Stored password hash:', admin.password);
-    console.log('Attempting to match password:', password);
 
-    // Check password using direct bcrypt compare
-    const isMatch = await bcrypt.compare(password, admin.password);
-    console.log('Password match result:', isMatch);
-    
+    // Check password using the model's matchPassword method
+    const isMatch = await admin.matchPassword(password);
     if (!isMatch) {
-      console.log('Password does not match');
+      console.log('Password does not match for admin:', email);
       return res.status(401).json({
         success: false,
         message: 'Invalid credentials'
       });
     }
 
+    // Update last login
+    admin.lastLogin = new Date();
+    await admin.save();
+
     // Generate token
     const token = generateToken(admin._id);
-    console.log('Login successful, token generated');
+    console.log('Login successful for admin:', email);
 
     res.json({
       success: true,
