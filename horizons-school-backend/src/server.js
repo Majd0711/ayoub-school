@@ -7,6 +7,13 @@ const connectDB = require('./config/database');
 // Load env vars
 dotenv.config();
 
+// Debug environment variables
+console.log('Environment variables loaded:');
+console.log('PORT:', process.env.PORT || 5000);
+console.log('FRONTEND_URL:', process.env.FRONTEND_URL || 'http://localhost:3000');
+console.log('JWT_SECRET exists:', !!(process.env.JWT_SECRET || 'your_jwt_secret_key_here'));
+console.log('JWT_EXPIRE:', process.env.JWT_EXPIRE || '30d');
+
 // Create Express app
 const app = express();
 
@@ -14,15 +21,25 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// CORS Configuration
+// CORS Configuration - More secure for production
 const corsOptions = {
   origin: process.env.FRONTEND_URL || 'http://localhost:3000',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: false
+  credentials: true,
+  maxAge: 86400 // 24 hours
 };
 
 app.use(cors(corsOptions));
+
+// Security headers
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  next();
+});
 
 // Log all incoming requests for debugging
 app.use((req, res, next) => {
@@ -95,8 +112,14 @@ const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
   try {
-    await connectDB();
-    console.log('MongoDB connected successfully');
+    console.log('Attempting to connect to MongoDB...');
+    const dbConnected = await connectDB();
+    
+    if (dbConnected) {
+      console.log('MongoDB connected successfully');
+    } else {
+      console.log('Running in database-less mode. API functionality will be limited.');
+    }
     
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
@@ -104,7 +127,11 @@ const startServer = async () => {
       console.log(`API available at: http://localhost:${PORT}/api/v1`);
     });
   } catch (err) {
-    console.error('Failed to start server:', err);
+    console.error('Failed to start server:');
+    console.error('Error message:', err.message);
+    console.error('Error name:', err.name);
+    console.error('Error stack:', err.stack);
+    console.error('Full error:', err);
   }
 };
 

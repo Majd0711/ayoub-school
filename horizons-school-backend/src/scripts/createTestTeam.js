@@ -3,11 +3,13 @@ const Admin = require('../models/Admin');
 const TeamMember = require('../models/TeamMember');
 require('dotenv').config();
 
-// Connect to MongoDB with hardcoded URI
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/horizons-school';
+// Connect to MongoDB with the provided Atlas URI
+const MONGODB_URI = 'mongodb+srv://contactmajde:DRJADyNhNV0N5iA5@s.4obmcmw.mongodb.net/?retryWrites=true&w=majority';
+
+console.log('Attempting to connect to MongoDB Atlas...');
 
 mongoose.connect(MONGODB_URI)
-  .then(() => console.log('MongoDB connected'))
+  .then(() => console.log('MongoDB Atlas connected successfully'))
   .catch(err => console.error('MongoDB connection error:', err));
 
 // Function to create test team members
@@ -20,6 +22,8 @@ async function createTestTeam() {
       console.error('No admin user found. Please run createAdmin.js first.');
       process.exit(1);
     }
+    
+    console.log('Using admin:', admin.email);
 
     // Delete existing team members
     await TeamMember.deleteMany({});
@@ -32,12 +36,14 @@ async function createTestTeam() {
         position: 'Directeur Général',
         bio: 'Expert en gestion d\'établissements éducatifs avec une vision stratégique pour l\'enseignement supérieur.',
         department: 'Management',
+        image: 'team-1.jpg',
         socialLinks: {
           linkedin: 'https://linkedin.com/in/ayoub-el-hajouji',
           email: 'ayoub@horizons-school.ma'
         },
         order: 1,
         isActive: true,
+        isFeatured: true,
         createdBy: admin._id
       },
       {
@@ -45,12 +51,14 @@ async function createTestTeam() {
         position: 'Directrice Pédagogique',
         bio: 'Docteur en sciences de l\'éducation avec plus de 15 ans d\'expérience dans le développement de programmes académiques innovants.',
         department: 'Academic',
+        image: 'team-2.jpg',
         socialLinks: {
           linkedin: 'https://linkedin.com/in/fatima-bennani',
           email: 'fatima@horizons-school.ma'
         },
         order: 2,
         isActive: true,
+        isFeatured: true,
         createdBy: admin._id
       },
       {
@@ -58,6 +66,7 @@ async function createTestTeam() {
         position: 'Professeur de Management',
         bio: 'Spécialiste en management stratégique et en leadership, avec une expérience professionnelle dans des multinationales.',
         department: 'Academic',
+        image: 'team-3.jpg',
         socialLinks: {
           linkedin: 'https://linkedin.com/in/hassan-alaoui',
           twitter: 'https://twitter.com/hassan_alaoui',
@@ -65,6 +74,7 @@ async function createTestTeam() {
         },
         order: 3,
         isActive: true,
+        isFeatured: true,
         createdBy: admin._id
       },
       {
@@ -72,12 +82,14 @@ async function createTestTeam() {
         position: 'Professeure de Finance',
         bio: 'Experte en finance d\'entreprise et marchés financiers, ancienne analyste financière chez Attijariwafa Bank.',
         department: 'Academic',
+        image: 'teacher1.jpg',
         socialLinks: {
           linkedin: 'https://linkedin.com/in/nadia-berrada',
           email: 'nadia@horizons-school.ma'
         },
         order: 4,
         isActive: true,
+        isFeatured: true,
         createdBy: admin._id
       },
       {
@@ -85,12 +97,14 @@ async function createTestTeam() {
         position: 'Responsable des Relations Entreprises',
         bio: 'Chargé des partenariats avec les entreprises et de l\'insertion professionnelle des étudiants.',
         department: 'Administrative',
+        image: 'teacher2.jpg',
         socialLinks: {
           linkedin: 'https://linkedin.com/in/karim-tazi',
           email: 'karim@horizons-school.ma'
         },
         order: 5,
         isActive: true,
+        isFeatured: false,
         createdBy: admin._id
       },
       {
@@ -98,11 +112,13 @@ async function createTestTeam() {
         position: 'Responsable Admission',
         bio: 'En charge du processus d\'admission et d\'orientation des nouveaux étudiants.',
         department: 'Administrative',
+        image: 'teacher3.jpg',
         socialLinks: {
           email: 'laila@horizons-school.ma'
         },
         order: 6,
         isActive: true,
+        isFeatured: false,
         createdBy: admin._id
       }
     ];

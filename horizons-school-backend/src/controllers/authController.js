@@ -55,8 +55,8 @@ const login = async (req, res) => {
     
     console.log('Login attempt:', { email });
 
-    // Check if admin exists
-    const admin = await Admin.findOne({ email });
+    // Check if admin exists - explicitly include password field
+    const admin = await Admin.findOne({ email }).select('+password');
     if (!admin) {
       console.log('Admin not found with email:', email);
       return res.status(401).json({

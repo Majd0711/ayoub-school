@@ -1,263 +1,257 @@
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
 const Program = require('../models/Program');
 const Admin = require('../models/Admin');
+require('dotenv').config();
 
-// Load environment variables
-dotenv.config();
+// Connect to MongoDB with the provided Atlas URI
+const MONGODB_URI = 'mongodb+srv://contactmajde:DRJADyNhNV0N5iA5@s.4obmcmw.mongodb.net/?retryWrites=true&w=majority';
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/horizons-school')
-  .then(() => console.log('MongoDB Connected: ' + mongoose.connection.host))
-.catch(err => {
-    console.error('MongoDB connection error:', err);
-  process.exit(1);
-});
+console.log('Attempting to connect to MongoDB Atlas...');
 
-// Initial program data - we'll add the createdBy field after finding an admin
-const programsData = [
-  // Formations Techniques
-  {
-    title: "TS : Gestion des entreprises",
-    description: "Formation technique supérieure en gestion des entreprises, combinant théorie et pratique pour former des professionnels compétents.",
-    level: "Baccalauréat",
-    duration: "2 ans",
-    category: "technical",
-    features: [
-      "Baccalauréat ou niveau technicien requis",
-      "Formation en gestion d'entreprise",
-      "Cours pratiques et théoriques"
-    ],
-    isActive: true
-  },
-  {
-    title: "T : Gestion Informatisée",
-    description: "Formation technique en gestion informatisée, offrant des compétences en informatique appliquée à la gestion d'entreprise.",
-    level: "Niveau Bac et plus",
-    duration: "2 ans",
-    category: "technical",
-    features: [
-      "Niveau Bac ou plus requis",
-      "Formation en informatique de gestion",
-      "Projets pratiques inclus"
-    ],
-    isActive: true
-  },
+mongoose.connect(MONGODB_URI)
+  .then(() => console.log('MongoDB Atlas connected successfully'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
-  // Licence Professionnelle
-  {
-    title: "Licence Pro - Management des Organisations",
-    description: "Formation professionnelle en management des organisations, préparant les étudiants à des postes de responsabilité dans divers secteurs.",
-    level: "Bac+2 (DUT, BTS, DEUG)",
-    duration: "1 an",
-    category: "license",
-    features: [
-      "Bac+2 en gestion ou domaine équivalent",
-      "Connaissances en management",
-      "Projet tutoré",
-      "Stage de 12 à 16 semaines"
-    ],
-    isActive: true
-  },
-  {
-    title: "Licence Pro - Gestion des Ressources Humaines",
-    description: "Formation professionnelle en gestion des ressources humaines, formant des spécialistes RH capables de gérer le capital humain de l'entreprise.",
-    level: "Bac+2 (DUT, BTS, DEUG)",
-    duration: "1 an",
-    category: "license",
-    features: [
-      "Bac+2 en gestion RH ou domaine similaire",
-      "Intérêt pour les relations humaines",
-      "Projet professionnel",
-      "Stage en entreprise obligatoire"
-    ],
-    isActive: true
-  },
-  {
-    title: "Licence Pro - Commerce International",
-    description: "Formation professionnelle en commerce international, préparant les étudiants aux défis du commerce mondial et des échanges internationaux.",
-    level: "Bac+2 (DUT, BTS, DEUG)",
-    duration: "1 an",
-    category: "license",
-    features: [
-      "Bac+2 en commerce ou équivalent",
-      "Niveau B2 en langues étrangères",
-      "Projet de fin d'études",
-      "Stage à l'international recommandé"
-    ],
-    isActive: true
-  },
-  {
-    title: "Licence Pro - Gestion Comptable et Financière",
-    description: "Formation professionnelle en gestion comptable et financière, formant des experts en comptabilité et analyse financière.",
-    level: "Bac+2 (DUT, BTS, DEUG)",
-    duration: "1 an",
-    category: "license",
-    features: [
-      "Bac+2 en comptabilité ou finance",
-      "Maîtrise des outils comptables",
-      "Mémoire professionnel",
-      "Stage en cabinet ou service comptable"
-    ],
-    isActive: true
-  },
-
-  // Master Professionnel
-  {
-    title: "Master en Management et Stratégie des Entreprises",
-    description: "Formation avancée en management et stratégie des entreprises, préparant les étudiants à des postes de direction et de conseil stratégique.",
-    level: "Bac+4",
-    duration: "2 ans",
-    category: "master",
-    features: [
-      "Bac+4 en gestion, économie ou domaine équivalent",
-      "Connaissances en management et stratégie",
-      "Projet de fin d'études",
-      "Stage en entreprise obligatoire"
-    ],
-    isActive: true
-  },
-  {
-    title: "Master en Expertise Comptable et Gestion Financière",
-    description: "Formation avancée en expertise comptable et gestion financière, préparant aux métiers de l'expertise comptable et de la direction financière.",
-    level: "Bac+4",
-    duration: "2 ans",
-    category: "master",
-    features: [
-      "Bac+4 en comptabilité ou finance",
-      "Connaissances en gestion financière",
-      "Mémoire de fin d'études",
-      "Stage professionnel en cabinet ou entreprise"
-    ],
-    isActive: true
-  },
-  {
-    title: "Master en Management des Ressources Humaines",
-    description: "Formation avancée en management des ressources humaines, formant des experts RH capables de définir et mettre en œuvre la politique RH de l'entreprise.",
-    level: "Bac+4",
-    duration: "2 ans",
-    category: "master",
-    features: [
-      "Bac+4 en gestion des RH ou domaine similaire",
-      "Intérêt pour la gestion du capital humain",
-      "Projet professionnel",
-      "Stage en service RH obligatoire"
-    ],
-    isActive: true
-  },
-
-  // Formations Continues
-  {
-    title: "Formation en Intelligence Artificielle",
-    description: "Formation continue en intelligence artificielle, permettant aux professionnels de se former aux technologies d'IA et à leur application en entreprise.",
-    level: "Bac+3",
-    duration: "6 mois",
-    category: "continuous",
-    features: [
-      "Bac+3 en informatique",
-      "Bases en programmation Python",
-      "Projet pratique",
-      "Présentation finale"
-    ],
-    isActive: true
-  },
-  {
-    title: "Développement Web Full Stack",
-    description: "Formation continue en développement web full stack, formant des développeurs compétents sur l'ensemble des technologies web modernes.",
-    level: "Bac+2",
-    duration: "6 mois",
-    category: "continuous",
-    features: [
-      "Bases en programmation",
-      "Projet de fin de formation",
-      "Portfolio de projets",
-      "Stage optionnel"
-    ],
-    isActive: true
-  },
-  {
-    title: "Marketing Digital et Réseaux Sociaux",
-    description: "Formation continue en marketing digital et réseaux sociaux, formant des experts en stratégies marketing numériques et communication digitale.",
-    level: "Bac+2",
-    duration: "6 mois",
-    category: "continuous",
-    features: [
-      "Intérêt pour le marketing digital",
-      "Projet de campagne",
-      "Certification Google Ads/SEO",
-      "Stage pratique"
-    ],
-    isActive: true
-  },
-  {
-    title: "Gestion des Établissements de Santé",
-    description: "Formation continue en gestion des établissements de santé, préparant les professionnels aux défis spécifiques du management hospitalier.",
-    level: "Bac+3",
-    duration: "6 mois",
-    category: "continuous",
-    features: [
-      "Bac+3 en gestion ou santé",
-      "Stage en milieu hospitalier",
-      "Mémoire de fin d'études",
-      "Présentation orale"
-    ],
-    isActive: true
-  },
-
-  // Formations en Langues
-  {
-    title: "Formation en Langues",
-    description: "Formations linguistiques adaptées à tous les niveaux, permettant d'acquérir ou de perfectionner ses compétences en langues étrangères.",
-    level: "Tous niveaux",
-    duration: "Variable",
-    category: "languages",
-    features: [
-      "Anglais, Français, Espagnol, Allemand",
-      "Tests de niveau personnalisés",
-      "Cours en petits groupes",
-      "Préparation aux certifications internationales"
-    ],
-    isActive: true
-  }
-];
-
-const seedPrograms = async () => {
+async function createTestPrograms() {
   try {
+    // Find admin user to use as creator
+    const admin = await Admin.findOne();
+    
+    if (!admin) {
+      console.error('No admin user found. Please run createAdmin.js first.');
+      process.exit(1);
+    }
+    
+    console.log('Using admin:', admin.email);
+
     // Delete existing programs
     await Program.deleteMany({});
     console.log('Deleted existing programs');
 
-    // Find an admin user or create a default one
-    let admin = await Admin.findOne();
-    
-    if (!admin) {
-      console.log('No admin found. Creating a default admin...');
-      admin = await Admin.create({
-        username: 'admin',
-        email: 'admin@horizons-school.com',
-        password: 'admin123', // This will be hashed by the model's pre-save hook
-        role: 'super-admin'
-      });
-      console.log('Default admin created');
-    }
+    // Create programs
+    const programs = [
+      {
+        title: 'Licence en Management des Organisations',
+        slug: 'licence-management-organisations',
+        description: 'Ce programme de licence forme les étudiants aux fondamentaux du management et de la gestion d\'entreprise. Les diplômés seront capables de comprendre les enjeux stratégiques des organisations et d\'appliquer les outils de gestion appropriés.',
+        category: 'Management',
+        duration: '3 ans',
+        level: 'Licence',
+        image: 'management.jpg',
+        isActive: true,
+        features: [
+          'Cours dispensés par des professionnels',
+          'Stages en entreprise',
+          'Projets pratiques',
+          'Accompagnement personnalisé'
+        ],
+        modules: [
+          { title: 'Introduction au management', description: 'Fondamentaux du management et théories des organisations' },
+          { title: 'Comptabilité générale', description: 'Principes comptables et états financiers' },
+          { title: 'Marketing de base', description: 'Concepts fondamentaux du marketing et études de marché' },
+          { title: 'Droit des affaires', description: 'Cadre juridique des entreprises et contrats commerciaux' },
+          { title: 'Gestion des ressources humaines', description: 'Recrutement, formation et gestion des talents' },
+          { title: 'Management stratégique', description: 'Analyse stratégique et prise de décision' }
+        ],
+        seats: 30,
+        createdBy: admin._id
+      },
+      {
+        title: 'Licence en Commerce International',
+        slug: 'licence-commerce-international',
+        description: 'Cette licence prépare les étudiants aux défis du commerce mondial. Le programme couvre les aspects économiques, juridiques et logistiques du commerce international, ainsi que les stratégies d\'exportation et d\'importation.',
+        category: 'Business',
+        duration: '3 ans',
+        level: 'Licence',
+        image: 'commerce.jpg',
+        isActive: true,
+        features: [
+          'Cours en anglais et français',
+          'Séminaires avec des experts internationaux',
+          'Stage à l\'étranger',
+          'Préparation aux certifications internationales'
+        ],
+        modules: [
+          { title: 'Économie internationale', description: 'Théories du commerce international et politiques économiques' },
+          { title: 'Droit international', description: 'Cadre juridique des échanges internationaux' },
+          { title: 'Logistique internationale', description: 'Gestion de la chaîne d\'approvisionnement mondiale' },
+          { title: 'Marketing international', description: 'Stratégies marketing adaptées aux marchés internationaux' },
+          { title: 'Négociation commerciale', description: 'Techniques de négociation dans un contexte multiculturel' },
+          { title: 'Géopolitique et commerce', description: 'Impact des relations internationales sur les échanges commerciaux' }
+        ],
+        seats: 25,
+        createdBy: admin._id
+      },
+      {
+        title: 'Licence en Gestion des Ressources Humaines',
+        slug: 'licence-ressources-humaines',
+        description: 'Cette formation spécialisée en GRH permet aux étudiants d\'acquérir les compétences nécessaires pour gérer efficacement le capital humain d\'une organisation, de la gestion administrative à la stratégie RH.',
+        category: 'Human Resources',
+        duration: '3 ans',
+        level: 'Licence',
+        image: 'hr.jpg',
+        isActive: true,
+        features: [
+          'Études de cas réels',
+          'Intervention de DRH',
+          'Logiciels de gestion RH',
+          'Techniques d\'entretien et de recrutement'
+        ],
+        modules: [
+          { title: 'Fondements de la GRH', description: 'Histoire et évolution de la fonction RH' },
+          { title: 'Droit du travail', description: 'Cadre juridique des relations employeur-employé' },
+          { title: 'Recrutement et sélection', description: 'Processus et techniques de recrutement' },
+          { title: 'Formation et développement', description: 'Gestion des compétences et plans de formation' },
+          { title: 'Gestion de la paie', description: 'Aspects techniques et réglementaires de la rémunération' },
+          { title: 'SIRH', description: 'Systèmes d\'information RH et digitalisation' }
+        ],
+        seats: 20,
+        createdBy: admin._id
+      },
+      {
+        title: 'Licence en Finance et Comptabilité',
+        slug: 'licence-finance-comptabilite',
+        description: 'Ce programme forme les étudiants aux métiers de la finance et de la comptabilité. Les diplômés seront capables d\'analyser des états financiers, de gérer des budgets et de conseiller sur les décisions financières.',
+        category: 'Finance',
+        duration: '3 ans',
+        level: 'Licence',
+        image: 'finance.jpg',
+        isActive: true,
+        features: [
+          'Préparation aux certifications professionnelles',
+          'Logiciels comptables professionnels',
+          'Études de cas financiers',
+          'Simulation de marché financier'
+        ],
+        modules: [
+          { title: 'Comptabilité générale et analytique', description: 'Principes comptables avancés et analyse des coûts' },
+          { title: 'Finance d\'entreprise', description: 'Gestion financière et décisions d\'investissement' },
+          { title: 'Fiscalité', description: 'Système fiscal marocain et optimisation fiscale' },
+          { title: 'Audit et contrôle de gestion', description: 'Méthodes d\'audit et tableaux de bord' },
+          { title: 'Marchés financiers', description: 'Fonctionnement des marchés et produits financiers' },
+          { title: 'Analyse financière', description: 'Évaluation de la performance financière des entreprises' }
+        ],
+        seats: 25,
+        createdBy: admin._id
+      },
+      {
+        title: 'Master en Management Stratégique',
+        slug: 'master-management-strategique',
+        description: 'Ce Master forme les futurs cadres dirigeants capables de définir et mettre en œuvre des stratégies d\'entreprise. Le programme combine théorie avancée et applications pratiques dans tous les domaines du management.',
+        category: 'Management',
+        duration: '2 ans',
+        level: 'Master',
+        image: 'management.jpg',
+        isActive: true,
+        features: [
+          'Business cases avec des entreprises partenaires',
+          'Séminaires de leadership',
+          'Voyage d\'étude international',
+          'Mémoire professionnel'
+        ],
+        modules: [
+          { title: 'Stratégie d\'entreprise avancée', description: 'Analyse concurrentielle et positionnement stratégique' },
+          { title: 'Leadership et management d\'équipe', description: 'Développement des compétences de direction' },
+          { title: 'Innovation et changement organisationnel', description: 'Gestion de l\'innovation et conduite du changement' },
+          { title: 'Business Intelligence', description: 'Analyse de données pour la prise de décision' },
+          { title: 'Management international', description: 'Gestion des équipes multiculturelles et stratégies globales' },
+          { title: 'Entrepreneuriat et business model', description: 'Création d\'entreprise et modèles économiques innovants' }
+        ],
+        seats: 20,
+        createdBy: admin._id
+      },
+      {
+        title: 'Master en Finance d\'Entreprise',
+        slug: 'master-finance-entreprise',
+        description: 'Ce Master spécialisé en finance d\'entreprise forme des experts capables d\'optimiser la gestion financière des organisations, d\'évaluer les investissements et de conseiller sur les décisions stratégiques financières.',
+        category: 'Finance',
+        duration: '2 ans',
+        level: 'Master',
+        image: 'finance.jpg',
+        isActive: true,
+        features: [
+          'Certifications financières internationales',
+          'Logiciels d\'analyse financière professionnels',
+          'Études de cas réels',
+          'Interventions de directeurs financiers'
+        ],
+        modules: [
+          { title: 'Analyse financière approfondie', description: 'Techniques avancées d\'analyse et de diagnostic financier' },
+          { title: 'Évaluation d\'entreprise', description: 'Méthodes d\'évaluation et fusions-acquisitions' },
+          { title: 'Gestion de trésorerie', description: 'Optimisation des flux financiers et relations bancaires' },
+          { title: 'Ingénierie financière', description: 'Montages financiers complexes et produits structurés' },
+          { title: 'Finance internationale', description: 'Gestion des risques de change et financement international' },
+          { title: 'Private Equity et capital-risque', description: 'Investissement en capital et financement de start-ups' }
+        ],
+        seats: 15,
+        createdBy: admin._id
+      },
+      {
+        title: 'Master en Marketing Digital et E-commerce',
+        slug: 'master-marketing-digital',
+        description: 'Ce programme forme des spécialistes du marketing à l\'ère numérique, capables de concevoir et mettre en œuvre des stratégies digitales performantes et de développer des activités de e-commerce.',
+        category: 'Marketing',
+        duration: '2 ans',
+        level: 'Master',
+        image: 'commerce.jpg',
+        isActive: true,
+        features: [
+          'Projets réels avec des entreprises',
+          'Certifications Google et Meta',
+          'Hackathons marketing',
+          'Développement de business en ligne'
+        ],
+        modules: [
+          { title: 'Stratégie marketing digital', description: 'Élaboration de plans marketing omnicanaux' },
+          { title: 'SEO et SEA', description: 'Optimisation pour les moteurs de recherche et publicité en ligne' },
+          { title: 'Social Media Management', description: 'Gestion avancée des réseaux sociaux et influence marketing' },
+          { title: 'UX/UI et web design', description: 'Conception d\'expériences utilisateur optimales' },
+          { title: 'E-commerce et marketplaces', description: 'Création et gestion de plateformes de vente en ligne' },
+          { title: 'Data Marketing', description: 'Analyse de données marketing et personnalisation' }
+        ],
+        seats: 20,
+        createdBy: admin._id
+      },
+      {
+        title: 'Master en Gestion Stratégique des Ressources Humaines',
+        slug: 'master-ressources-humaines-strategiques',
+        description: 'Ce Master forme des experts RH capables d\'aligner la stratégie RH avec la stratégie globale de l\'entreprise, de gérer les talents et de conduire des transformations organisationnelles.',
+        category: 'Human Resources',
+        duration: '2 ans',
+        level: 'Master',
+        image: 'hr.jpg',
+        isActive: true,
+        features: [
+          'Coaching professionnel',
+          'Assessment center',
+          'Consulting RH en entreprise',
+          'Certification en Digital HR'
+        ],
+        modules: [
+          { title: 'Stratégie RH', description: 'Alignement de la stratégie RH avec les objectifs d\'entreprise' },
+          { title: 'Talent Management', description: 'Attraction, développement et fidélisation des talents' },
+          { title: 'Change Management', description: 'Gestion des transformations organisationnelles' },
+          { title: 'HR Analytics', description: 'Mesure de la performance RH et prise de décision basée sur les données' },
+          { title: 'Relations sociales avancées', description: 'Négociation sociale et gestion des conflits' },
+          { title: 'Leadership et développement organisationnel', description: 'Développement du leadership et culture d\'entreprise' }
+        ],
+        seats: 15,
+        createdBy: admin._id
+      }
+    ];
 
-    // Add createdBy field to all programs
-    const programsWithAdmin = programsData.map(program => ({
-      ...program,
-      createdBy: admin._id
-    }));
-    
-    // Insert new programs
-    const createdPrograms = await Program.insertMany(programsWithAdmin);
-    console.log(`${createdPrograms.length} programs created successfully`);
+    // Insert programs
+    await Program.insertMany(programs);
+    console.log(`Created ${programs.length} test programs`);
 
-    // Close the connection
-    mongoose.connection.close();
+    // Disconnect from MongoDB
+    await mongoose.disconnect();
+    console.log('MongoDB disconnected');
   } catch (error) {
     console.error('Error seeding programs:', error);
     process.exit(1);
   }
-}; 
+}
 
-// Run the seed function
-seedPrograms(); 
+// Run the function
+createTestPrograms(); 

@@ -175,7 +175,7 @@ async function apiRequest<T>(
         ...options.headers,
       },
       mode: 'cors',
-      credentials: 'omit', // Changed from 'include' to 'omit'
+      credentials: 'include', // Changed from 'omit' to 'include' to allow cookies/auth
     };
 
     // Add timestamp to GET requests to prevent browser caching
@@ -314,7 +314,7 @@ export const programsApi = {
           'Accept': 'application/json',
         },
         mode: 'cors',
-        credentials: 'omit'
+        credentials: 'include'
       });
 
       if (!response.ok) {
@@ -347,7 +347,7 @@ export const programsApi = {
             'Accept': 'application/json',
           },
           mode: 'cors',
-          credentials: 'omit'
+          credentials: 'include'
         }
       );
 

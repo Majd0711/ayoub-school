@@ -6,16 +6,20 @@ const Admin = require('../models/Admin');
 // Load env vars
 dotenv.config({ path: './.env' });
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/horizons-school')
-  .then(() => console.log('MongoDB Connected'))
-  .catch(err => console.error('MongoDB Connection Error:', err));
+// Connect to MongoDB with the provided Atlas URI
+const MONGODB_URI = 'mongodb+srv://contactmajde:DRJADyNhNV0N5iA5@s.4obmcmw.mongodb.net/?retryWrites=true&w=majority';
+
+console.log('Attempting to connect to MongoDB Atlas...');
+
+mongoose.connect(MONGODB_URI)
+  .then(() => console.log('MongoDB Atlas connected successfully'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
 // Admin data
 const adminData = {
   username: 'admin',
   name: 'Admin User',
-  email: 'admin@horizons-school.com',
+  email: 'admin@horizons-school.ma',
   password: 'Admin@123',
   role: 'super-admin'
 };

@@ -17,7 +17,7 @@ const adminSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Password is required'],
     minlength: 6,
-    select: true,
+    select: false,
   },
   role: {
     type: String,
@@ -37,17 +37,30 @@ adminSchema.pre('save', async function(next) {
   if (!this.isModified('password')) return next();
   
   try {
+    console.log('Hashing password before save...');
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
+    console.log('Password hashed successfully');
     next();
   } catch (error) {
+    console.error('Error hashing password:', error);
     next(error);
   }
 });
 
 // Method to check password
 adminSchema.methods.matchPassword = async function(enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
+  try {
+    console.log('Matching password using method...');
+    console.log('Stored hash:', this.password);
+    console.log('Entered password:', enteredPassword);
+    const isMatch = await bcrypt.compare(enteredPassword, this.password);
+    console.log('Password match result:', isMatch);
+    return isMatch;
+  } catch (error) {
+    console.error('Error matching password:', error);
+    return false;
+  }
 };
 
 const Admin = mongoose.model('Admin', adminSchema);
