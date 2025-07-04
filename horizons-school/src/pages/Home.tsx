@@ -310,7 +310,7 @@ const Home: React.FC = () => {
                   </p>
                   <div className="text-center mb-4">
                     <h5 className="mb-1">Abdelah El Kabir</h5>
-                    <p className="text-muted mb-0">Promotion 2022 - Analyste Financier</p>
+                    <p className="text-muted mb-0">Promotion 2024 - Analyste Financier</p>
                   </div>
                 </Carousel.Item>
 
@@ -325,7 +325,7 @@ const Home: React.FC = () => {
                   </p>
                   <div className="text-center mb-4">
                     <h5 className="mb-1">Sara Naji</h5>
-                    <p className="text-muted mb-0">Promotion 2023 - Responsable RH</p>
+                    <p className="text-muted mb-0">Promotion 2024 - Responsable RH</p>
                   </div>
                 </Carousel.Item>
 
@@ -413,20 +413,98 @@ const Home: React.FC = () => {
                 />
               </div>
             </Col>
-            {[2, 3, 4, 5].map((partner) => (
-              <Col xs={6} sm={4} md={2} key={partner} data-aos="fade-up" data-aos-delay={`${partner * 100}`}>
-                <div className="bg-white p-3 rounded-3 shadow-sm h-100 d-flex align-items-center justify-content-center">
-                  <div 
-                    style={{
-                      width: '100%',
-                      height: '80px',
-                      backgroundColor: '#f8f9fa',
-                      borderRadius: '4px'
-                    }}
-                  />
-                </div>
-              </Col>
-            ))}
+            <Col xs={6} sm={4} md={2} data-aos="fade-up" data-aos-delay="200">
+              <div className="bg-white p-3 rounded-3 shadow-sm h-100 d-flex align-items-center justify-content-center">
+                <img 
+                  src="/images/logo-ifps.png"
+                  alt="IFPS"
+                  className="img-fluid"
+                  style={{
+                    maxHeight: '80px',
+                    filter: 'grayscale(100%)', 
+                    opacity: 0.7, 
+                    transition: 'all 0.3s ease'
+                  }}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.filter = 'grayscale(0%)';
+                    e.currentTarget.style.opacity = '1';
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.filter = 'grayscale(100%)';
+                    e.currentTarget.style.opacity = '0.7';
+                  }}
+                />
+              </div>
+            </Col>
+            <Col xs={6} sm={4} md={2} data-aos="fade-up" data-aos-delay="300">
+              <div className="bg-white p-3 rounded-3 shadow-sm h-100 d-flex align-items-center justify-content-center">
+                <img 
+                  src="/images/logo,accreditation.png"
+                  alt="Accréditation"
+                  className="img-fluid"
+                  style={{
+                    maxHeight: '80px',
+                    filter: 'grayscale(100%)', 
+                    opacity: 0.7, 
+                    transition: 'all 0.3s ease'
+                  }}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.filter = 'grayscale(0%)';
+                    e.currentTarget.style.opacity = '1';
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.filter = 'grayscale(100%)';
+                    e.currentTarget.style.opacity = '0.7';
+                  }}
+                />
+              </div>
+            </Col>
+            <Col xs={6} sm={4} md={2} data-aos="fade-up" data-aos-delay="400">
+              <div className="bg-white p-3 rounded-3 shadow-sm h-100 d-flex align-items-center justify-content-center">
+                <img 
+                  src="/images/logo,Europe.png"
+                  alt="Europe"
+                  className="img-fluid"
+                  style={{
+                    maxHeight: '80px',
+                    filter: 'grayscale(100%)', 
+                    opacity: 0.7, 
+                    transition: 'all 0.3s ease'
+                  }}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.filter = 'grayscale(0%)';
+                    e.currentTarget.style.opacity = '1';
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.filter = 'grayscale(100%)';
+                    e.currentTarget.style.opacity = '0.7';
+                  }}
+                />
+              </div>
+            </Col>
+            <Col xs={6} sm={4} md={2} data-aos="fade-up" data-aos-delay="500">
+              <div className="bg-white p-3 rounded-3 shadow-sm h-100 d-flex align-items-center justify-content-center">
+                <img 
+                  src="/images/logo,fp.jpg"
+                  alt="FP"
+                  className="img-fluid"
+                  style={{
+                    maxHeight: '80px',
+                    filter: 'grayscale(100%)', 
+                    opacity: 0.7, 
+                    transition: 'all 0.3s ease'
+                  }}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.filter = 'grayscale(0%)';
+                    e.currentTarget.style.opacity = '1';
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.filter = 'grayscale(100%)';
+                    e.currentTarget.style.opacity = '0.7';
+                  }}
+                />
+              </div>
+            </Col>
           </Row>
         </Container>
       </section>

@@ -9,45 +9,43 @@ const protect = async (req, res, next) => {
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
       token = req.headers.authorization.split(' ')[1];
     }
-    // Also check for token in cookies or query params for flexibility
-    else if (req.cookies && req.cookies.token) {
-      token = req.cookies.token;
-    } else if (req.query.token) {
-      token = req.query.token;
-    }
 
     if (!token) {
       return res.status(401).json({
         success: false,
-        message: 'Not authorized to access this route'
+        message: 'Not authorized - no token provided'
       });
     }
 
     try {
       // Verify token
-      const decoded = jwt.verify(
-        token,
-        process.env.JWT_SECRET || 'horizons-school-secret-key-2024'
-      );
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'horizons-school-secret-key-2024');
 
-      // Get user from token
-      const user = await Admin.findById(decoded.id).select('-password');
-      if (!user) {
+      // Get admin from token
+      const admin = await Admin.findById(decoded.id);
+      if (!admin) {
         return res.status(401).json({
           success: false,
-          message: 'User not found'
+          message: 'Admin not found'
         });
       }
 
-      // Add user to request object
-      req.user = user;
+      req.user = admin;
       next();
     } catch (error) {
-      console.error('Token verification error:', error);
-      return res.status(401).json({
-        success: false,
-        message: 'Not authorized to access this route'
-      });
+      if (error.name === 'JsonWebTokenError') {
+        return res.status(401).json({
+          success: false,
+          message: 'Invalid token'
+        });
+      }
+      if (error.name === 'TokenExpiredError') {
+        return res.status(401).json({
+          success: false,
+          message: 'Token expired'
+        });
+      }
+      throw error;
     }
   } catch (error) {
     console.error('Auth middleware error:', error);

@@ -80,7 +80,7 @@ export const programs = [
     level: "Bac+2 (DUT, BTS, DEUG)",
     duration: "1 an",
     features: [
-      "Bac+2 en comptabilité ou finance",
+      "Bac+2 en comptabilité ou domaine équivalent",
       "Maîtrise des outils comptables",
       "Mémoire professionnel",
       "Stage en cabinet ou service comptable"
@@ -92,10 +92,10 @@ export const programs = [
   {
     _id: "m1",
     title: "Master en Management et Stratégie des Entreprises",
-    level: "Bac+4",
+    level: "Bac+3",
     duration: "2 ans",
     features: [
-      "Bac+4 en gestion, économie ou domaine équivalent",
+      "Bac+3 en gestion, économie ou domaine équivalent",
       "Connaissances en management et stratégie",
       "Projet de fin d'études",
       "Stage en entreprise obligatoire"
@@ -105,10 +105,10 @@ export const programs = [
   {
     _id: "m2",
     title: "Master en Expertise Comptable et Gestion Financière",
-    level: "Bac+4",
+    level: "Bac+3",
     duration: "2 ans",
     features: [
-      "Bac+4 en comptabilité ou finance",
+      "Bac+3 en comptabilité ou domaine équivalent",
       "Connaissances en gestion financière",
       "Mémoire de fin d'études",
       "Stage professionnel en cabinet ou entreprise"
@@ -118,10 +118,10 @@ export const programs = [
   {
     _id: "m3",
     title: "Master en Management des Ressources Humaines",
-    level: "Bac+4",
+    level: "Bac+3",
     duration: "2 ans",
     features: [
-      "Bac+4 en gestion des RH ou domaine similaire",
+      "Bac+3 en gestion des RH ou domaine similaire",
       "Intérêt pour la gestion du capital humain",
       "Projet professionnel",
       "Stage en service RH obligatoire"
@@ -133,10 +133,10 @@ export const programs = [
   {
     _id: "fc1",
     title: "Formation en Intelligence Artificielle",
-    level: "Bac+3",
+    level: "Tous niveaux",
     duration: "6 mois",
     features: [
-      "Bac+3 en informatique",
+      "Connaissances de base en informatique",
       "Bases en programmation Python",
       "Projet pratique",
       "Présentation finale"
@@ -146,7 +146,7 @@ export const programs = [
   {
     _id: "fc2",
     title: "Développement Web Full Stack",
-    level: "Bac+2",
+    level: "Tous niveaux",
     duration: "6 mois",
     features: [
       "Bases en programmation",
@@ -159,7 +159,7 @@ export const programs = [
   {
     _id: "fc3",
     title: "Marketing Digital et Réseaux Sociaux",
-    level: "Bac+2",
+    level: "Tous niveaux",
     duration: "6 mois",
     features: [
       "Intérêt pour le marketing digital",
@@ -172,13 +172,104 @@ export const programs = [
   {
     _id: "fc4",
     title: "Gestion des Établissements de Santé",
-    level: "Bac+3",
+    level: "Tous niveaux",
     duration: "6 mois",
     features: [
-      "Bac+3 en gestion ou santé",
+      "Connaissances de base dans le domaine",
       "Stage en milieu hospitalier",
       "Mémoire de fin d'études",
       "Présentation orale"
+    ],
+    category: "continuous"
+  },
+  {
+    _id: "fc5",
+    title: "Formation en Comptabilité",
+    level: "Tous niveaux",
+    duration: "6 mois",
+    features: [
+      "Bases de la comptabilité",
+      "Logiciels comptables",
+      "Cas pratiques",
+      "Stage optionnel"
+    ],
+    category: "continuous"
+  },
+  {
+    _id: "fc6",
+    title: "Formation Délégué Médical",
+    level: "Tous niveaux",
+    duration: "6 mois",
+    features: [
+      "Connaissances médicales de base",
+      "Techniques de vente",
+      "Stage pratique",
+      "Certification finale"
+    ],
+    category: "continuous"
+  },
+  {
+    _id: "fc7",
+    title: "Formation Médias et Communication",
+    level: "Tous niveaux",
+    duration: "6 mois",
+    features: [
+      "Communication digitale",
+      "Relations publiques",
+      "Projet média",
+      "Stage pratique"
+    ],
+    category: "continuous"
+  },
+  {
+    _id: "fc8",
+    title: "Formation en Finance",
+    level: "Tous niveaux",
+    duration: "6 mois",
+    features: [
+      "Bases de la finance",
+      "Analyse financière",
+      "Études de cas",
+      "Projet final"
+    ],
+    category: "continuous"
+  },
+  {
+    _id: "fc9",
+    title: "Gestion de Stock et Logistique",
+    level: "Tous niveaux",
+    duration: "6 mois",
+    features: [
+      "Supply chain",
+      "Logiciels de gestion",
+      "Cas pratiques",
+      "Stage optionnel"
+    ],
+    category: "continuous"
+  },
+  {
+    _id: "fc10",
+    title: "Réseaux Informatiques",
+    level: "Tous niveaux",
+    duration: "6 mois",
+    features: [
+      "Bases des réseaux",
+      "Configuration",
+      "Sécurité",
+      "Projet pratique"
+    ],
+    category: "continuous"
+  },
+  {
+    _id: "fc11",
+    title: "Marketing Fondamental",
+    level: "Tous niveaux",
+    duration: "6 mois",
+    features: [
+      "Principes du marketing",
+      "Études de marché",
+      "Plan marketing",
+      "Projet final"
     ],
     category: "continuous"
   },

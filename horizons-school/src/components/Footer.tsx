@@ -181,7 +181,7 @@ const Footer: React.FC = () => {
         
         <Row className="align-items-center position-relative">
           <Col className="text-center">
-            <p className="mb-0">&copy; 2022 Horizons School. Tous droits réservés.</p>
+            <p className="mb-0">&copy; 2025 Horizons School. Tous droits réservés.</p>
           </Col>
           <div className="position-absolute" style={{ right: '15px', bottom: '0' }}>
             <ScrollToTopButton />

@@ -1,5 +1,29 @@
 [
   {
+    "_id": "686401895d5d0f7024032276",
+    "title": "Formations en Langues",
+    "description": "Formation intensive en langues étrangères, incluant l'anglais, le français, et d'autres langues importantes pour le monde professionnel.",
+    "category": "languages",
+    "duration": "Variable",
+    "level": "Tous niveaux",
+    "image": "Les langues.jpg",
+    "features": [
+      "Cours intensifs de langues",
+      "Préparation aux certifications internationales",
+      "Groupes de niveau adaptés",
+      "Professeurs natifs"
+    ],
+    "isActive": true,
+    "isFeatured": true,
+    "seats": 15,
+    "createdBy": "685ac1d6ed6c525ee450bd8c",
+    "modules": [],
+    "slug": "formations-en-langues",
+    "__v": 0,
+    "createdAt": "2025-07-01T15:40:57.206Z",
+    "updatedAt": "2025-07-01T15:40:57.206Z"
+  },
+  {
     "_id": "686401895d5d0f7024032277",
     "title": "TS : Gestion des entreprises",
     "description": "Formation technique supérieure en gestion des entreprises, combinant théorie et pratique pour former des professionnels compétents.",
@@ -17,6 +41,7 @@
     "seats": 20,
     "createdBy": "685ac1d6ed6c525ee450bd8c",
     "modules": [],
+    "slug": "ts-gestion-des-entreprises",
     "__v": 0,
     "createdAt": "2025-07-01T15:40:57.206Z",
     "updatedAt": "2025-07-01T15:40:57.206Z"
@@ -121,7 +146,7 @@
     "level": "Bac+2 (DUT, BTS, DEUG)",
     "image": "default-program.jpg",
     "features": [
-      "Bac+2 en comptabilité ou finance",
+      "Bac+2 en comptabilité ou domaine équivalent",
       "Maîtrise des outils comptables",
       "Mémoire professionnel",
       "Stage en cabinet ou service comptable"
@@ -141,10 +166,10 @@
     "description": "Formation avancée en management et stratégie des entreprises, préparant les étudiants à des postes de direction et de conseil stratégique.",
     "category": "master",
     "duration": "2 ans",
-    "level": "Bac+4",
+    "level": "Bac+3",
     "image": "default-program.jpg",
     "features": [
-      "Bac+4 en gestion, économie ou domaine équivalent",
+      "Bac+3 en gestion, économie ou domaine équivalent",
       "Connaissances en management et stratégie",
       "Projet de fin d'études",
       "Stage en entreprise obligatoire"
@@ -164,10 +189,10 @@
     "description": "Formation avancée en expertise comptable et gestion financière, préparant aux métiers de l'expertise comptable et de la direction financière.",
     "category": "master",
     "duration": "2 ans",
-    "level": "Bac+4",
+    "level": "Bac+3",
     "image": "default-program.jpg",
     "features": [
-      "Bac+4 en comptabilité ou finance",
+      "Bac+3 en comptabilité ou domaine équivalent",
       "Connaissances en gestion financière",
       "Mémoire de fin d'études",
       "Stage professionnel en cabinet ou entreprise"
@@ -187,10 +212,10 @@
     "description": "Formation avancée en management des ressources humaines, formant des experts RH capables de définir et mettre en œuvre la politique RH de l'entreprise.",
     "category": "master",
     "duration": "2 ans",
-    "level": "Bac+4",
+    "level": "Bac+3",
     "image": "default-program.jpg",
     "features": [
-      "Bac+4 en gestion des RH ou domaine similaire",
+      "Bac+3 en gestion des RH ou domaine similaire",
       "Intérêt pour la gestion du capital humain",
       "Projet professionnel",
       "Stage en service RH obligatoire"
@@ -205,15 +230,15 @@
     "updatedAt": "2025-07-01T15:40:57.208Z"
   },
   {
-    "_id": "686401895d5d0f7024032280",
+    "_id": "fc1",
     "title": "Formation en Intelligence Artificielle",
     "description": "Formation continue en intelligence artificielle, permettant aux professionnels de se former aux technologies d'IA et à leur application en entreprise.",
     "category": "continuous",
     "duration": "6 mois",
-    "level": "Bac+3",
+    "level": "Tous niveaux",
     "image": "default-program.jpg",
     "features": [
-      "Bac+3 en informatique",
+      "Connaissances de base en informatique",
       "Bases en programmation Python",
       "Projet pratique",
       "Présentation finale"
@@ -228,12 +253,12 @@
     "updatedAt": "2025-07-01T15:40:57.208Z"
   },
   {
-    "_id": "686401895d5d0f7024032281",
+    "_id": "fc2",
     "title": "Développement Web Full Stack",
     "description": "Formation continue en développement web full stack, formant des développeurs compétents sur l'ensemble des technologies web modernes.",
     "category": "continuous",
     "duration": "6 mois",
-    "level": "Bac+2",
+    "level": "Tous niveaux",
     "image": "default-program.jpg",
     "features": [
       "Bases en programmation",
@@ -251,12 +276,12 @@
     "updatedAt": "2025-07-01T15:40:57.208Z"
   },
   {
-    "_id": "686401895d5d0f7024032282",
+    "_id": "fc3",
     "title": "Marketing Digital et Réseaux Sociaux",
     "description": "Formation continue en marketing digital et réseaux sociaux, formant des experts en stratégies marketing numériques et communication digitale.",
     "category": "continuous",
     "duration": "6 mois",
-    "level": "Bac+2",
+    "level": "Tous niveaux",
     "image": "default-program.jpg",
     "features": [
       "Intérêt pour le marketing digital",
@@ -274,15 +299,15 @@
     "updatedAt": "2025-07-01T15:40:57.208Z"
   },
   {
-    "_id": "686401895d5d0f7024032283",
+    "_id": "fc4",
     "title": "Gestion des Établissements de Santé",
     "description": "Formation continue en gestion des établissements de santé, préparant les professionnels aux défis spécifiques du management hospitalier.",
     "category": "continuous",
     "duration": "6 mois",
-    "level": "Bac+3",
+    "level": "Tous niveaux",
     "image": "default-program.jpg",
     "features": [
-      "Bac+3 en gestion ou santé",
+      "Connaissances de base dans le domaine",
       "Stage en milieu hospitalier",
       "Mémoire de fin d'études",
       "Présentation orale"
@@ -297,18 +322,156 @@
     "updatedAt": "2025-07-01T15:40:57.208Z"
   },
   {
-    "_id": "686401895d5d0f7024032284",
-    "title": "Formation en Langues",
-    "description": "Formations linguistiques adaptées à tous les niveaux, permettant d'acquérir ou de perfectionner ses compétences en langues étrangères.",
-    "category": "languages",
-    "duration": "Variable",
+    "_id": "fc5",
+    "title": "Formation en Comptabilité",
+    "description": "Formation pratique en comptabilité, permettant d'acquérir les compétences essentielles en comptabilité et gestion financière.",
+    "category": "continuous",
+    "duration": "6 mois",
     "level": "Tous niveaux",
     "image": "default-program.jpg",
     "features": [
-      "Anglais, Français, Espagnol, Allemand",
-      "Tests de niveau personnalisés",
-      "Cours en petits groupes",
-      "Préparation aux certifications internationales"
+      "Aucun prérequis spécifique",
+      "Formation aux logiciels comptables",
+      "Cas pratiques et exercices",
+      "Évaluation continue"
+    ],
+    "isActive": true,
+    "isFeatured": false,
+    "seats": 20,
+    "createdBy": "685ac1d6ed6c525ee450bd8c",
+    "modules": [],
+    "__v": 0,
+    "createdAt": "2025-07-01T15:40:57.208Z",
+    "updatedAt": "2025-07-01T15:40:57.208Z"
+  },
+  {
+    "_id": "fc6",
+    "title": "Formation Délégué Médical",
+    "description": "Formation complète pour devenir délégué médical, alliant connaissances médicales et techniques de communication.",
+    "category": "continuous",
+    "duration": "6 mois",
+    "level": "Tous niveaux",
+    "image": "default-program.jpg",
+    "features": [
+      "Intérêt pour le domaine médical",
+      "Formation en communication",
+      "Stage pratique",
+      "Certification professionnelle"
+    ],
+    "isActive": true,
+    "isFeatured": false,
+    "seats": 20,
+    "createdBy": "685ac1d6ed6c525ee450bd8c",
+    "modules": [],
+    "__v": 0,
+    "createdAt": "2025-07-01T15:40:57.208Z",
+    "updatedAt": "2025-07-01T15:40:57.208Z"
+  },
+  {
+    "_id": "fc7",
+    "title": "Formation Médias et Communication",
+    "description": "Formation aux métiers des médias et de la communication, couvrant les aspects théoriques et pratiques du journalisme moderne.",
+    "category": "continuous",
+    "duration": "6 mois",
+    "level": "Tous niveaux",
+    "image": "default-program.jpg",
+    "features": [
+      "Passion pour la communication",
+      "Projets médiatiques pratiques",
+      "Techniques journalistiques",
+      "Stage en média"
+    ],
+    "isActive": true,
+    "isFeatured": false,
+    "seats": 20,
+    "createdBy": "685ac1d6ed6c525ee450bd8c",
+    "modules": [],
+    "__v": 0,
+    "createdAt": "2025-07-01T15:40:57.208Z",
+    "updatedAt": "2025-07-01T15:40:57.208Z"
+  },
+  {
+    "_id": "fc8",
+    "title": "Formation en Finance",
+    "description": "Formation approfondie en finance, couvrant les aspects fondamentaux de l'analyse financière et de la gestion de portefeuille.",
+    "category": "continuous",
+    "duration": "6 mois",
+    "level": "Tous niveaux",
+    "image": "default-program.jpg",
+    "features": [
+      "Bases en mathématiques",
+      "Analyse financière",
+      "Études de cas réels",
+      "Projet final"
+    ],
+    "isActive": true,
+    "isFeatured": false,
+    "seats": 20,
+    "createdBy": "685ac1d6ed6c525ee450bd8c",
+    "modules": [],
+    "__v": 0,
+    "createdAt": "2025-07-01T15:40:57.208Z",
+    "updatedAt": "2025-07-01T15:40:57.208Z"
+  },
+  {
+    "_id": "fc9",
+    "title": "Gestion de Stock et Logistique",
+    "description": "Formation pratique en gestion de stock et logistique, permettant de maîtriser les outils et techniques modernes de la supply chain.",
+    "category": "continuous",
+    "duration": "6 mois",
+    "level": "Tous niveaux",
+    "image": "default-program.jpg",
+    "features": [
+      "Aucun prérequis spécifique",
+      "Logiciels de gestion de stock",
+      "Cas pratiques d'entreprise",
+      "Stage en entreprise"
+    ],
+    "isActive": true,
+    "isFeatured": false,
+    "seats": 20,
+    "createdBy": "685ac1d6ed6c525ee450bd8c",
+    "modules": [],
+    "__v": 0,
+    "createdAt": "2025-07-01T15:40:57.208Z",
+    "updatedAt": "2025-07-01T15:40:57.208Z"
+  },
+  {
+    "_id": "fc10",
+    "title": "Réseaux Informatiques",
+    "description": "Formation technique en réseaux informatiques, couvrant la configuration, la maintenance et la sécurité des réseaux d'entreprise.",
+    "category": "continuous",
+    "duration": "6 mois",
+    "level": "Tous niveaux",
+    "image": "default-program.jpg",
+    "features": [
+      "Connaissances de base en informatique",
+      "Configuration réseau",
+      "Travaux pratiques",
+      "Certification possible"
+    ],
+    "isActive": true,
+    "isFeatured": false,
+    "seats": 20,
+    "createdBy": "685ac1d6ed6c525ee450bd8c",
+    "modules": [],
+    "__v": 0,
+    "createdAt": "2025-07-01T15:40:57.208Z",
+    "updatedAt": "2025-07-01T15:40:57.208Z"
+  },
+  {
+    "_id": "fc11",
+    "title": "Marketing Fondamental",
+    "description": "Formation complète aux fondamentaux du marketing, couvrant les stratégies traditionnelles et modernes du marketing.",
+    "category": "continuous",
+    "duration": "6 mois",
+    "level": "Tous niveaux",
+    "image": "default-program.jpg",
+    "features": [
+      "Aucun prérequis spécifique",
+      "Études de marché",
+      "Stratégie marketing",
+      "Projet marketing complet"
     ],
     "isActive": true,
     "isFeatured": false,

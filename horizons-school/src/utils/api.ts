@@ -835,31 +835,97 @@ export async function getTeamMembers() {
 }
 
 export const createTeamMember = async (formData: FormData): Promise<TeamMember> => {
-  const { data } = await apiRequest<TeamMember>(`${API_BASE_URL}/team`, {
+  const token = getAuthToken();
+  if (!token) {
+    throw new Error('Authentication required');
+  }
+
+  const { data, error } = await apiRequest<TeamMember>(`${API_BASE_URL}/team`, {
     method: 'POST',
     body: formData,
     headers: {
+      'Authorization': `Bearer ${token}`
       // Don't set Content-Type here as it will be automatically set with the boundary for FormData
     },
   });
-  return data as TeamMember;
+
+  if (error) {
+    throw new Error(error);
+  }
+
+  if (!data) {
+    throw new Error('Failed to create team member');
+  }
+
+  clearTeamCache();
+  return data;
 };
 
 export const updateTeamMember = async (id: string, formData: FormData): Promise<TeamMember> => {
-  const { data } = await apiRequest<TeamMember>(`${API_BASE_URL}/team/${id}`, {
+  const token = getAuthToken();
+  if (!token) {
+    throw new Error('Authentication required');
+  }
+
+  const { data, error } = await apiRequest<TeamMember>(`${API_BASE_URL}/team/${id}`, {
     method: 'PUT',
     body: formData,
     headers: {
+      'Authorization': `Bearer ${token}`
       // Don't set Content-Type here as it will be automatically set with the boundary for FormData
     },
   });
-  return data as TeamMember;
+
+  if (error) {
+    throw new Error(error);
+  }
+
+  if (!data) {
+    throw new Error('Failed to update team member');
+  }
+
+  clearTeamCache();
+  return data;
 };
 
 export const deleteTeamMember = async (id: string): Promise<void> => {
-  await apiRequest(`${API_BASE_URL}/team/${id}`, {
-    method: 'DELETE',
+  const token = getAuthToken();
+  if (!token) {
+    throw new Error('Authentication required');
+  }
+
+  // First verify the team member exists
+  const { data: teamMember, error: getError } = await apiRequest<TeamMember>(`${API_BASE_URL}/team/${id}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    },
   });
+
+  if (getError) {
+    if (getError.includes('404')) {
+      throw new Error('Team member not found');
+    }
+    throw new Error(getError);
+  }
+
+  if (!teamMember) {
+    throw new Error('Team member not found');
+  }
+
+  // Then proceed with deletion
+  const { error: deleteError } = await apiRequest(`${API_BASE_URL}/team/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    },
+  });
+
+  if (deleteError) {
+    throw new Error(deleteError);
+  }
+
+  clearTeamCache();
 };
 
 // Partner type definition

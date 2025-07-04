@@ -86,7 +86,16 @@ const TeamManagement: React.FC = () => {
         setTeamMembers(teamMembers.filter(member => member._id !== id));
         alert('Team member deleted successfully');
       } catch (err: any) {
-        alert(`Error deleting team member: ${err.message}`);
+        if (err.message.includes('Not authorized')) {
+          alert('You are not authorized to delete team members. Please log in again.');
+          // Optionally redirect to login page or refresh auth token
+        } else if (err.message.includes('not found')) {
+          alert('This team member no longer exists. The list will be refreshed.');
+          // Refresh the team members list
+          fetchTeamMembers();
+        } else {
+          alert(`Error deleting team member: ${err.message}`);
+        }
       }
     }
   };
@@ -130,7 +139,12 @@ const TeamManagement: React.FC = () => {
       setShowModal(false);
       alert(`Team member ${formMode === 'create' ? 'created' : 'updated'} successfully`);
     } catch (err: any) {
-      setFormError(err.message || `Failed to ${formMode} team member`);
+      if (err.message.includes('Not authorized') || err.message.includes('Invalid token')) {
+        setFormError('You are not authorized. Please log in again.');
+        // Optionally redirect to login page or refresh auth token
+      } else {
+        setFormError(err.message || `Failed to ${formMode} team member`);
+      }
     } finally {
       setFormSubmitting(false);
     }
