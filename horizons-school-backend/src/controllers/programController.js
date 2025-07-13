@@ -12,6 +12,7 @@ exports.getPrograms = async (req, res) => {
       data: programs
     });
   } catch (error) {
+    console.error(error);
     res.status(500).json({
       success: false,
       message: 'Server Error',
@@ -35,6 +36,7 @@ exports.getHomePrograms = async (req, res) => {
       data: programs
     });
   } catch (error) {
+    console.error(error);
     res.status(500).json({
       success: false,
       message: 'Server Error',
@@ -62,6 +64,7 @@ exports.getProgram = async (req, res) => {
       data: program
     });
   } catch (error) {
+    console.error(error);
     res.status(500).json({
       success: false,
       message: 'Server Error',
@@ -89,6 +92,7 @@ exports.createProgram = async (req, res) => {
       data: program
     });
   } catch (error) {
+    console.error(error);
     res.status(500).json({
       success: false,
       message: 'Server Error',
@@ -123,6 +127,7 @@ exports.updateProgram = async (req, res) => {
       data: program
     });
   } catch (error) {
+    console.error(error);
     res.status(500).json({
       success: false,
       message: 'Server Error',
@@ -152,6 +157,7 @@ exports.deleteProgram = async (req, res) => {
       data: {}
     });
   } catch (error) {
+    console.error(error);
     res.status(500).json({
       success: false,
       message: 'Server Error',
@@ -182,6 +188,7 @@ exports.toggleHomeVisibility = async (req, res) => {
       data: program
     });
   } catch (error) {
+    console.error(error);
     res.status(500).json({
       success: false,
       message: 'Server Error',
@@ -209,6 +216,7 @@ exports.reorderPrograms = async (req, res) => {
       message: 'Programs reordered successfully'
     });
   } catch (error) {
+    console.error(error);
     res.status(500).json({
       success: false,
       message: 'Server Error',
@@ -233,6 +241,7 @@ exports.getFeaturedPrograms = async (req, res) => {
       data: programs
     });
   } catch (error) {
+    console.error(error);
     res.status(500).json({
       success: false,
       message: 'Server Error',
@@ -263,6 +272,7 @@ exports.toggleActive = async (req, res) => {
       data: program
     });
   } catch (error) {
+    console.error(error);
     res.status(500).json({
       success: false,
       message: 'Server Error',

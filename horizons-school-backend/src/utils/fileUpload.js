@@ -57,7 +57,8 @@ const teamStorage = multer.diskStorage({
 
 // File filter for images
 const imageFilter = (req, file, cb) => {
-  if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
+  // Allow a broad range of image extensions (jpg, jpeg, png, gif, bmp, webp, svg, tiff, heic, avif, jfif)
+  if (!file.originalname.match(/\.(jpg|jpeg|png|gif|bmp|webp|svg|tiff|heic|avif|jfif)$/i)) {
     return cb(new Error('Only image files are allowed!'), false);
   }
   cb(null, true);
@@ -87,17 +88,17 @@ const handleUpload = (upload) => (req, res, next) => {
 exports.uploadProgramImage = handleUpload(multer({
   storage: programStorage,
   fileFilter: imageFilter,
-  limits: { fileSize: 5 * 1024 * 1024 } // 5MB
+  limits: { fileSize: 20 * 1024 * 1024 } // 20MB
 }).single('image'));
 
 exports.uploadNewsImage = handleUpload(multer({
   storage: newsStorage,
   fileFilter: imageFilter,
-  limits: { fileSize: 5 * 1024 * 1024 } // 5MB
+  limits: { fileSize: 20 * 1024 * 1024 } // 20MB
 }).single('image'));
 
 exports.uploadTeamMemberImage = handleUpload(multer({
   storage: teamStorage,
   fileFilter: imageFilter,
-  limits: { fileSize: 5 * 1024 * 1024 } // 5MB
+  limits: { fileSize: 20 * 1024 * 1024 } // 20MB
 }).single('image')); 

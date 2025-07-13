@@ -17,28 +17,19 @@ const programSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please add a description']
   },
+  // Category is now optional and free-form
   category: {
     type: String,
-    required: [true, 'Please add a category'],
-    enum: [
-      'Business',
-      'Finance',
-      'Management',
-      'Marketing',
-      'Human Resources',
-      'Technology',
-      'Languages',
-      'Other'
-    ]
+    trim: true
   },
   duration: {
     type: String,
     required: [true, 'Please add a duration']
   },
+  // Level is now optional and free-form (Licence, Master, etc.)
   level: {
     type: String,
-    required: [true, 'Please add a level'],
-    enum: ['Beginner', 'Intermediate', 'Advanced']
+    trim: true
   },
   image: {
     type: String,

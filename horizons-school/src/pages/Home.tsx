@@ -137,10 +137,15 @@ const Home: React.FC = () => {
       {/* Programs Overview */}
       <section className="py-5">
         <Container>
-          <div className="text-center mb-5" data-aos="fade-up">
-            <span className="text-primary fw-bold">NOS PROGRAMMES</span>
-            <h2 className="h1">Formations d'Excellence</h2>
-            <p className="lead text-muted">Découvrez nos programmes conçus pour votre réussite professionnelle</p>
+          <div className="position-relative mb-5" data-aos="fade-up">
+            <div className="text-center">
+              <span className="text-primary fw-bold">NOS PROGRAMMES</span>
+              <h2 className="h1 mt-2">Formations d'Excellence</h2>
+              <p className="lead text-muted">Découvrez nos programmes conçus pour votre réussite professionnelle</p>
+            </div>
+            <Link to="/programs" className="btn btn-outline-primary fw-medium position-absolute top-0 end-0">
+              Voir plus →
+            </Link>
           </div>
           <ProgramsSection />
         </Container>

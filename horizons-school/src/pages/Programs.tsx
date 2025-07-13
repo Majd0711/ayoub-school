@@ -1,9 +1,10 @@
 import React from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import { FaBook, FaGraduationCap, FaBriefcase, FaAward, FaWhatsapp } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { FaBook, FaGraduationCap, FaBriefcase, FaAward } from 'react-icons/fa';
+
 import ProgramCard from '../components/ProgramCard';
-import { programs } from '../data/programs';
+import { programs as staticPrograms } from '../data/programs';
+import { getPrograms } from '../utils/api';
 import './Programs.css';
 
 export interface Program {
@@ -16,14 +17,52 @@ export interface Program {
 }
 
 const Programs: React.FC = () => {
-  const navigate = useNavigate();
+
+  const [programsData, setProgramsData] = React.useState<Program[]>(staticPrograms as Program[]);
+  const [loading, setLoading] = React.useState<boolean>(false);
+
+  React.useEffect(() => {
+    const load = async () => {
+      setLoading(true);
+      try {
+        const data = await getPrograms();
+        if (Array.isArray(data)) {
+          setProgramsData(data);
+        }
+      } catch (err) {
+        console.error('Failed to fetch programs, using static fallback', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+  }, []);
+
+  const normalize = (c: string | undefined) => {
+    const val = (c || '').trim().toLowerCase();
+    switch (val) {
+      case 'technicien':
+      case 'professional training':
+      case 'technician':
+        return 'technical';
+      case 'licence':
+        return 'license';
+      case 'formation continue':
+        return 'continuous';
+      case 'langues':
+        return 'languages';
+      default:
+        return val;
+    }
+  };
 
   const programsByCategory = {
-    technical: programs.filter(p => p.category === 'technical'),
-    license: programs.filter(p => p.category === 'license'),
-    master: programs.filter(p => p.category === 'master'),
-    continuous: programs.filter(p => p.category === 'continuous'),
-    languages: programs.filter(p => p.category === 'languages')
+    technical: programsData.filter(p => normalize(p.category) === 'technical'),
+    license: programsData.filter(p => normalize(p.category) === 'license'),
+    master: programsData.filter(p => normalize(p.category) === 'master'),
+    continuous: programsData.filter(p => normalize(p.category) === 'continuous'),
+    languages: programsData.filter(p => normalize(p.category) === 'languages'),
+    others: programsData.filter(p => !p.category || p.category.trim() === '')
   };
 
   const scrollToCategory = (categoryId: string) => {
@@ -33,11 +72,7 @@ const Programs: React.FC = () => {
     }
   };
 
-  const handleWhatsAppClick = () => {
-    const phoneNumber = '+212661754108'; // Replace with your actual WhatsApp number
-    const message = encodeURIComponent('Bonjour, je souhaite m\'inscrire à une formation.');
-    window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
-  };
+
 
   return (
     <div className="programs-page">
@@ -145,6 +180,11 @@ const Programs: React.FC = () => {
             <Button variant="outline-primary" onClick={() => scrollToCategory('languages')}>
               Formations en Langues
             </Button>
+            {programsByCategory.others.length > 0 && (
+              <Button variant="outline-primary" onClick={() => scrollToCategory('others')}>
+                Autres
+              </Button>
+            )}
           </div>
         </Container>
       </section>
@@ -214,6 +254,20 @@ const Programs: React.FC = () => {
               <h3>Formations en Langues</h3>
               <Row className="g-4">
                 {programsByCategory.languages.map((program) => (
+                  <Col key={program._id} md={6} lg={4}>
+                    <ProgramCard program={program} />
+                  </Col>
+                ))}
+              </Row>
+            </div>
+          )}
+
+          {/* Others */}
+          {programsByCategory.others.length > 0 && (
+            <div id="others" className="program-category">
+              <h3>Autres Programmes</h3>
+              <Row className="g-4">
+                {programsByCategory.others.map((program) => (
                   <Col key={program._id} md={6} lg={4}>
                     <ProgramCard program={program} />
                   </Col>
