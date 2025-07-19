@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import 'boxicons/css/boxicons.min.css';
 import '../styles/Footer.css';
 
@@ -79,10 +80,18 @@ const Footer: React.FC = () => {
           <Col lg={3} md={6}>
             <h5 className="text-white">Liens Rapides</h5>
             <ul className="list-unstyled mt-3">
-              <li className="mb-2"><a href="#/" className="text-white text-decoration-none">Accueil</a></li>
-              <li className="mb-2"><a href="#/about" className="text-white text-decoration-none">À Propos</a></li>
-              <li className="mb-2"><a href="#/programs" className="text-white text-decoration-none">Programmes</a></li>
-              <li className="mb-2"><a href="#/contact" className="text-white text-decoration-none">Contact</a></li>
+              <li className="mb-2">
+                <Link to="/" className="text-white text-decoration-none" onClick={() => window.scrollTo(0, 0)}>Accueil</Link>
+              </li>
+              <li className="mb-2">
+                <Link to="/about" className="text-white text-decoration-none" onClick={() => window.scrollTo(0, 0)}>À Propos</Link>
+              </li>
+              <li className="mb-2">
+                <Link to="/programs" className="text-white text-decoration-none" onClick={() => window.scrollTo(0, 0)}>Programmes</Link>
+              </li>
+              <li className="mb-2">
+                <Link to="/contact" className="text-white text-decoration-none" onClick={() => window.scrollTo(0, 0)}>Contact</Link>
+              </li>
             </ul>
           </Col>
           
