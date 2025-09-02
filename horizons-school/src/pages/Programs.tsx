@@ -284,7 +284,7 @@ const Programs: React.FC = () => {
           <h2>Prêt à commencer votre formation ?</h2>
           <p>Les inscriptions sont ouvertes. Places limitées !</p>
           <a 
-            href={`https://wa.me/+212661754108?text=${encodeURIComponent('Bonjour, je souhaite m\'inscrire à une formation.')}`}
+            href={`https://wa.me/+212604916565?text=${encodeURIComponent('Bonjour, je souhaite m\'inscrire à une formation.')}`}
             target="_blank"
             rel="noopener noreferrer"
             className="cta-button"
